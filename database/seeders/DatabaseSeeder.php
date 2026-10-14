@@ -1533,6 +1533,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ServiceCatalogueSeeder::class);
         $this->call(ExpandedServiceCatalogueSeeder::class);
         $this->call(ExtraServicesSeeder::class);
+        $this->call(AiAgentServicesSeeder::class);
         $this->call(AssetLifecycleCategorySeeder::class);
         $this->call(PromoCampaignSeeder::class);
         $this->call(DemoPortfolioSeeder::class);

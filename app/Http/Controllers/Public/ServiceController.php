@@ -20,6 +20,17 @@ class ServiceController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        // Support ?category=slug deep-links from navigation dropdowns.
+        $activeCategory = null;
+        if (request()->filled('category')) {
+            $activeCategory = ServiceCategory::where('slug', request()->input('category'))
+                ->where('is_active', true)
+                ->first();
+            if ($activeCategory) {
+                $categories = $categories->filter(fn ($c) => $c->id === $activeCategory->id)->values();
+            }
+        }
+
         $featured = Service::where('is_active', true)
             ->where('is_featured', true)
             ->with('category', 'countryPrices.country')
@@ -28,7 +39,7 @@ class ServiceController extends Controller
 
         $countries = Country::where('is_active', true)->orderBy('sort_order')->get();
 
-        return view('public.services.index', compact('categories', 'featured', 'countries'));
+        return view('public.services.index', compact('categories', 'featured', 'countries', 'activeCategory'));
     }
 
     public function show($slug)

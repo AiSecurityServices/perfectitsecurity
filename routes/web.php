@@ -59,6 +59,10 @@ Route::post('/contact', [ContactController::class, 'submit'])->middleware('throt
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('services.show');
 
+// AI Agent Services division (first-class landing + scoped detail pages)
+Route::get('/ai-services', [\App\Http\Controllers\Public\AiServiceController::class, 'index'])->name('ai.index');
+Route::get('/ai-services/{slug}', [\App\Http\Controllers\Public\AiServiceController::class, 'show'])->name('ai.show');
+
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::post('/blog/{slug}/comment', [BlogController::class, 'comment'])->middleware('throttle:10,1')->name('blog.comment');

@@ -24,24 +24,29 @@
     <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-36 pb-14 lg:pb-20 grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
         <div class="max-w-4xl">
             {{-- premium eyebrow --}}
-            <p class="reveal"><span class="premium-eyebrow">Enterprise IT • Cybersecurity • Cloud</span></p>
+            <p class="reveal"><span class="premium-eyebrow">Managed IT • AI Agents • Cybersecurity • Cloud</span></p>
 
             <h1 id="hero-heading" class="mt-6 font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-6xl lg:text-7xl text-balance reveal">
-                <span class="premium-title">Your Technology. Secure. Connected. Unstoppable.</span><span class="term-cursor" aria-hidden="true"></span>
+                <span class="premium-title">Intelligent IT. Autonomous AI. Secure by Design.</span><span class="term-cursor" aria-hidden="true"></span>
             </h1>
 
             <p class="premium-lede mt-6 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl reveal delay-100">
-                From proactive IT support and cloud infrastructure to advanced cybersecurity,
-                we help businesses build, protect, and operate technology with confidence.
+                From managed IT and cybersecurity to custom AI agents and intelligent business
+                automation, we design, deploy, and support technology that helps your business
+                operate smarter.
             </p>
 
             <div class="mt-9 flex flex-col sm:flex-row flex-wrap gap-3 reveal delay-200">
-                <a href="{{ route('get-quote') }}" class="term-btn term-btn-lg btn-premium">
+                <a href="{{ route('ai.index') }}" class="term-btn term-btn-lg btn-premium">
+                    Explore AI Agent Services
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                </a>
+                <a href="{{ route('get-quote') }}" class="term-btn term-btn-lg term-btn-ghost btn-ghost-premium">
                     Book a Consultation
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                 </a>
                 <a href="#services" class="term-btn term-btn-lg term-btn-ghost btn-ghost-premium">
-                    Explore Our Services
+                    Explore IT Services
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                 </a>
             </div>

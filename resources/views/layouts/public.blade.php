@@ -163,6 +163,9 @@
                     {{-- IT Support (home section anchor) --}}
                     <a href="{{ request()->routeIs('home') ? '#it-support' : route('home') . '#it-support' }}" class="header-nav-item px-3 py-2 text-sm font-medium text-white hover:text-[#00FF00] transition-colors">IT Support</a>
 
+                    {{-- AI Services --}}
+                    <a href="{{ route('ai.index') }}" @if(request()->routeIs('ai.*')) aria-current="page" @endif class="header-nav-item px-3 py-2 text-sm font-medium text-white hover:text-[#00FF00] transition-colors">AI Services</a>
+
                     {{-- Portfolio --}}
                     <a href="{{ route('portfolio.index') }}" @if(request()->routeIs('portfolio.*')) aria-current="page" @endif class="header-nav-item px-3 py-2 text-sm font-medium text-white hover:text-[#00FF00] transition-colors">Portfolio</a>
 
@@ -246,6 +249,7 @@
                             ['label' => 'Solutions', 'url' => route('case-studies'), 'active' => request()->routeIs('case-studies*')],
                             ['label' => 'Security', 'url' => request()->routeIs('home') ? '#security' : route('home') . '#security', 'active' => false],
                             ['label' => 'IT Support', 'url' => request()->routeIs('home') ? '#it-support' : route('home') . '#it-support', 'active' => false],
+                            ['label' => 'AI Services', 'url' => route('ai.index'), 'active' => request()->routeIs('ai.*')],
                             ['label' => 'Portfolio', 'url' => route('portfolio.index'), 'active' => request()->routeIs('portfolio.*')],
                             ['label' => 'Knowledge Base', 'url' => route('kb.index'), 'active' => request()->routeIs('kb.*')],
                             ['label' => 'About', 'url' => route('about'), 'active' => request()->routeIs('about')],
