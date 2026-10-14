@@ -99,12 +99,16 @@ class ResponsiveAuditTest extends TestCase
     /** @test */
     public function canvases_pause_and_cap_cost_on_mobile()
     {
-        $cosmic = file_get_contents(resource_path('js/cosmic-bg.js'));
-        $this->assertStringContainsString('visibilitychange', $cosmic);
-        $this->assertStringContainsString('devicePixelRatio', $cosmic);
-        $hero = file_get_contents(resource_path('js/hero-3d.js'));
-        // Premium green/blue identity carried into the 3D rig.
-        $this->assertStringContainsString('0x06b6d4', $hero);
+        // Shipped ambient world: pauses off-screen/hidden tabs, caps DPR.
+        $global = file_get_contents(resource_path('js/global-3d.js'));
+        $this->assertStringContainsString('visibilitychange', $global);
+        $this->assertStringContainsString('devicePixelRatio', $global);
+        // Shipped signature hero globe: same pause + DPR discipline.
+        $globe = file_get_contents(resource_path('js/hero-globe.js'));
+        $this->assertStringContainsString('visibilitychange', $globe);
+        $this->assertStringContainsString('devicePixelRatio', $globe);
+        // Premium cyan identity carried into the globe rig.
+        $this->assertStringContainsString('0x55e6ff', strtolower($globe));
         $role = file_get_contents(resource_path('js/role-bg.js'));
         $this->assertStringContainsString('#22C55E', $role);
     }
