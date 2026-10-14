@@ -107,6 +107,16 @@ module.exports = {
                     amber: '#FFB454',
                     red: '#FF5C5C',
                 },
+                // Premium cinematic layer (additive): midnight navy surfaces,
+                // electric cyan primary + sophisticated violet secondary.
+                premium: {
+                    950: '#070B14',
+                    900: '#0D1422',
+                    800: '#131C30',
+                    700: '#1B2947',
+                    cyan: '#55E6FF',
+                    violet: '#9275FF',
+                },
             },
             animation: {
                 'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1)',

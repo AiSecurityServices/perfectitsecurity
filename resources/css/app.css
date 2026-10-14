@@ -3415,3 +3415,134 @@ html:not(.dark) .shell-group-label { color: #6b7280; }
 /* 14h. Muted 3D ambience on light so decor never shouts over ink. */
 html:not(.dark) .page-lights { opacity: .5; }
 html:not(.dark) .gsb { opacity: .35; }
+
+/* ═══════════════════════════════════════════════════════════════
+   15. PREMIUM CINEMATIC HERO LAYER (additive, non-breaking)
+   Midnight navy + electric cyan (#55E6FF) + violet (#9275FF).
+   Works with the existing terminal identity; hero-scoped only.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+    --premium-bg: #070B14;
+    --premium-surface: #0D1422;
+    --premium-cyan: #55E6FF;
+    --premium-violet: #9275FF;
+    --premium-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.premium-hero {
+    position: relative;
+    isolation: isolate;
+    background:
+        radial-gradient(900px 480px at 78% 30%, rgba(85, 230, 255, 0.10), transparent 60%),
+        radial-gradient(760px 520px at 62% 78%, rgba(146, 117, 255, 0.12), transparent 62%),
+        linear-gradient(180deg, rgba(7, 11, 20, 0.35), transparent 40%);
+}
+.premium-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--term-mono);
+    font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--premium-cyan);
+    border: 1px solid rgba(85, 230, 255, 0.35);
+    background: rgba(85, 230, 255, 0.06);
+    padding: 0.45rem 0.9rem; border-radius: 999px;
+}
+.premium-eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 999px;
+    background: var(--premium-cyan);
+    box-shadow: 0 0 12px rgba(85, 230, 255, 0.9);
+}
+.premium-title {
+    background: linear-gradient(100deg, #fff 30%, #bfefff 55%, #cfc2ff 80%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.premium-lede { color: #aebdd2; }
+html:not(.dark) .premium-lede { color: #3d4b63; }
+html:not(.dark) .premium-title {
+    background: linear-gradient(100deg, #0a0f1e 20%, #0e4a5e 55%, #4b3fa3 85%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* Signature globe stage */
+.hero-globe-stage {
+    position: relative; width: 100%; min-height: 420px; height: clamp(420px, 34vw, 600px);
+}
+@media (max-width: 1023px) {
+    .hero-globe-stage { height: clamp(300px, 70vw, 440px); min-height: 300px; }
+}
+#hero-globe-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+    border-radius: 1.25rem; cursor: grab;
+}
+#hero-globe-canvas:active { cursor: grabbing; }
+/* Static gradient fallback (shown when WebGL / motion unavailable) */
+.hero-globe-fallback {
+    position: absolute; inset: 0; border-radius: 1.25rem; display: none;
+    background:
+        radial-gradient(circle at 50% 46%, rgba(85, 230, 255, 0.35), transparent 42%),
+        radial-gradient(circle at 50% 46%, rgba(146, 117, 255, 0.28), transparent 58%),
+        radial-gradient(closest-side at 50% 46%, #16263f, #0a1120 72%, #060a14);
+    border: 1px solid rgba(85, 230, 255, 0.18);
+}
+.hero-globe-fallback::after {
+    content: ""; position: absolute; inset: 18% 12%;
+    border-radius: 999px;
+    border: 1px solid rgba(85, 230, 255, 0.35);
+    box-shadow: 0 0 60px rgba(85, 230, 255, 0.15), inset 0 0 60px rgba(146, 117, 255, 0.12);
+}
+.hero-globe-stage[data-globe="fallback"] .hero-globe-fallback { display: block; }
+.hero-globe-stage[data-globe="fallback"] #hero-globe-canvas { display: none; }
+
+/* Floating glass telemetry panels */
+.hero-float {
+    position: absolute; z-index: 5;
+    background: rgba(13, 20, 34, 0.66);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border: 1px solid rgba(148, 184, 255, 0.18);
+    border-radius: 0.9rem;
+    box-shadow: 0 18px 50px -18px rgba(2, 6, 23, 0.7);
+    padding: 0.7rem 0.9rem;
+    font-family: var(--term-mono); font-size: 11px; letter-spacing: 0.12em;
+    color: #cfe3ff; text-transform: uppercase;
+    animation: hero-drift 7s ease-in-out infinite;
+    max-width: 230px;
+}
+.hero-float strong { display: block; color: #fff; font-size: 12px; letter-spacing: 0.1em; }
+.hero-float .ok { color: var(--premium-cyan); }
+.hero-float--tl { top: 4%; left: 0; }
+.hero-float--br { bottom: 5%; right: 0; animation-delay: -3.5s; }
+@media (max-width: 640px) {
+    .hero-float { font-size: 10px; padding: 0.55rem 0.7rem; max-width: 180px; }
+    .hero-float--tl { top: 0; }
+    .hero-float--br { bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-float { animation: none; }
+}
+@keyframes hero-drift {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Scroll-aware nav: transparent over hero → glass after scroll */
+#main-nav { transition: background-color 0.35s var(--premium-ease), border-color 0.35s var(--premium-ease), backdrop-filter 0.35s var(--premium-ease); }
+#main-nav.nav-scrolled {
+    background-color: rgba(7, 11, 20, 0.82);
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+    border-bottom-color: rgba(85, 230, 255, 0.22);
+}
+html:not(.dark) #main-nav.nav-scrolled { background-color: rgba(255, 255, 255, 0.86); }
+
+/* Premium CTA glow (restrained) */
+.btn-premium {
+    background: linear-gradient(100deg, #38d6f5, #55E6FF 45%, #9275FF 110%);
+    color: #04121a; font-weight: 700;
+    box-shadow: 0 12px 34px -12px rgba(85, 230, 255, 0.55);
+    transition: transform 0.25s var(--premium-ease), box-shadow 0.25s var(--premium-ease), filter 0.25s;
+}
+.btn-premium:hover { transform: translateY(-2px); filter: brightness(1.06); box-shadow: 0 18px 44px -12px rgba(85, 230, 255, 0.65); }
+.btn-premium:focus-visible { outline: 2px solid var(--premium-cyan); outline-offset: 3px; }
+.btn-ghost-premium {
+    border: 1px solid rgba(148, 184, 255, 0.35); color: inherit;
+    transition: border-color 0.25s, background-color 0.25s, transform 0.25s var(--premium-ease);
+}
+.btn-ghost-premium:hover { border-color: rgba(85, 230, 255, 0.6); background: rgba(85, 230, 255, 0.07); transform: translateY(-2px); }

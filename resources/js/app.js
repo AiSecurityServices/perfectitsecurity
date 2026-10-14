@@ -19,7 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then((m) => { window._global3D = new m.default(); })
                 .catch(() => { /* 3D decorative only — never break the page */ });
         }
+        // Signature hero globe: home page only, separate async chunk so the
+        // main bundle stays lean. Module self-handles reduced-motion,
+        // WebGL fallback, off-screen pausing, and GPU cleanup.
+        if (document.getElementById('hero-globe-canvas') && !window._heroGlobe) {
+            import('./hero-globe.js')
+                .then((m) => { window._heroGlobe = new m.default('hero-globe-canvas'); })
+                .catch(() => {
+                    document.querySelector('.hero-globe-stage')?.setAttribute('data-globe', 'fallback');
+                });
+        }
     } catch (e) { /* 3D decorative only — never break the page */ }
+
+    // Scroll-aware nav: transparent over hero → frosted glass after scroll.
+    try {
+        const nav = document.getElementById('main-nav');
+        if (nav) {
+            const onScroll = () => nav.classList.toggle('nav-scrolled', window.scrollY > 24);
+            onScroll();
+            window.addEventListener('scroll', onScroll, { passive: true });
+        }
+    } catch (e) { /* nav decorative only */ }
 });
 
 // Dark mode persistence

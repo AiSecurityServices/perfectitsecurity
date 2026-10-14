@@ -6,13 +6,13 @@
 @section('content')
 
 {{-- ═══════════════════════════════════════════════════════════════
-     HERO — SYS://PERFECTITSECURITY
-     Subtle CSS-only technical environment (grid is global via
-     terminal-background). No canvas, no WebGL, no heavy JS.
+     HERO — Premium signature experience: cinematic copy (left) +
+     interactive real-time 3D infrastructure globe (right).
+     The canvas is decorative (aria-hidden); all CTAs work without JS/WebGL.
      ═══════════════════════════════════════════════════════════════ --}}
-<section class="relative w-full overflow-hidden" aria-labelledby="hero-heading" data-3d-state="hero">
+<section class="premium-hero relative w-full overflow-hidden" aria-labelledby="hero-heading" data-3d-state="hero">
     <div class="absolute inset-0 bg-cyber-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
-    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" aria-hidden="true"></div>
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#55E6FF]/40 to-transparent" aria-hidden="true"></div>
     {{-- faint system coordinates --}}
     <div class="absolute top-20 right-6 lg:right-12 font-mono text-[10px] tracking-[0.2em] text-term-700/60 uppercase hidden md:block pointer-events-none select-none" aria-hidden="true">
         LAT 51.5072 // LON -0.1276<br>NODE: EDGE-01
@@ -21,43 +21,32 @@
         SESSION: TLS-SECURED
     </div>
 
-    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-36 pb-14 lg:pb-20 grid lg:grid-cols-2 gap-10 lg:gap-6 items-center">
+    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-36 pb-14 lg:pb-20 grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
         <div class="max-w-4xl">
-            {{-- monospace status --}}
-            <div class="flex flex-wrap items-center gap-2.5 mb-7 reveal">
-                <span class="term-tag term-tag-accent">SYS://PERFECTITSECURITY</span>
-                <span class="term-status text-emerald-700 dark:text-accent-soft"><span class="term-status-dot" aria-hidden="true"></span>Status: Online</span>
-                <span class="term-tag">Security operations active</span>
-            </div>
+            {{-- premium eyebrow --}}
+            <p class="reveal"><span class="premium-eyebrow">Enterprise IT • Cybersecurity • Cloud</span></p>
 
-            <h1 id="hero-heading" class="font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-6xl lg:text-7xl text-navy-900 dark:text-white text-balance reveal">
-                SECURE YOUR<br>
-                DIGITAL WORLD<span class="term-cursor" aria-hidden="true"></span>
+            <h1 id="hero-heading" class="mt-6 font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-6xl lg:text-7xl text-balance reveal">
+                <span class="premium-title">Your Technology. Secure. Connected. Unstoppable.</span><span class="term-cursor" aria-hidden="true"></span>
             </h1>
 
-            <p class="mt-6 text-base sm:text-lg lg:text-xl leading-relaxed text-surface-600 dark:text-term-800 max-w-2xl reveal delay-100">
-                PerfectITSecurity provides managed IT support, cybersecurity and penetration
-                testing, secure software development, cloud and server management, web
-                development, and dependable digital solutions — built, secured, and operated
-                by one engineering team.
+            <p class="premium-lede mt-6 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl reveal delay-100">
+                From proactive IT support and cloud infrastructure to advanced cybersecurity,
+                we help businesses build, protect, and operate technology with confidence.
             </p>
 
             <div class="mt-9 flex flex-col sm:flex-row flex-wrap gap-3 reveal delay-200">
-                <a href="{{ route('get-quote') }}" class="term-btn term-btn-lg">
-                    Get IT Support
+                <a href="{{ route('get-quote') }}" class="term-btn term-btn-lg btn-premium">
+                    Book a Consultation
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                 </a>
-                <a href="{{ auth()->check() ? route('portal.service-request.create') : route('get-quote') }}" class="term-btn term-btn-lg term-btn-ghost">
-                    Request a Service
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                </a>
-                <a href="{{ route('contact') }}" class="term-btn term-btn-lg term-btn-ghost">
-                    Contact Us
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                <a href="#services" class="term-btn term-btn-lg term-btn-ghost btn-ghost-premium">
+                    Explore Our Services
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                 </a>
             </div>
             <p class="mt-5 font-mono text-[11px] tracking-[0.18em] uppercase text-slate-500 dark:text-term-700 reveal delay-300">
-                Reliable IT Support <span class="text-accent mx-1" aria-hidden="true">•</span> Fast Response <span class="text-accent mx-1" aria-hidden="true">•</span> Professional Solutions
+                <span class="inline-flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-accent inline-block" aria-hidden="true"></span>Security operations active · Ticketed support workflow · Same engineering team end-to-end</span>
             </p>
             <button type="button" onclick="window.dispatchEvent(new CustomEvent('open-ai-chat'))"
                class="mt-5 inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase text-slate-600 hover:text-emerald-700 dark:text-term-700 dark:hover:text-accent-soft transition-colors reveal delay-300">
@@ -68,7 +57,7 @@
             {{-- technical metadata strip (no statistics — capability markers only) --}}
             <dl class="mt-12 pt-6 border-t border-term-300 dark:border-term-400/60 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 font-mono reveal delay-300">
                 @foreach([
-                    ['k' => 'SUPPORT', 'v' => '24/7 available'],
+                    ['k' => 'SUPPORT', 'v' => 'Ticketed queue'],
                     ['k' => 'APPROACH', 'v' => 'Security first'],
                     ['k' => 'DELIVERY', 'v' => 'Global remote service'],
                     ['k' => 'READY', 'v' => 'Enterprise workflows'],
@@ -81,12 +70,28 @@
             </dl>
         </div>
 
-        {{-- Spacer: the HUD visual now lives in the fixed global HUD frame
-             (<x-global-hud-frame />); this column reserves its space so the
-             headline never slides underneath it. --}}
-        <div class="hidden lg:block" aria-hidden="true"></div>
+        {{-- Signature 3D infrastructure globe (right). Decorative: aria-hidden,
+             keyboard-inert, with a static CSS fallback when WebGL is unavailable. --}}
+        <div class="hero-globe-stage reveal delay-200" data-globe="live" aria-hidden="true">
+            <div class="hero-globe-fallback"></div>
+            <canvas id="hero-globe-canvas" aria-hidden="true" tabindex="-1"></canvas>
+            <div class="hero-float hero-float--tl"><strong>Threat monitoring</strong><span class="ok">● Active</span> · 24/7 watch</div>
+            <div class="hero-float hero-float--br"><strong>Cloud infrastructure</strong><span class="ok">● Connected</span> · Backups verified</div>
+        </div>
     </div>
 </section>
+
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'ProfessionalService',
+    'name' => 'PerfectITSecurity',
+    'description' => 'Managed IT support, cybersecurity, penetration testing, secure software development, and cloud/server management.',
+    'url' => url('/'),
+], JSON_UNESCAPED_SLASHES) !!}
+</script>
+@endpush
 
 {{-- ═══════════ 01 / SERVICES://CORE ═══════════ --}}
 <section class="relative w-full py-16 sm:py-20 lg:py-28" aria-labelledby="services-heading" id="services" data-3d-state="services">
@@ -526,12 +531,12 @@
             <span class="term-sec-num">14</span>
             <span class="term-sec-label">CONTACT://SECURE_CHANNEL</span>
         </div>
-        <h2 id="contact-heading" class="term-sec-title text-3xl sm:text-4xl lg:text-6xl text-balance reveal">LET'S SECURE YOUR<br>NEXT PROJECT.</h2>
+        <h2 id="contact-heading" class="term-sec-title text-3xl sm:text-4xl lg:text-6xl text-balance reveal">LET'S MAKE YOUR TECHNOLOGY<br>WORK SMARTER.</h2>
         <p class="term-sec-desc mt-5 max-w-xl mx-auto reveal delay-100">Tell us what you need — support, security, development, or cloud. Requests use the existing contact workflow and land in the same tracked queue.</p>
         <div class="mt-9 flex flex-col sm:flex-row justify-center gap-3 reveal delay-200">
-            <a href="{{ route('contact') }}" class="term-btn term-btn-lg">Send Request
+            <a href="{{ route('get-quote') }}" class="term-btn term-btn-lg btn-premium">Book a Consultation
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
-            <a href="{{ route('get-quote') }}" class="term-btn term-btn-lg term-btn-ghost">Get a Quote →</a>
+            <a href="{{ auth()->check() ? route('portal.tickets.create') : route('login') }}" class="term-btn term-btn-lg term-btn-ghost btn-ghost-premium">Request IT Support →</a>
         </div>
         @if($latestPosts->isNotEmpty())
         <div class="mt-16 text-left">
