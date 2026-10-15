@@ -3,11 +3,9 @@
 namespace App\Services;
 
 use App\Models\Country;
-use App\Models\Notification;
 use App\Models\SlaPolicy;
 use App\Models\Ticket;
 use App\Models\User;
-use Illuminate\Support\Str;
 
 class SlaService
 {
@@ -61,8 +59,46 @@ class SlaService
         return $ticket;
     }
 
+    /**
+     * Freeze the SLA clock while work waits on the customer or a third
+     * party. Idempotent — calling twice is a no-op.
+     */
+    public function pauseClock(Ticket $ticket): Ticket
+    {
+        if (! $ticket->sla_paused_at && ! $ticket->isTerminal() && $ticket->sla_resolution_deadline) {
+            $ticket->update(['sla_paused_at' => now()]);
+        }
+
+        return $ticket;
+    }
+
+    /**
+     * Resume a frozen clock: both deadlines shift forward by the exact
+     * waited duration, so neither side is penalised for waiting time.
+     */
+    public function resumeClock(Ticket $ticket): Ticket
+    {
+        if (! $ticket->sla_paused_at) {
+            return $ticket;
+        }
+        $waitedMinutes = max(0, (int) $ticket->sla_paused_at->diffInMinutes(now()));
+        $updates = ['sla_paused_at' => null];
+        if ($ticket->sla_response_deadline) {
+            $updates['sla_response_deadline'] = $ticket->sla_response_deadline->copy()->addMinutes($waitedMinutes);
+        }
+        if ($ticket->sla_resolution_deadline) {
+            $updates['sla_resolution_deadline'] = $ticket->sla_resolution_deadline->copy()->addMinutes($waitedMinutes);
+        }
+        $ticket->update($updates);
+
+        return $ticket;
+    }
+
     public function getSlaStatus(Ticket $ticket): string
     {
+        if ($ticket->sla_paused_at) {
+            return 'paused';
+        }
         if (! $ticket->sla_resolution_deadline) {
             return 'no_sla';
         }
@@ -95,7 +131,9 @@ class SlaService
     {
         $warningCount = 0;
         $breachCount = 0;
-        $tickets = Ticket::with('assignee')->open()->whereNotNull('sla_resolution_deadline')->get();
+        // Paused clocks (waiting on customer/third party) are skipped —
+        // their deadlines shift on resume instead.
+        $tickets = Ticket::with('assignee')->open()->whereNotNull('sla_resolution_deadline')->whereNull('sla_paused_at')->get();
 
         foreach ($tickets as $ticket) {
             $deadline = $ticket->sla_resolution_deadline;
@@ -138,13 +176,9 @@ class SlaService
         }
 
         foreach ($recipients->unique('id') as $user) {
-            Notification::create([
-                'id' => (string) Str::uuid(),
-                'type' => $type,
-                'notifiable_type' => User::class,
-                'notifiable_id' => $user->id,
-                'data' => ['title' => $title, 'message' => $message, 'ticket_id' => $ticket->id],
-            ]);
+            // Preference-gated like every other notification (no direct
+            // Notification::create bypass).
+            ServiceTrackingService::notify((int) $user->id, $type, $title, $message);
         }
     }
 

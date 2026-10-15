@@ -19,14 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then((m) => { window._global3D = new m.default(); })
                 .catch(() => { /* 3D decorative only — never break the page */ });
         }
-        // Signature hero globe: home page only, separate async chunk so the
-        // main bundle stays lean. Module self-handles reduced-motion,
-        // WebGL fallback, off-screen pausing, and GPU cleanup.
-        if (document.getElementById('hero-globe-canvas') && !window._heroGlobe) {
+        // Signature homepage globe: shown on every page hero (one instance
+        // per hero visual), separate async chunk so the main bundle stays
+        // lean. Module self-handles reduced-motion, WebGL fallback,
+        // off-screen pausing, and GPU cleanup.
+        if (document.querySelector('canvas.hero-globe-canvas:not([data-globe-init])') && !window._heroGlobes) {
             import('./hero-globe.js')
-                .then((m) => { window._heroGlobe = new m.default('hero-globe-canvas'); })
+                .then((m) => { window._heroGlobes = m.default.initAll(); })
                 .catch(() => {
-                    document.querySelector('.hero-globe-stage')?.setAttribute('data-globe', 'fallback');
+                    document.querySelectorAll('.hero-globe-stage').forEach((el) => el.setAttribute('data-globe', 'fallback'));
                 });
         }
     } catch (e) { /* 3D decorative only — never break the page */ }

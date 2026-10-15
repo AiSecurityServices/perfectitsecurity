@@ -1,600 +1,284 @@
 @extends('layouts.public')
 
-@section('title', 'PerfectITSecurity — Secure Your Digital World')
-@section('description', 'Managed IT support, cybersecurity, penetration testing, secure software development, and cloud/server management. Security operations active.')
+@section('title', 'AISecurity — Advanced IT Support Meets the Power of AI')
+@section('description', 'We build, secure and manage your digital future with AI agents, reliable IT support, and enterprise-grade cybersecurity.')
 
 @section('content')
+@php
+    // Eight AI agent spotlight cards in reference order. Copy is benefit-led
+    // and honest (no 24/7 or capability claims beyond the catalogue).
+    $spotBySlug = isset($aiSpotlight) ? $aiSpotlight->keyBy('slug') : collect();
+    $aiCards = [
+        ['slug' => 'ai-customer-service-agents', 'title' => 'Customer Support Agents', 'desc' => 'Provide instant, accurate and friendly customer support.', 'bg' => 'rgba(22,139,255,.18)', 'fg' => '#4DA3FF', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>'],
+        ['slug' => 'ai-sales-research-agents', 'title' => 'Sales & Research Agents', 'desc' => 'Find leads, analyze data and boost your sales.', 'bg' => 'rgba(255,180,84,.16)', 'fg' => '#FFB454', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M7 14l4-4 3 3 5-6"/>'],
+        ['slug' => 'ai-coding-assistant-configuration', 'title' => 'Coding Assistant Agents', 'desc' => 'Write, debug and optimize code with AI.', 'bg' => 'rgba(121,88,255,.18)', 'fg' => '#9275FF', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M8 9l-4 3 4 3m8-6l4 3-4 3M14 5l-4 14"/>'],
+        ['slug' => 'business-process-automation-ai', 'title' => 'Business Process Automation', 'desc' => 'Automate workflows and save hours of work.', 'bg' => 'rgba(0,230,122,.14)', 'fg' => '#00E67A', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10M18 16l2 2 3-3"/>'],
+        ['slug' => 'local-private-ai-deployment', 'title' => 'Local & Private AI Deployment', 'desc' => 'Your data, your control, on-site or in the cloud.', 'bg' => 'rgba(0,207,255,.14)', 'fg' => '#00CFFF', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10M12 3v0"/>'],
+        ['slug' => 'ai-security-hardening', 'title' => 'AI Security Hardening', 'desc' => 'Protect your AI systems and data with advanced security layers.', 'bg' => 'rgba(77,163,255,.16)', 'fg' => '#4DA3FF', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3zM9.2 12l1.9 1.9L15 10"/>'],
+        ['slug' => 'ai-agent-platform-setup', 'title' => 'AI Agent Platform Setup', 'desc' => 'Build and manage your own AI agent ecosystem.', 'bg' => 'rgba(0,207,255,.14)', 'fg' => '#00CFFF', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 9h6v6H9zM4 4h5v5H4zM15 4h5v5h-5zM4 15h5v5H4zM15 15h5v5h-5z"/>'],
+        ['slug' => 'managed-ai-support', 'title' => 'Managed AI Support', 'desc' => 'Ongoing monitoring, updates and expert help.', 'bg' => 'rgba(255,92,92,.14)', 'fg' => '#FF8A8A', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M4 13a8 8 0 0116 0M3 15a2 2 0 012-2h1v6H5a2 2 0 01-2-2v-2zM21 15a2 2 0 00-2-2h-1v6h1a2 2 0 002-2v-2zM18 19a4 4 0 01-4 3h-2"/>'],
+    ];
+    $svc = fn($cat) => route('services.index').'?category='.$cat;
+@endphp
 
-{{-- ═══════════════════════════════════════════════════════════════
-     HERO — Premium signature experience: cinematic copy (left) +
-     interactive real-time 3D infrastructure globe (right).
-     The canvas is decorative (aria-hidden); all CTAs work without JS/WebGL.
-     ═══════════════════════════════════════════════════════════════ --}}
-<section class="premium-hero relative w-full overflow-hidden" aria-labelledby="hero-heading" data-3d-state="hero">
-    <div class="absolute inset-0 bg-cyber-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
-    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#55E6FF]/40 to-transparent" aria-hidden="true"></div>
-    {{-- faint system coordinates --}}
-    <div class="absolute top-20 right-6 lg:right-12 font-mono text-[10px] tracking-[0.2em] text-term-700/60 uppercase hidden md:block pointer-events-none select-none" aria-hidden="true">
-        LAT 51.5072 // LON -0.1276<br>NODE: EDGE-01
-    </div>
-    <div class="absolute bottom-24 left-6 lg:left-12 font-mono text-[10px] tracking-[0.2em] text-term-700/60 uppercase hidden md:block pointer-events-none select-none" aria-hidden="true">
-        SESSION: TLS-SECURED
-    </div>
-
-    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-36 pb-14 lg:pb-20 grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
-        <div class="max-w-4xl">
-            {{-- premium eyebrow --}}
-            <p class="reveal"><span class="premium-eyebrow">Managed IT • AI Agents • Cybersecurity • Cloud</span></p>
-
-            <h1 id="hero-heading" class="mt-6 font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-6xl lg:text-7xl text-balance reveal">
-                <span class="premium-title">Intelligent IT. Autonomous AI. Secure by Design.</span><span class="term-cursor" aria-hidden="true"></span>
+<div class="ais-page">
+{{-- ═════════ HERO ═════════ --}}
+<section class="relative w-full overflow-hidden" aria-labelledby="hero-heading">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background:radial-gradient(ellipse 60% 55% at 72% 40%, rgba(22,139,255,.20), transparent 65%), radial-gradient(ellipse 45% 50% at 85% 70%, rgba(121,88,255,.14), transparent 60%), radial-gradient(ellipse 70% 45% at 15% 10%, rgba(0,207,255,.07), transparent 60%);"></div>
+    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-16 sm:pt-20 lg:pt-24 pb-12 lg:pb-16 grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+            <p class="ais-eyebrow reveal" style="letter-spacing:.08em; text-transform:none; font-size:12.5px; font-weight:500; color:#7FB7E8;">Your Trusted Partner in AI-Powered IT &amp; Security</p>
+            <h1 id="hero-heading" class="mt-4 font-extrabold tracking-tight leading-[1.05] text-4xl sm:text-5xl xl:text-[3.6rem] reveal" style="font-family:Sora,Inter,system-ui,sans-serif;">
+                <span class="text-white">Advanced IT Support</span><br>
+                <span class="ais-title-hl">Meets the Power of AI</span>
             </h1>
-
-            <p class="premium-lede mt-6 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl reveal delay-100">
-                From managed IT and cybersecurity to custom AI agents and intelligent business
-                automation, we design, deploy, and support technology that helps your business
-                operate smarter.
-            </p>
-
-            <div class="mt-9 flex flex-col sm:flex-row flex-wrap gap-3 reveal delay-200">
-                <a href="{{ route('ai.index') }}" class="term-btn term-btn-lg btn-premium">
-                    Explore AI Agent Services
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                </a>
-                <a href="{{ route('get-quote') }}" class="term-btn term-btn-lg term-btn-ghost btn-ghost-premium">
-                    Book a Consultation
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                </a>
-                <a href="#services" class="term-btn term-btn-lg term-btn-ghost btn-ghost-premium">
-                    Explore IT Services
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                </a>
-            </div>
-            <p class="mt-5 font-mono text-[11px] tracking-[0.18em] uppercase text-slate-500 dark:text-term-700 reveal delay-300">
-                <span class="inline-flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-accent inline-block" aria-hidden="true"></span>Security operations active · Ticketed support workflow · Same engineering team end-to-end</span>
-            </p>
-            <button type="button" onclick="window.dispatchEvent(new CustomEvent('open-ai-chat'))"
-               class="mt-5 inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase text-slate-600 hover:text-emerald-700 dark:text-term-700 dark:hover:text-accent-soft transition-colors reveal delay-300">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-                <span class="underline underline-offset-4">Ask the AI assistant</span>
-            </button>
-
-            {{-- technical metadata strip (no statistics — capability markers only) --}}
-            <dl class="mt-12 pt-6 border-t border-term-300 dark:border-term-400/60 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 font-mono reveal delay-300">
-                @foreach([
-                    ['k' => 'SUPPORT', 'v' => 'Ticketed queue'],
-                    ['k' => 'APPROACH', 'v' => 'Security first'],
-                    ['k' => 'DELIVERY', 'v' => 'Global remote service'],
-                    ['k' => 'READY', 'v' => 'Enterprise workflows'],
-                ] as $m)
-                <div class="min-w-0">
-                    <dt class="text-[10px] tracking-[0.24em] text-term-700 uppercase">{{ $m['k'] }}</dt>
-                    <dd class="mt-1 text-[13px] tracking-wide text-navy-800 dark:text-term-950 truncate">{{ $m['v'] }}</dd>
-                </div>
-                @endforeach
-            </dl>
-        </div>
-
-        {{-- Signature 3D infrastructure globe (right). Decorative: aria-hidden,
-             keyboard-inert, with a static CSS fallback when WebGL is unavailable. --}}
-        <div class="hero-globe-stage reveal delay-200" data-globe="live" aria-hidden="true">
-            <div class="hero-globe-fallback"></div>
-            <canvas id="hero-globe-canvas" aria-hidden="true" tabindex="-1"></canvas>
-            <div class="hero-float hero-float--tl"><strong>Threat monitoring</strong><span class="ok">● Active</span> · 24/7 watch</div>
-            <div class="hero-float hero-float--br"><strong>Cloud infrastructure</strong><span class="ok">● Connected</span> · Backups verified</div>
-        </div>
-    </div>
-</section>
-
-@push('head')
-<script type="application/ld+json">
-{!! json_encode([
-    '@context' => 'https://schema.org',
-    '@type' => 'ProfessionalService',
-    'name' => 'PerfectITSecurity',
-    'description' => 'Managed IT support, cybersecurity, penetration testing, secure software development, and cloud/server management.',
-    'url' => url('/'),
-], JSON_UNESCAPED_SLASHES) !!}
-</script>
-@endpush
-
-{{-- ═══════════ 01 / SERVICES://CORE ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28" aria-labelledby="services-heading" id="services" data-3d-state="services">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="01" label="SERVICES://CORE"
-            title="Four disciplines. One accountable team."
-            desc="Every engagement is delivered through the same ticketed, tracked, and documented workflow — request a service, follow its progress, and keep the full record." />
-        <span id="services-heading" class="sr-only">Core services</span>
-
-        <div class="mt-10 lg:mt-14 grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4 overflow-hidden">
-            @forelse($serviceCategories as $i => $cat)
-            <article class="term-panel min-w-0 p-5 sm:p-6 group reveal card-3d tilt-3d" aria-labelledby="svc-{{ $cat->id }}">
-                <span class="card-3d-shine" aria-hidden="true"></span>
-                <div class="flex items-start justify-between gap-4 mb-5">
-                    <span class="font-mono text-[11px] tracking-[0.24em] text-accent-soft">{{ str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) }} / {{ strtoupper($cat->name) }}</span>
-                    <span class="term-tag">{{ $cat->services->count() }} module{{ $cat->services->count() === 1 ? '' : 's' }}</span>
-                </div>
-                <h3 id="svc-{{ $cat->id }}" class="font-display text-lg sm:text-xl font-bold tracking-tight text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors">
-                    {{ $cat->name }}
-                </h3>
-                <p class="mt-2.5 text-sm leading-relaxed text-surface-600 dark:text-term-800">
-                    {{ $cat->description ?? 'Scoped, priced, and delivered through the client portal with full service history.' }}
-                </p>
-                @if($cat->services->isNotEmpty())
-                <ul class="mt-5 flex flex-wrap gap-1.5" aria-label="Services in {{ $cat->name }}">
-                    @foreach($cat->services->take(8) as $svc)
-                    <li><a href="{{ route('services.show', $svc->slug) }}" class="term-tag hover:border-accent/50 hover:text-accent-soft transition-colors">{{ $svc->name }}</a></li>
-                    @endforeach
-                </ul>
-                @endif
-                <div class="mt-6 pt-5 border-t border-term-300 dark:border-white/5 flex flex-wrap items-center gap-x-6 gap-y-3">
-                    <a href="{{ route('services.index') }}?category={{ $cat->slug }}" class="term-link">Learn More
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </a>
-                    <a href="{{ auth()->check() ? route('portal.service-request.create') : route('get-quote') }}" class="term-link">Request Service
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                    </a>
-                </div>
-            </article>
-            @empty
-            <div class="term-panel p-8 text-sm text-term-800 md:col-span-2 xl:col-span-4">
-                The service catalogue is managed by administrators.
-                <a href="{{ route('services.index') }}" class="term-link ml-2">Browse services →</a>
-            </div>
-            @endforelse
-        </div>
-    </div>
-</section>
-
-{{-- ═══════════ 02 / WHY://OPERATE ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="why-heading" data-3d-state="features">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="02" label="WHY://OPERATE"
-            title="Complexity is the risk. Discipline is the answer."
-            desc="Digital systems become increasingly complex. We counter that with one operating model across IT, security, and engineering." />
-        <span id="why-heading" class="sr-only">Why PerfectITSecurity</span>
-
-        <div class="mt-10 lg:mt-14 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
-            @foreach([
-                ['n' => '01', 't' => 'THE PROBLEM', 'd' => 'Websites, servers, cloud accounts, devices, and vendors multiply. Nobody owns the full picture, and small gaps go unnoticed.'],
-                ['n' => '02', 't' => 'THE RISK', 'd' => 'Security gaps, downtime, poor infrastructure, and uncontrolled access turn into data loss, outages, and unexpected cost.'],
-                ['n' => '03', 't' => 'OUR APPROACH', 'd' => 'We combine IT operations, cybersecurity, and software engineering in one ticketed workflow with documented scope and sign-off.'],
-                ['n' => '04', 't' => 'THE RESULT', 'd' => 'A more secure, maintainable, and reliable digital environment — with a complete record you can audit at any time.'],
-            ] as $c)
-            <article class="term-panel p-6 sm:p-7 reveal">
-                <div class="font-mono text-[11px] tracking-[0.24em] text-accent-soft mb-4">{{ $c['n'] }}</div>
-                <h3 class="font-display text-lg font-bold tracking-tight text-navy-900 dark:text-white">{{ $c['t'] }}</h3>
-                <p class="mt-2.5 text-sm leading-relaxed text-surface-600 dark:text-term-800">{{ $c['d'] }}</p>
-            </article>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-{{-- ═══════════ 03 / SECURITY://OPERATIONS ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="security-heading" id="security">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="03" label="SECURITY://OPERATIONS"
-            title="Authorized testing. Documented findings. Verified fixes."
-            desc="All security work is performed exclusively on systems you own or are explicitly authorized to test, under agreed scope, with written findings and remediation guidance." />
-        <span id="security-heading" class="sr-only">Security operations</span>
-
-        <div class="mt-10 lg:mt-14 grid lg:grid-cols-12 gap-4 sm:gap-5">
-            <div class="lg:col-span-7 term-panel p-6 sm:p-8 reveal">
-                <div class="font-mono text-[10px] tracking-[0.24em] text-term-700 uppercase mb-5">Assessment scope // authorized systems only</div>
-                <ul class="grid sm:grid-cols-2 gap-x-6 gap-y-3.5 text-sm">
-                    @foreach(['Penetration Testing','Vulnerability Assessment','Web Application Security','API Security','Network Security','Cloud Security','Security Hardening','Security Monitoring','Security Consulting','Security Documentation'] as $s)
-                    <li class="flex items-center gap-2.5 text-navy-800 dark:text-term-900">
-                        <span class="w-1.5 h-1.5 bg-accent flex-shrink-0" aria-hidden="true"></span>{{ $s }}
-                    </li>
-                    @endforeach
-                </ul>
-                <div class="mt-7 pt-5 border-t border-term-300 dark:border-white/5 flex flex-wrap gap-x-6 gap-y-3">
-                    <a href="{{ route('get-quote') }}" class="term-link">Request Assessment
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
-                    <a href="{{ route('contact') }}" class="term-link">Discuss Scope
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
-                </div>
-            </div>
-            <div class="lg:col-span-5 flex flex-col gap-4 sm:gap-5">
-                @foreach([
-                    ['k' => 'TARGET', 'v' => 'YOUR WEB APPLICATION'],
-                    ['k' => 'STATUS', 'v' => 'ASSESSMENT READY'],
-                    ['k' => 'SCOPE', 'v' => 'AUTHORIZED SYSTEM'],
-                ] as $row)
-                <div class="term-panel-2 px-5 py-4 flex items-center justify-between gap-4 reveal">
-                    <span class="font-mono text-[10px] tracking-[0.24em] text-term-700">{{ $row['k'] }}</span>
-                    <span class="font-mono text-xs tracking-[0.12em] text-accent-soft text-right">{{ $row['v'] }}</span>
-                </div>
-                @endforeach
-                <div class="term-panel-2 p-5 sm:p-6 reveal">
-                    <p class="font-mono text-[11px] leading-relaxed tracking-wider text-term-800">
-                        $ scope --verify-authorization<br>
-                        <span class="text-accent-soft">✓ ownership confirmed → assessment unlocked</span>
-                    </p>
-                    <p class="mt-3 text-xs leading-relaxed text-term-700">No testing begins without written authorization and a defined scope. You receive findings, severity ratings, and remediation steps.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- ═══════════ 04 / IT_SUPPORT://OPERATIONS ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="itsupport-heading" id="it-support">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="04" label="IT_SUPPORT://OPERATIONS"
-            title="Support tickets you can open, track, and audit."
-            desc="One queue for every request — hardware, software, accounts, email, network, or server — with status tracking and a full communication record in your portal." />
-        <span id="itsupport-heading" class="sr-only">IT support operations</span>
-
-        <div class="mt-10 lg:mt-14 grid lg:grid-cols-12 gap-4 sm:gap-5">
-            <div class="lg:col-span-8 term-panel p-6 sm:p-8 reveal">
-                <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3.5 text-sm">
-                    @foreach(['Ticket Management','Remote Support','Hardware Support','Software Support','Microsoft 365','Windows','Linux','Network','Server','User Accounts','Email','Endpoints','IT Asset Management'] as $s)
-                    <li class="flex items-center gap-2.5 text-navy-800 dark:text-term-900">
-                        <span class="w-1.5 h-1.5 flex-shrink-0" style="background:#4DA3FF" aria-hidden="true"></span>{{ $s }}
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="lg:col-span-4 term-panel p-6 sm:p-8 flex flex-col justify-between gap-6 reveal delay-100">
-                <div>
-                    <div class="term-status text-accent-soft mb-3"><span class="term-status-dot" aria-hidden="true"></span>Queue: monitored</div>
-                    <p class="text-sm leading-relaxed text-surface-600 dark:text-term-800">Open a request in minutes. Track assignment, replies, and resolution — every step timestamped.</p>
-                </div>
-                <div class="flex flex-col gap-2.5">
-                    <a href="{{ auth()->check() ? route('portal.tickets.create') : route('login') }}" class="term-btn w-full">Open Support Request
-                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
-                    <a href="{{ route('login') }}" class="term-btn term-btn-ghost w-full">Client Portal →</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{{-- ═══════════ 05 / PORTAL://ACCESS ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="portal-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        <div class="lg:col-span-7">
-            <x-section-head num="05" label="PORTAL://ACCESS"
-                title="Your IT. Your security. Your record."
-                desc="Customers work independently in the portal using the platform's existing authentication — no second login, no parallel system. Your tickets, services, finances, and documents stay in one auditable place." />
-            <span id="portal-heading" class="sr-only">Customer portal</span>
-            <div class="mt-8 flex flex-col sm:flex-row gap-3 reveal">
-                <a href="{{ route('login') }}" class="term-btn">Access Client Portal
+            <p class="mt-5 text-[14px] sm:text-[15px] leading-relaxed max-w-xl reveal delay-100" style="color:#B6C8DD;">We build, secure and manage your digital future with AI agents, 24/7 support, and enterprise-grade security.</p>
+            <ul class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 max-w-xl reveal delay-200" aria-label="Service highlights">
+                <li class="ais-chip"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9h6v6H9zM4 4h5v5H4zM15 4h5v5h-5zM4 15h5v5H4zM15 15h5v5h-5z"/></svg><span><strong class="text-white font-semibold">AI Agents</strong> &amp; Automation</span></li>
+                <li class="ais-chip"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/></svg><span><strong class="text-white font-semibold">Cybersecurity</strong> &amp; Threat Protection</span></li>
+                <li class="ais-chip"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.5 19a4.5 4.5 0 100-9 6 6 0 00-11.5 1.5A4 4 0 006.5 19h11z"/></svg><span><strong class="text-white font-semibold">Cloud &amp; Infrastructure</strong> Management</span></li>
+                <li class="ais-chip"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M18 19a4 4 0 01-4 3h-2M4 13a8 8 0 0116 0M3 15a2 2 0 012-2h1v6H5a2 2 0 01-2-2v-2zM21 15a2 2 0 00-2-2h-1v6h1a2 2 0 002-2v-2z"/></svg><span><strong class="text-white font-semibold">24/7 Support</strong> &amp; Monitoring</span></li>
+            </ul>
+            <div class="mt-7 flex flex-col sm:flex-row flex-wrap gap-3 reveal delay-200">
+                <a href="{{ route('ai.index') }}" class="ais-btn-primary">Explore Our AI Solutions
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
-                <a href="{{ route('register') }}" class="term-btn term-btn-ghost">Create Account →</a>
+                <a href="{{ route('contact') }}" class="ais-btn-ghost">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18 19a4 4 0 01-4 3h-2M4 13a8 8 0 0116 0M3 15a2 2 0 012-2h1v6H5a2 2 0 01-2-2v-2zM21 15a2 2 0 00-2-2h-1v6h1a2 2 0 002-2v-2z"/></svg>
+                    Talk to an Expert</a>
             </div>
         </div>
-        <div class="lg:col-span-5 term-panel p-6 sm:p-7 reveal delay-100" aria-label="What the portal contains">
-            <div class="font-mono text-[10px] tracking-[0.24em] text-term-700 uppercase mb-4">$ portal --list-records</div>
-            <ul class="space-y-2.5 text-sm text-navy-800 dark:text-term-900">
-                @foreach(['Support tickets','Service history','Invoices & payments','Documents & reports','Security assessments','Task progress','Communication history'] as $r)
-                <li class="flex items-center justify-between gap-3 border-b border-term-300/60 dark:border-white/5 pb-2.5">
-                    <span>{{ $r }}</span><span class="font-mono text-[10px] text-accent-soft">TRACKED</span>
-                </li>
+        <div class="hero-globe-stage reveal delay-100" data-globe="live" aria-hidden="true">
+            <div class="hero-globe-fallback"></div>
+            <canvas class="hero-globe-canvas" tabindex="-1"></canvas>
+            <div class="hero-float hero-float--tl"><strong><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path stroke-linecap="round" d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>AI Agents</strong></div>
+            <div class="hero-float hero-float--tr"><strong><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10l2 2M19 5l-2 2M7 17l-2 2"/></svg>Automation</strong></div>
+            <div class="hero-float hero-float--ml"><strong><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.5 19a4.5 4.5 0 100-9 6 6 0 00-11.5 1.5A4 4 0 006.5 19h11z"/></svg>IT Support</strong></div>
+            <div class="hero-float hero-float--mr"><strong><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.5 19a4.5 4.5 0 100-9 6 6 0 00-11.5 1.5A4 4 0 006.5 19h11z"/></svg>Cloud</strong></div>
+            <div class="hero-float hero-float--br"><strong><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M18 19a4 4 0 01-4 3h-2M4 13a8 8 0 0116 0M3 15a2 2 0 012-2h1v6H5a2 2 0 01-2-2v-2zM21 15a2 2 0 00-2-2h-1v6h1a2 2 0 002-2v-2z"/></svg>24/7 Support</strong></div>
+            <div class="hero-float hero-float--bc"><strong><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/></svg>Cybersecurity</strong></div>
+        </div>
+    </div>
+</section>
+
+{{-- ═════════ AI AGENT SERVICES ═════════ --}}
+<section class="relative w-full border-t border-white/5" aria-labelledby="agents-heading" style="background:linear-gradient(180deg,#020916,#03101f);">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16 grid lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-3 reveal">
+            <p class="ais-eyebrow">AI Agent Services</p>
+            <h2 id="agents-heading" class="ais-h2 mt-3 text-2xl sm:text-[1.7rem] leading-tight">Intelligent Agents for Every Business Need</h2>
+            <p class="ais-sub mt-4 text-[13px] leading-relaxed">From customer support to sales, research, coding and automation — our AI agents work around the clock to help you scale faster, reduce costs and improve productivity.</p>
+            <a href="{{ route('ai.index') }}" class="ais-link mt-5">Explore All AI Agents
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+        </div>
+        <div class="lg:col-span-9">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
+                @foreach($aiCards as $card)
+                @php $hit = $spotBySlug->get($card['slug']); $url = $hit ? route('ai.show', $hit->slug) : route('ai.index'); @endphp
+                <a href="{{ $url }}" class="ais-card group block p-4 reveal" aria-label="{{ $card['title'] }} — view service">
+                    <div class="flex items-start justify-between gap-2">
+                        <span class="ais-icon" style="background:{{ $card['bg'] }}; color:{{ $card['fg'] }};" aria-hidden="true"><svg class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">{!! $card['icon'] !!}</svg></span>
+                        <svg class="w-4 h-4 mt-1 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                    </div>
+                    <h3 class="mt-3 text-[13.5px] font-bold text-white leading-snug">{{ $card['title'] }}</h3>
+                    <p class="mt-1.5 text-[12px] leading-relaxed" style="color:#B6C8DD;">{{ $card['desc'] }}</p>
+                </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ═════════ WHY AISECURITY ═════════ --}}
+<section class="relative w-full border-t border-white/5" aria-labelledby="why-heading" style="background:#020916;">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16 grid lg:grid-cols-12 gap-6 items-stretch">
+        <div class="lg:col-span-4 reveal">
+            <p class="ais-eyebrow">Why AISecurity</p>
+            <h2 id="why-heading" class="ais-h2 mt-3 text-2xl sm:text-[1.7rem] leading-tight">More Than IT Support — We Build Smarter Solutions</h2>
+            <p class="ais-sub mt-4 text-[13px] leading-relaxed">AISecurity combines expert IT support with cutting-edge AI technology to give you a secure, scalable and future-ready digital environment.</p>
+            <ul class="mt-5 space-y-2.5 text-[13px]" style="color:#DCEBFF;">
+                @foreach(['Certified AI & Security Experts', 'Tailored Solutions for Every Business', 'Enterprise-Grade Security & Compliance', 'Proven Track Record & Client Satisfaction'] as $b)
+                <li class="flex items-start gap-2.5"><span class="mt-0.5 inline-flex w-4.5 h-4.5 w-[18px] h-[18px] rounded-full items-center justify-center flex-shrink-0" style="background:rgba(0,207,255,.15); border:1px solid rgba(0,207,255,.5);" aria-hidden="true"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="#00CFFF" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>{{ $b }}</li>
                 @endforeach
             </ul>
+            <a href="{{ route('about') }}" class="ais-btn-ghost mt-6 !py-2 !text-[12.5px]">Learn More About Us
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+        </div>
+        <div class="lg:col-span-5 reveal delay-100">
+            <div class="ais-robot h-full p-6 flex items-center justify-center" role="img" aria-label="Futuristic AI support robot illustration">
+                <svg viewBox="0 0 320 340" class="w-full max-w-[300px]" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="rbMetal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8F1FF"/><stop offset=".5" stop-color="#9DB4D0"/><stop offset="1" stop-color="#5B7191"/></linearGradient>
+                        <linearGradient id="rbGlow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#168BFF"/><stop offset="1" stop-color="#00CFFF"/></linearGradient>
+                        <radialGradient id="rbEye" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#CFf6ff"/><stop offset=".5" stop-color="#00CFFF"/><stop offset="1" stop-color="#0a2540"/></radialGradient>
+                    </defs>
+                    <ellipse cx="160" cy="318" rx="90" ry="12" fill="rgba(0,207,255,.18)"/>
+                    <rect x="110" y="200" width="100" height="95" rx="26" fill="url(#rbMetal)"/>
+                    <rect x="132" y="222" width="56" height="44" rx="12" fill="#041326" stroke="url(#rbGlow)" stroke-width="3"/>
+                    <circle cx="160" cy="244" r="12" fill="url(#rbGlow)" opacity=".9"/>
+                    <path d="M104 208 L78 160 L96 152 L118 196 Z" fill="url(#rbMetal)"/>
+                    <path d="M216 208 L242 160 L224 152 L202 196 Z" fill="url(#rbMetal)"/>
+                    <ellipse cx="160" cy="120" rx="72" ry="80" fill="url(#rbMetal)"/>
+                    <path d="M100 108 Q160 60 220 108 L214 150 Q160 128 106 150 Z" fill="#0b1a33"/>
+                    <ellipse cx="160" cy="132" rx="48" ry="34" fill="#0b1a33"/>
+                    <ellipse cx="142" cy="130" rx="13" ry="15" fill="url(#rbEye)"/>
+                    <ellipse cx="180" cy="130" rx="13" ry="15" fill="url(#rbEye)"/>
+                    <circle cx="96" cy="136" r="14" fill="none" stroke="url(#rbGlow)" stroke-width="5"/>
+                    <rect x="146" y="196" width="28" height="14" rx="7" fill="#0b1a33" stroke="url(#rbGlow)" stroke-width="2"/>
+                </svg>
+                <div class="absolute top-4 right-4 w-[168px] rounded-xl p-3.5 text-left" style="background:linear-gradient(180deg, rgba(13,32,58,.92), rgba(7,26,48,.92)); border:1px solid rgba(0,207,255,.45); box-shadow:0 14px 40px -12px rgba(0,207,255,.4);" aria-hidden="true">
+                    <p class="text-[12px] font-extrabold text-white leading-tight">AI Powered<br>IT Support</p>
+                    <ul class="mt-2.5 space-y-1.5 text-[11.5px]" style="color:#B6C8DD;">
+                        @foreach(['Smarter','Faster','Safer','Always On'] as $w)
+                        <li class="flex items-center gap-1.5"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="#00CFFF" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>{{ $w }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="ais-robot-glow"></div>
+            </div>
+        </div>
+        <div class="lg:col-span-3 reveal delay-200">
+            <div class="ais-card h-full p-6 flex flex-col overflow-hidden relative">
+                <div class="absolute inset-x-0 top-0 h-28 pointer-events-none" aria-hidden="true" style="background:radial-gradient(ellipse 70% 90% at 50% 0%, rgba(22,139,255,.35), transparent 70%);"></div>
+                <div class="mx-auto mt-2 relative" aria-hidden="true">
+                    <div class="w-20 h-20 mx-auto flex items-center justify-center" style="background:linear-gradient(180deg, rgba(22,139,255,.35), rgba(121,88,255,.25)); clip-path:polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); border:1px solid rgba(0,207,255,.6);">
+                        <svg class="w-9 h-9" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v5m0 0l-2.5-2.5M12 13l2.5-2.5"/></svg>
+                    </div>
+                </div>
+                <h3 class="ais-h2 mt-4 text-center text-lg leading-snug">Your Security<br>Our Priority</h3>
+                <p class="ais-sub mt-3 text-center text-[12.5px] leading-relaxed">Advanced threat detection, proactive monitoring and protection tailored to your business.</p>
+                <a href="{{ $svc('cybersecurity') }}" class="ais-btn-ghost mt-5 justify-center !text-[12.5px]">Explore Security Solutions
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+            </div>
         </div>
     </div>
 </section>
 
-{{-- ═══════════ 06 / OPS://PLATFORM ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="ops-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="06" label="OPS://PLATFORM"
-            title="An internal service-management platform behind every order."
-            desc="Staff operate from the same system you see — tasks, tickets, customer history, time tracking, assets, reporting, finance, and documentation stay connected. No private employee data is exposed publicly." />
-        <span id="ops-heading" class="sr-only">Operations platform</span>
-        <div class="mt-10 grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+{{-- ═════════ STATS STRIP (honest, no fabricated figures) ═════════ --}}
+<section class="relative w-full" aria-label="How we work" style="background:#020916;">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pb-2">
+        <div class="ais-card reveal px-6 py-5 grid grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach([
-                ['t' => 'TASK MANAGEMENT', 'd' => 'Scoped work with assignment and approval.'],
-                ['t' => 'TICKET MANAGEMENT', 'd' => 'SLA-tracked queue with full thread history.'],
-                ['t' => 'CUSTOMER HISTORY', 'd' => 'Every order, invoice, and message in one view.'],
-                ['t' => 'SERVICE TRACKING', 'd' => 'Live progress with customer-visible updates.'],
-                ['t' => 'TIME TRACKING', 'd' => 'Recorded effort attached to tickets and tasks.'],
-                ['t' => 'REPORTING & FINANCE', 'd' => 'Invoices, payments, and reports from one ledger.'],
-            ] as $c)
-            <div class="term-panel-2 p-5 sm:p-6 reveal">
-                <h3 class="font-mono text-xs tracking-[0.18em] text-navy-900 dark:text-white">{{ $c['t'] }}</h3>
-                <p class="mt-2 text-[13px] leading-relaxed text-term-700 dark:text-term-800">{{ $c['d'] }}</p>
+                ['t' => 'Business-Focused', 'd' => 'Tailored Solutions', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4zm6-4a3 3 0 11-3-3"/>'],
+                ['t' => 'Security First', 'd' => 'Protection by Design', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/>'],
+                ['t' => '24/7 Options', 'd' => 'Where Contracted', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M18 19a4 4 0 01-4 3h-2M4 13a8 8 0 0116 0M3 15a2 2 0 012-2h1v6H5a2 2 0 01-2-2v-2zM21 15a2 2 0 00-2-2h-1v6h1a2 2 0 002-2v-2z"/>'],
+                ['t' => 'End-to-End', 'd' => 'Project Support', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.5a.56.56 0 011.04 0l2.13 5.11 5.52.44c.5.04.7.66.32.99l-4.2 3.6 1.28 5.38c.12.5-.42.9-.86.63L12 16.72l-4.71 2.93c-.44.27-.98-.13-.86-.63l1.28-5.38-4.2-3.6c-.38-.33-.18-.95.32-.99l5.52-.44 2.13-5.11z"/>'],
+            ] as $i => $s)
+            <div class="flex items-center gap-3.5 {{ $i > 0 ? 'lg:border-l lg:border-white/10 lg:pl-6' : '' }}">
+                <span class="ais-icon !w-10 !h-10 !rounded-full" style="background:rgba(0,207,255,.12); color:#00CFFF; border-color:rgba(0,207,255,.4);" aria-hidden="true"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">{!! $s['icon'] !!}</svg></span>
+                <span><strong class="block text-white text-[15px] font-extrabold leading-tight">{{ $s['t'] }}</strong><span class="block text-[12px]" style="color:#B6C8DD;">{{ $s['d'] }}</span></span>
             </div>
             @endforeach
         </div>
     </div>
 </section>
 
-{{-- ═══════════ 07 / SECURITY://PROCESS ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="process-heading" data-3d-state="process">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="07" label="SECURITY://PROCESS"
-            title="From discovery to continuous monitoring."
-            desc="A fixed six-stage workflow keeps every assessment scoped, documented, and verified — nothing informal, nothing undocumented." />
-        <span id="process-heading" class="sr-only">Security process</span>
-        <ol class="mt-10 lg:mt-14 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-6 lg:gap-0 lg:divide-x lg:divide-term-300 lg:dark:divide-white/5">
+{{-- ═════════ COMPLETE IT & AI SOLUTIONS ═════════ --}}
+<section class="relative w-full" aria-labelledby="services-heading" style="background:#020916;">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
+        <div class="reveal">
+            <p class="ais-eyebrow">Our Services</p>
+            <h2 id="services-heading" class="ais-h2 mt-3 text-2xl sm:text-3xl">Complete IT &amp; AI Solutions Under One Roof</h2>
+            <p class="ais-sub mt-3 text-[13px] max-w-3xl">From infrastructure to intelligent automation, we provide end-to-end services to keep your business secure, productive and ready for the future.</p>
+        </div>
+        <div class="mt-7 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3.5">
             @foreach([
-                ['n' => '01', 't' => 'DISCOVER', 'd' => 'Map assets and agree the authorized scope in writing.'],
-                ['n' => '02', 't' => 'ASSESS', 'd' => 'Baseline vulnerabilities and configuration weaknesses.'],
-                ['n' => '03', 't' => 'TEST', 'd' => 'Controlled testing strictly inside the agreed scope.'],
-                ['n' => '04', 't' => 'REMEDIATE', 'd' => 'Prioritized fixes with clear severity and guidance.'],
-                ['n' => '05', 't' => 'VERIFY', 'd' => 'Retest fixes and confirm closure with evidence.'],
-                ['n' => '06', 't' => 'MONITOR', 'd' => 'Ongoing watch with documented follow-up.'],
-            ] as $s)
-            <li class="term-panel lg:border-0 lg:bg-transparent lg:rounded-none p-5 sm:p-6 lg:px-6 reveal">
-                <div class="font-mono text-[11px] tracking-[0.24em] text-accent-soft">{{ $s['n'] }}</div>
-                <h3 class="mt-2 font-display text-base font-bold tracking-tight text-navy-900 dark:text-white">{{ $s['t'] }}</h3>
-                <p class="mt-2 text-[13px] leading-relaxed text-surface-600 dark:text-term-800">{{ $s['d'] }}</p>
+                ['t' => 'IT Support & Helpdesk', 'd' => 'Fast, reliable support for all your IT needs.', 'u' => $svc('managed-it-support'), 'art' => 'linear-gradient(160deg, rgba(22,139,255,.5), rgba(4,19,38,.9)),repeating-linear-gradient(90deg, rgba(0,207,255,.15) 0 2px, transparent 2px 14px)', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>'],
+                ['t' => 'Cloud Solutions', 'd' => 'Scalable, secure and high-performance cloud services.', 'u' => $svc('cloud-server-network'), 'art' => 'radial-gradient(circle at 50% 35%, rgba(0,207,255,.55), transparent 60%),linear-gradient(180deg, rgba(22,139,255,.35), rgba(4,19,38,.95))', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M17.5 19a4.5 4.5 0 100-9 6 6 0 00-11.5 1.5A4 4 0 006.5 19h11z"/>'],
+                ['t' => 'Cybersecurity', 'd' => 'Advanced protection for your digital assets.', 'u' => $svc('cybersecurity'), 'art' => 'radial-gradient(circle at 50% 30%, rgba(0,207,255,.5), transparent 55%),linear-gradient(180deg, rgba(9,30,66,.9), rgba(4,19,38,.95))', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3zM9.2 12l1.9 1.9L15 10"/>'],
+                ['t' => 'AI Integration & Agents', 'd' => 'Custom AI agents and automation for your business.', 'u' => route('ai.index'), 'art' => 'radial-gradient(circle at 70% 30%, rgba(121,88,255,.5), transparent 55%),radial-gradient(circle at 30% 60%, rgba(0,207,255,.4), transparent 55%),linear-gradient(180deg, rgba(9,30,66,.9), rgba(4,19,38,.95))', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 9h6v6H9zM4 4h5v5H4zM15 4h5v5h-5zM4 15h5v5H4zM15 15h5v5h-5z"/>'],
+                ['t' => 'Managed Services', 'd' => 'Proactive monitoring, maintenance and support.', 'u' => $svc('managed-it-support'), 'art' => 'linear-gradient(160deg, rgba(121,88,255,.4), rgba(4,19,38,.95)),repeating-linear-gradient(0deg, rgba(0,207,255,.12) 0 2px, transparent 2px 12px)', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M3 13h4l2 3h6l2-3h4M5 5h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>'],
+            ] as $c)
+            <article class="ais-card group overflow-hidden reveal flex flex-col">
+                <div class="h-28 relative flex items-center justify-center" style="background:{{ $c['art'] }};" aria-hidden="true">
+                    <svg class="w-11 h-11" fill="none" viewBox="0 0 24 24" stroke="#BFE9FF" stroke-width="1.4">{!! $c['icon'] !!}</svg>
+                    <div class="absolute inset-0" style="background:linear-gradient(180deg, transparent 30%, rgba(2,9,22,.85));"></div>
+                </div>
+                <div class="p-4 flex flex-col flex-1">
+                    <h3 class="text-[13.5px] font-bold text-white leading-snug">{{ $c['t'] }}</h3>
+                    <p class="mt-1.5 text-[12px] leading-relaxed flex-1" style="color:#B6C8DD;">{{ $c['d'] }}</p>
+                    <a href="{{ $c['u'] }}" class="ais-link mt-3">Learn More
+                        <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+                </div>
+            </article>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ═════════ PROCESS ═════════ --}}
+<section class="relative w-full border-t border-white/5" aria-labelledby="process-heading" style="background:#020916;">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16 grid lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-4 reveal">
+            <p class="ais-eyebrow">Our Process</p>
+            <h2 id="process-heading" class="ais-h2 mt-3 text-2xl sm:text-[1.7rem] leading-tight">Simple Steps to a Smarter, Safer Future</h2>
+            <p class="ais-sub mt-4 text-[13px] leading-relaxed">We make it easy to get started. Our proven process ensures you get the right solution, with full support every step of the way.</p>
+        </div>
+        <ol class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+            @foreach([
+                ['n' => '01', 't' => 'Consultation', 'd' => 'Understand your needs and goals.', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z"/>'],
+                ['n' => '02', 't' => 'Strategy', 'd' => 'Design the right solution for your business.', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M5 9a8 8 0 0114-3M19 15a8 8 0 01-14 3"/>'],
+                ['n' => '03', 't' => 'Implementation', 'd' => 'Build, configure and integrate.', 'icon' => '<circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v3m0 14v3M2 12h3m14 0h3"/>'],
+                ['n' => '04', 't' => 'Support', 'd' => 'Ongoing monitoring, updates and assistance.', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M10.3 4.3a1.5 1.5 0 012.4 0l8 10.4a1.5 1.5 0 01-1.2 2.3H4.5a1.5 1.5 0 01-1.2-2.3l8-10.4zM12 10v4m0 3h.01"/>'],
+            ] as $i => $s)
+            <li class="relative reveal text-center sm:text-left" style="transition-delay:{{ $i * 80 }}ms;">
+                @if($i < 3)<span class="hidden xl:block absolute top-[23px] left-[52px] right-[-24px] h-px" style="background:linear-gradient(90deg, rgba(0,207,255,.5), rgba(0,207,255,.08));" aria-hidden="true"></span>@endif
+                <span class="ais-step-dot relative" aria-hidden="true"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">{!! $s['icon'] !!}</svg></span>
+                <p class="mt-3 text-[11px] font-bold tracking-widest" style="color:#00CFFF;">{{ $s['n'] }}</p>
+                <h3 class="text-white text-[14px] font-bold">{{ $s['t'] }}</h3>
+                <p class="mt-1 text-[12px] leading-relaxed" style="color:#B6C8DD;">{{ $s['d'] }}</p>
             </li>
             @endforeach
         </ol>
     </div>
 </section>
 
-{{-- ═══════════ 08 / STACK://CAPABILITIES ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="stack-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="08" label="STACK://CAPABILITIES"
-            title="Capability areas we actively deliver."
-            desc="Named only where the team genuinely delivers client work today — no invented partnerships or certifications." />
-        <span id="stack-heading" class="sr-only">Technology capabilities</span>
-        <div class="mt-10 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            @foreach([
-                ['t' => 'SECURITY', 'items' => 'Testing · Hardening · Monitoring · Documentation'],
-                ['t' => 'DEVELOPMENT', 'items' => 'Websites · Portals · Business automation · Secure builds'],
-                ['t' => 'INFRASTRUCTURE', 'items' => 'Servers · Networks · Endpoints · Microsoft 365'],
-                ['t' => 'CLOUD & DATA', 'items' => 'Hosting · Backups · Monitoring · Reporting'],
-            ] as $c)
-            <div class="term-panel p-6 reveal">
-                <h3 class="font-mono text-xs tracking-[0.2em] text-accent-soft">{{ $c['t'] }}</h3>
-                <p class="mt-3 text-sm leading-relaxed text-surface-600 dark:text-term-800">{{ $c['items'] }}</p>
+{{-- ═════════ FINAL CTA ═════════ --}}
+<section class="relative w-full overflow-hidden border-t border-white/5" aria-labelledby="cta-heading" style="background:linear-gradient(180deg,#03101f,#020916);">
+    <svg class="absolute bottom-0 left-0 w-full h-56 opacity-40 pointer-events-none" viewBox="0 0 1200 220" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 160 C 200 120, 350 200, 600 150 S 1000 90, 1200 150" fill="none" stroke="#168BFF" stroke-width="1.5" opacity=".6"/>
+        <path d="M0 180 C 220 140, 380 215, 620 168 S 1010 112, 1200 170" fill="none" stroke="#7958FF" stroke-width="1.2" opacity=".55"/>
+        <path d="M0 200 C 240 165, 400 225, 640 188 S 1020 140, 1200 190" fill="none" stroke="#00CFFF" stroke-width="1" opacity=".5"/>
+    </svg>
+    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16 grid lg:grid-cols-2 gap-8 items-center">
+        <div class="reveal">
+            <p class="ais-eyebrow">Ready to get started?</p>
+            <h2 id="cta-heading" class="ais-h2 mt-3 text-2xl sm:text-3xl">Let&rsquo;s Build Your AI-Powered Future</h2>
+            <p class="ais-sub mt-3 text-[13px]">Get expert advice, a custom solution and ongoing support — all in one place.</p>
+            <div class="mt-6 flex flex-col sm:flex-row flex-wrap gap-3">
+                <a href="{{ route('get-quote') }}" class="ais-btn-primary">Get a Free Consultation
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+                <a href="{{ route('services.index') }}" class="ais-btn-ghost">Explore Our Services</a>
             </div>
-            @endforeach
         </div>
-    </div>
-</section>
-
-{{-- ═══════════ 09 / COMPLIANCE://FRAMEWORKS ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="compliance-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="09" label="COMPLIANCE://FRAMEWORKS"
-            title="Security practices aligned with recognized frameworks."
-            desc="We do not claim certifications we do not hold. Our practices are aligned with widely used frameworks, and we support your compliance preparation with documentation and evidence." />
-        <span id="compliance-heading" class="sr-only">Compliance frameworks</span>
-        <ul class="mt-10 flex flex-wrap gap-2.5 reveal" aria-label="Reference frameworks">
-            @foreach(['ISO 27001','SOC 2','GDPR','OWASP','NIST','CIS Controls'] as $f)
-            <li class="term-tag">Aligned: {{ $f }}</li>
-            @endforeach
-        </ul>
-        <p class="mt-5 text-xs leading-relaxed text-term-700 max-w-2xl reveal">Wording is deliberate: “aligned with” and “support for compliance preparation” — never a claim of certification unless verified and published by the company.</p>
-    </div>
-</section>
-
-{{-- ═══════════ 10 / ASSESSMENT://READINESS ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="assess-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 grid lg:grid-cols-12 gap-8">
-        <div class="lg:col-span-5">
-            <x-section-head num="10" label="ASSESSMENT://READINESS"
-                title="Check your security readiness in 60 seconds."
-                desc="Seven quick questions produce an informational readiness signal. This is guidance only — not a penetration test, audit, or certification." />
-            <span id="assess-heading" class="sr-only">Security readiness assessment</span>
-        </div>
-        <div class="lg:col-span-7">
-            <form id="readiness-quiz" class="term-panel p-6 sm:p-8 reveal" aria-describedby="quiz-note">
-                <div class="font-mono text-[10px] tracking-[0.24em] text-term-700 uppercase mb-5">$ readiness --interactive</div>
-                <ol class="space-y-5">
-                    @foreach([
-                        'Do you have a website or business application?',
-                        'Do you have an internal IT team or provider?',
-                        'Have you had a security assessment in the last 12 months?',
-                        'Do you enforce multi-factor authentication (MFA)?',
-                        'Do you maintain tested, off-site backups?',
-                        'Do you have an incident response plan?',
-                        'Do you manage company devices centrally?',
-                    ] as $i => $q)
-                    <li>
-                        <fieldset>
-                            <legend class="text-sm font-medium text-navy-900 dark:text-term-950">{{ str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) }}. {{ $q }}</legend>
-                            <div class="mt-2 flex gap-2">
-                                <label class="term-tag cursor-pointer has-[:checked]:border-accent/60 has-[:checked]:text-accent-soft"><input type="radio" name="q{{ $i }}" value="1" class="sr-only" required> Yes</label>
-                                <label class="term-tag cursor-pointer has-[:checked]:border-accent/60 has-[:checked]:text-accent-soft"><input type="radio" name="q{{ $i }}" value="0" class="sr-only"> No</label>
-                            </div>
-                        </fieldset>
-                    </li>
+        <div class="reveal delay-100">
+            <div class="ais-dc p-5" role="img" aria-label="Stylised AI data centre with server racks and a central AI core">
+                <div class="grid grid-cols-3 gap-3 items-end">
+                    @foreach([['h'=>['38%','62%','48%']],['h'=>['55%','42%','66%']],['h'=>['46%','58%','40%']]] as $rack)
+                    <div class="rounded-lg p-2" style="background:rgba(7,26,48,.8); border:1px solid rgba(22,139,255,.3);" aria-hidden="true">
+                        @foreach($rack['h'] as $h)
+                        <div class="rounded-sm my-1.5" style="height:8px; width:{{ $h }}; background:linear-gradient(90deg,#168BFF,#00CFFF); opacity:.8;"></div>
+                        @endforeach
+                        <div class="rounded-sm my-1.5" style="height:8px; width:70%; background:rgba(121,88,255,.7);"></div>
+                    </div>
                     @endforeach
-                </ol>
-                <div class="mt-7 flex flex-col sm:flex-row sm:items-center gap-3">
-                    <button type="submit" class="term-btn">Generate Result →</button>
-                    <button type="reset" class="term-btn term-btn-ghost" id="quiz-reset">Reset</button>
                 </div>
-                <div id="quiz-result" class="mt-6 hidden" role="status" aria-live="polite"></div>
-                <p id="quiz-note" class="mt-5 text-xs leading-relaxed text-term-700">Informational self-check only. No personal data is collected or transmitted — scoring runs entirely in your browser. For a formal review, <a href="{{ route('get-quote') }}" class="underline underline-offset-2 hover:text-accent-soft">request an assessment</a>.</p>
-            </form>
-        </div>
-    </div>
-</section>
-
-{{-- ═══════════ 11 / WORK://CASEFILES ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="work-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <x-section-head num="11" label="WORK://CASEFILES"
-                title="Selected work from the live catalogue."
-                desc="Pulled directly from the database — administrators manage these records, and the public list always matches." />
-            <a href="{{ route('portfolio.index') }}" class="term-link flex-shrink-0 reveal">All casefiles
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
-        </div>
-        <span id="work-heading" class="sr-only">Portfolio case files</span>
-        <div class="mt-10 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
-            @forelse($portfolioItems as $i => $item)
-            <article class="term-panel p-6 sm:p-7 group reveal">
-                <div class="font-mono text-[11px] tracking-[0.2em] text-term-700 mb-3">FILE_{{ str_pad((string)($i + 1), 3, '0', STR_PAD_LEFT) }} // {{ strtoupper($item->category ?? 'GENERAL') }}</div>
-                <h3 class="font-display text-lg font-bold tracking-tight text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors">{{ $item->title }}</h3>
-                @if($item->summary)<p class="mt-2 text-sm leading-relaxed text-surface-600 dark:text-term-800 line-clamp-3">{{ $item->summary }}</p>@endif
-                <dl class="mt-4 space-y-1.5 font-mono text-[11px] tracking-wider">
-                    @if($item->category)<div class="flex gap-2"><dt class="text-term-700">CATEGORY:</dt><dd class="text-term-900 dark:text-term-950">{{ $item->category }}</dd></div>@endif
-                    @if($item->technologies)<div class="flex gap-2"><dt class="text-term-700">TECH:</dt><dd class="text-term-900 dark:text-term-950 line-clamp-1">{{ is_array($item->technologies) ? implode(', ', $item->technologies) : $item->technologies }}</dd></div>@endif
-                </dl>
-                <a href="{{ route('portfolio.show', $item->slug) }}" class="term-link mt-5">Open casefile
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>
-            </article>
-            @empty
-            <div class="term-panel p-8 text-sm text-term-800 md:col-span-2 xl:col-span-3">
-                Case files are being curated.
-                <a href="{{ route('portfolio.index') }}" class="term-link ml-2">View portfolio →</a>
-            </div>
-            @endforelse
-        </div>
-
-        @if($caseStudies->isNotEmpty())
-        <div class="mt-8 grid gap-4 sm:gap-5 md:grid-cols-3">
-            @foreach($caseStudies as $cs)
-            <a href="{{ route('case-studies.show', $cs->slug) }}" class="term-panel-2 p-5 sm:p-6 group block reveal">
-                <div class="font-mono text-[10px] tracking-[0.2em] text-term-700 mb-2">CASE STUDY // {{ strtoupper($cs->industry ?? 'GENERAL') }}</div>
-                <h3 class="font-display text-base font-bold tracking-tight text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors">{{ $cs->title }}</h3>
-                @if($cs->summary)<p class="mt-2 text-[13px] leading-relaxed text-term-700 line-clamp-2">{{ $cs->summary }}</p>@endif
-            </a>
-            @endforeach
-        </div>
-        @endif
-    </div>
-</section>
-
-{{-- ═══════════ 12 / KNOWLEDGE://BASE ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="kb-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <x-section-head num="12" label="KNOWLEDGE://BASE"
-                title="Documentation-grade guides, searchable."
-                desc="Live articles from the knowledge base — security guides, IT procedures, troubleshooting, and FAQs maintained by the team." />
-            <a href="{{ route('kb.index') }}" class="term-link flex-shrink-0 reveal">Open knowledge base
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
-        </div>
-        <span id="kb-heading" class="sr-only">Knowledge base</span>
-
-        <form action="{{ route('kb.index') }}" method="GET" role="search" class="mt-8 flex flex-col sm:flex-row gap-2.5 max-w-2xl reveal">
-            <label for="home-kb-search" class="sr-only">Search the knowledge base</label>
-            <input id="home-kb-search" name="search" type="search" placeholder="search guides: e.g. MFA, backups, VPN…" class="form-input flex-1 font-mono text-sm" autocomplete="off">
-            <button type="submit" class="term-btn flex-shrink-0">Search →</button>
-        </form>
-
-        @if($kbCategories->isNotEmpty())
-        <ul class="mt-5 flex flex-wrap gap-1.5 reveal" aria-label="Knowledge base categories">
-            @foreach($kbCategories as $kc)
-            <li><a href="{{ route('kb.index') }}?category={{ $kc->slug }}" class="term-tag hover:border-accent/50 hover:text-accent-soft transition-colors">{{ $kc->name }}</a></li>
-            @endforeach
-        </ul>
-        @endif
-
-        <div class="mt-8 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
-            @forelse($kbArticles as $a)
-            <a href="{{ route('kb.show', $a->slug) }}" class="term-panel p-5 sm:p-6 group block reveal">
-                <div class="font-mono text-[10px] tracking-[0.2em] text-term-700 mb-2">{{ strtoupper($a->category->name ?? 'GUIDE') }} // {{ strtoupper($a->difficulty ?? 'ALL LEVELS') }}</div>
-                <h3 class="font-display text-base font-bold tracking-tight text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors line-clamp-2">{{ $a->title }}</h3>
-                @if($a->excerpt)<p class="mt-2 text-[13px] leading-relaxed text-term-700 line-clamp-2">{{ $a->excerpt }}</p>@endif
-            </a>
-            @empty
-            <div class="term-panel p-8 text-sm text-term-800 md:col-span-2 xl:col-span-3">
-                Guides are being published.
-                <a href="{{ route('kb.index') }}" class="term-link ml-2">Browse all →</a>
-            </div>
-            @endforelse
-        </div>
-    </div>
-</section>
-
-{{-- ═══════════ 13 / AI://ASSISTANT ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="ai-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 grid lg:grid-cols-12 gap-8 items-start">
-        <div class="lg:col-span-7">
-            <x-section-head num="13" label="AI://ASSISTANT"
-                title="A support console, not a chatbot toy."
-                desc="The assistant answers from the company knowledge base, helps you discover services, guides support requests, and escalates to a human when needed." />
-            <span id="ai-heading" class="sr-only">AI customer assistant</span>
-            <div class="mt-8 flex flex-col sm:flex-row gap-3 reveal">
-                <button type="button" onclick="window.dispatchEvent(new CustomEvent('open-ai-chat'))" class="term-btn">Launch Assistant →</button>
-                <a href="{{ route('faq') }}" class="term-btn term-btn-ghost">Read FAQ</a>
-            </div>
-        </div>
-        <div class="lg:col-span-5 term-panel p-0 overflow-hidden reveal delay-100" aria-hidden="true">
-            <div class="flex items-center justify-between px-5 py-3 border-b border-term-300 dark:border-white/5">
-                <span class="font-mono text-[10px] tracking-[0.24em] text-term-700">AI://CONSOLE</span>
-                <span class="term-status text-accent-soft"><span class="term-status-dot"></span>Ready</span>
-            </div>
-            <div class="p-5 font-mono text-xs leading-relaxed space-y-3">
-                <p class="text-term-700">visitor&gt; <span class="text-term-950 dark:text-term-950">how do I reset MFA on my account?</span></p>
-                <p class="text-term-800">assistant&gt; <span class="text-navy-800 dark:text-term-900">Here is the documented procedure from the knowledge base… [escalation to human available]</span></p>
-                <p class="text-term-700">system&gt; <span class="text-accent-soft">knowledge-base linked · no credentials requested</span></p>
+                <div class="absolute left-1/2 top-6 -translate-x-1/2 text-center" aria-hidden="true">
+                    <div class="w-16 h-16 mx-auto rounded-xl flex items-center justify-center text-white font-extrabold text-lg" style="background:linear-gradient(160deg, rgba(22,139,255,.9), rgba(121,88,255,.85)); border:1px solid rgba(0,207,255,.7); box-shadow:0 0 44px -4px rgba(0,207,255,.75); font-family:Sora,Inter,sans-serif;">AI</div>
+                    <div class="mx-auto mt-1 h-10 w-px" style="background:linear-gradient(180deg, rgba(0,207,255,.8), transparent);"></div>
+                </div>
+                <div class="absolute top-5 left-5 flex items-center gap-1.5 text-[11px] px-2.5 py-1.5 rounded-lg" style="background:rgba(7,26,48,.9); border:1px solid rgba(0,207,255,.4); color:#BFE3FF;" aria-hidden="true">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="#00CFFF" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9h6v6H9zM4 4h5v5H4zM15 4h5v5h-5zM4 15h5v5H4zM15 15h5v5h-5z"/></svg>AI Core · Online</div>
+                <div class="absolute top-5 right-5 flex items-center gap-1.5 text-[11px] px-2.5 py-1.5 rounded-lg" style="background:rgba(7,26,48,.9); border:1px solid rgba(121,88,255,.5); color:#D9CFFF;" aria-hidden="true">
+                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.5 19a4.5 4.5 0 100-9 6 6 0 00-11.5 1.5A4 4 0 006.5 19h11z"/></svg>Cloud · Connected</div>
             </div>
         </div>
     </div>
 </section>
+</div>
 
-{{-- ═══════════ 14 / CONTACT://SECURE_CHANNEL ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-28 border-t border-term-300 dark:border-white/5" aria-labelledby="contact-heading" data-3d-state="contact">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 text-center">
-        <div class="term-sec-head justify-center" aria-hidden="true">
-            <span class="term-sec-num">14</span>
-            <span class="term-sec-label">CONTACT://SECURE_CHANNEL</span>
-        </div>
-        <h2 id="contact-heading" class="term-sec-title text-3xl sm:text-4xl lg:text-6xl text-balance reveal">LET'S MAKE YOUR TECHNOLOGY<br>WORK SMARTER.</h2>
-        <p class="term-sec-desc mt-5 max-w-xl mx-auto reveal delay-100">Tell us what you need — support, security, development, or cloud. Requests use the existing contact workflow and land in the same tracked queue.</p>
-        <div class="mt-9 flex flex-col sm:flex-row justify-center gap-3 reveal delay-200">
-            <a href="{{ route('get-quote') }}" class="term-btn term-btn-lg btn-premium">Book a Consultation
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
-            <a href="{{ auth()->check() ? route('portal.tickets.create') : route('login') }}" class="term-btn term-btn-lg term-btn-ghost btn-ghost-premium">Request IT Support →</a>
-        </div>
-        @if($latestPosts->isNotEmpty())
-        <div class="mt-16 text-left">
-            <div class="font-mono text-[10px] tracking-[0.24em] text-term-700 uppercase mb-5 reveal">LATEST://TRANSMISSIONS</div>
-            <div class="grid gap-4 sm:gap-5 md:grid-cols-3">
-                @foreach($latestPosts as $post)
-                <a href="{{ route('blog.show', $post->slug) }}" class="term-panel p-5 sm:p-6 group block reveal">
-                    <h3 class="font-display text-base font-bold tracking-tight text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors line-clamp-2">{{ $post->title }}</h3>
-                    @if($post->excerpt)<p class="mt-2 text-[13px] leading-relaxed text-term-700 line-clamp-2">{{ $post->excerpt }}</p>@endif
-                </a>
-                @endforeach
-            </div>
-        </div>
-        @endif
-    </div>
-</section>
-
-@push('scripts')
-<script>
-(function () {
-    var form = document.getElementById('readiness-quiz');
-    if (!form) return;
-    var result = document.getElementById('quiz-result');
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var score = 0, answered = 0;
-        for (var i = 0; i < 7; i++) {
-            var checked = form.querySelector('input[name="q' + i + '"]:checked');
-            if (checked) { answered++; score += parseInt(checked.value, 10); }
-        }
-        if (answered < 7) {
-            result.classList.remove('hidden');
-            result.innerHTML = '<p class="font-mono text-xs tracking-wider text-amber-400">Please answer all 7 questions to generate your signal.</p>';
-            return;
-        }
-        var level, detail, cls;
-        if (score >= 6) { level = 'READINESS: STRONG'; detail = 'Core hygiene looks covered. A periodic professional assessment keeps it that way.'; cls = 'text-accent-soft border-accent/40'; }
-        else if (score >= 4) { level = 'READINESS: DEVELOPING'; detail = 'Foundations exist with clear gaps. Prioritize MFA, backups, and an incident plan.'; cls = 'text-[#4DA3FF] border-[#4DA3FF]/40'; }
-        else { level = 'READINESS: AT RISK'; detail = 'Several fundamentals are missing. Start with backups + MFA, then book a scoped review.'; cls = 'text-[#FFB454] border-[#FFB454]/40'; }
-        result.classList.remove('hidden');
-        // Text is fully static (no user input reflected) — no XSS surface.
-        result.innerHTML = '<div class="border px-5 py-4 ' + cls + '">'
-            + '<p class="font-mono text-xs tracking-[0.18em]">' + level + ' — ' + score + '/7</p>'
-            + '<p class="mt-2 text-sm leading-relaxed text-term-800">' + detail + '</p>'
-            + '<p class="mt-2 font-mono text-[11px] text-term-700">signal informational only · not a penetration test</p></div>';
-        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-    document.getElementById('quiz-reset').addEventListener('click', function () {
-        result.classList.add('hidden');
-        result.innerHTML = '';
-    });
-})();
+@push('head')
+<script type="application/ld+json">
+{!! json_encode(['@context' => 'https://schema.org', '@type' => 'ProfessionalService', 'name' => 'AISecurity', 'description' => 'Advanced IT support, intelligent AI agents, cybersecurity and business automation.', 'url' => url('/')], JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endpush
-
 @endsection

@@ -38,7 +38,7 @@ class DemoContentExpansionSeeder extends Seeder
 
     private function demoNote(): string
     {
-        return 'Demo/sample portfolio profile — fictional individual with a stated illustrative 12 years of experience. Not an actual PerfectITSecurity employee; shown until replaced by verified team members.';
+        return 'Demo/sample portfolio profile — fictional individual with a stated illustrative 12 years of experience. Not an actual AISecurity employee; shown until replaced by verified team members.';
     }
 
     private function profiles(): array

@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title', 'PerfectITSecurity Academy')
-@section('page-title', 'PerfectITSecurity Academy')
+@section('title', 'AISecurity Academy')
+@section('page-title', 'AISecurity Academy')
 
 @section('content')
-<x-page-header sys="CONTENT://ACADEMY" title="PerfectITSecurity Academy" subtitle="Learn how our platform works. Practice real-world workflows. Complete role-specific training." badge="TRAINING" badgeColor="emerald">
+<x-page-header sys="CONTENT://ACADEMY" title="AISecurity Academy" subtitle="Learn how our platform works. Practice real-world workflows. Complete role-specific training." badge="TRAINING" badgeColor="emerald">
     <a href="{{ route('admin.academy.my') }}" class="term-btn term-btn-sm">My Learning</a>
     <a href="{{ route('admin.academy.certificates') }}" class="term-btn term-btn-ghost term-btn-sm">My Records</a>
 </x-page-header>

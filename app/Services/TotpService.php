@@ -19,7 +19,7 @@ class TotpService
         return $secret;
     }
 
-    public function getProvisioningUri(string $secret, string $email, string $issuer = 'TechSupport'): string
+    public function getProvisioningUri(string $secret, string $email, string $issuer = 'AISecurity'): string
     {
         $label = rawurlencode($issuer.':'.$email);
         $issuerEnc = rawurlencode($issuer);

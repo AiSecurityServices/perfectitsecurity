@@ -17,7 +17,7 @@
         {{-- Header / Brand --}}
         <div class="flex items-start justify-between border-b border-gray-200 pb-6">
             <div>
-                <h2 class="text-2xl font-black tracking-tight text-indigo-600">TechSupport Services</h2>
+                <h2 class="text-2xl font-black tracking-tight text-indigo-600">AISecurity</h2>
                 <p class="text-xs text-gray-500 mt-0.5">Enterprise IT Support, ITSM & Digital Solutions</p>
                 <div class="mt-3 text-xs text-gray-600">
                     <div>support@techsupport.local</div>

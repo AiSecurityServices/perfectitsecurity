@@ -11,7 +11,7 @@ namespace App\Support;
  *
  * Route-based overrides take precedence over role defaults so finance,
  * security, AI/knowledge, tickets, projects and settings each get their
- * own room inside one consistent PerfectITSecurity identity. Unknown
+ * own room inside one consistent AISecurity identity. Unknown
  * routes fall back to the role default; guests fall back to 'operations'.
  */
 class AuthenticatedBackgroundManager

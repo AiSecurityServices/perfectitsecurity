@@ -1,11 +1,11 @@
-{{-- AI://ASSISTANT — professional technical support console.
-     Terminal visual language. Backend endpoints + logic unchanged. --}}
-<div x-data="aiChat()" x-init="init()" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 font-mono" role="complementary" aria-label="AI support assistant">
-    {{-- Test/AT hook: canonical assistant name (visual identity stays AI://ASSISTANT) --}}
-    <span class="sr-only">AI Support Assistant</span>
+{{-- AISecurity Assistant — customer support console.
+     Backend endpoints + logic unchanged. --}}
+<div x-data="aiChat()" x-init="init()" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 font-mono" role="complementary" aria-label="AISecurity support assistant">
+    {{-- Test/AT hook: canonical assistant name --}}
+    <span class="sr-only">AISecurity Support Assistant</span>
     {{-- Chat Toggle Button --}}
     <button x-show="!isOpen" @click="toggleChat()" x-transition
-        aria-label="Open AI support assistant"
+        aria-label="Open AISecurity support assistant"
         class="ai-widget-trigger w-14 h-14 flex items-center justify-center text-accent transition-all duration-300 hover:scale-105">
         <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l-4 3 4 3m8-6l4 3-4 3M14 5l-4 14" />
@@ -30,7 +30,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h3 class="text-term-950 dark:text-white font-bold text-[11px] tracking-[0.2em]">AI://ASSISTANT</h3>
+                    <h3 class="text-term-950 dark:text-white font-bold text-[11px] tracking-[0.2em]">AISECURITY · ASSISTANT</h3>
                     <p class="text-term-700 text-[10px] tracking-[0.14em] flex items-center gap-1.5"><span class="term-status-dot" style="width:5px;height:5px;" aria-hidden="true"></span>ONLINE · KB-LINKED</p>
                 </div>
             </div>
@@ -61,9 +61,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l-4 3 4 3m8-6l4 3-4 3M14 5l-4 14" />
                         </svg>
                     </div>
-                    <h4 class="font-sans font-bold text-term-950 dark:text-white mb-2 text-[15px]">How can I help?</h4>
-                    <p class="font-sans text-[13px] text-term-700 mb-1">Knowledge-base answers · service discovery · support guidance.</p>
-                    <p class="font-sans text-[11px] text-term-700 mb-4">Escalation to human support available anytime.</p>
+                    <h4 class="font-sans font-bold text-term-950 dark:text-white mb-2 text-[15px]">Welcome to AISecurity</h4>
+                    <p class="font-sans text-[13px] text-term-700 mb-1">IT services, AI agent solutions, cybersecurity, and support options.</p>
+                    <p class="font-sans text-[11px] text-term-700 mb-4">AI-generated answers · human specialist handoff available anytime.</p>
 
                     {{-- Suggested Questions --}}
                     <div class="space-y-2">

@@ -1,0 +1,25 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('tickets', function (Blueprint $table) {
+            // SLA clock freeze while waiting on customer / third party.
+            // Set when entering a waiting state, cleared (and deadlines
+            // shifted forward by the waited duration) on resume.
+            $table->timestamp('sla_paused_at')->nullable()->after('sla_breached_at');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('tickets', function (Blueprint $table) {
+            $table->dropColumn('sla_paused_at');
+        });
+    }
+};

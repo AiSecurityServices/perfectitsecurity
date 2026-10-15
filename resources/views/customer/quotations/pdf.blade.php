@@ -36,7 +36,7 @@
         <table style="width: 100%;">
             <tr>
                 <td>
-                    <div class="logo">TechSupport Solutions</div>
+                    <div class="logo">AISecurity</div>
                     <div style="color: #64748b; margin-top: 4px;">Enterprise IT Infrastructure & Cybersecurity</div>
                     <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">Global Delivery: London &bull; New York &bull; Dhaka</div>
                 </td>
@@ -176,7 +176,7 @@
     </div>
 
     <div class="footer">
-        TechSupport Solutions &bull; Enterprise IT Infrastructure, Cybersecurity &amp; Managed Services &bull; billing@techsupport.com
+        AISecurity &bull; Enterprise IT Infrastructure, Cybersecurity &amp; Managed Services &bull; billing@techsupport.com
     </div>
 </body>
 </html>

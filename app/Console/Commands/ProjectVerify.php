@@ -11,11 +11,11 @@ class ProjectVerify extends Command
 {
     protected $signature = 'project:verify {--baseline : Regenerate baseline from current state}';
 
-    protected $description = 'Verify PerfectITSecurity project baseline integrity';
+    protected $description = 'Verify AISecurity project baseline integrity';
 
     public function handle()
     {
-        $this->info('PerfectITSecurity Project Verification');
+        $this->info('AISecurity Project Verification');
         $this->newLine();
 
         $results = [
@@ -251,7 +251,7 @@ class ProjectVerify extends Command
         $this->info('Regenerating baseline...');
 
         $baseline = [
-            'project' => 'PerfectITSecurity',
+            'project' => 'AISecurity',
             'baseline_version' => '1.0.0',
             'generated_at' => now()->toIso8601String(),
             'php_version' => PHP_VERSION,

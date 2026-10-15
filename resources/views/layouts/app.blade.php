@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 @php
     // Authenticated background environment (visual only; no permission logic here).
     // Chain: User Role â†’ Authenticated Layout â†’ AuthenticatedBackgroundManager
@@ -70,7 +70,7 @@
         <div x-show="mobileOpen" x-transition:enter="transition-opacity ease-linear duration-300" x-transition:leave="transition-opacity ease-linear duration-300" @click="mobileOpen = false" class="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden" style="display: none;"></div>
 
         {{-- Sidebar --}}
-        <aside :class="[collapsed ? 'w-20' : 'w-64', mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0']" class="fixed left-0 top-0 z-40 h-screen bg-white dark:bg-black border-r border-gray-300 dark:border-[#00FF00]/30 transition-all duration-300 flex flex-col" aria-label="Primary">
+        <aside :class="[collapsed ? 'w-20' : 'w-64', mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0']" class="fixed left-0 top-0 z-40 h-screen bg-white dark:bg-black border-r border-gray-300 dark:border-[#54E5FF]/30 transition-all duration-300 flex flex-col" aria-label="Primary">
 
             {{-- Logo --}}
             <div class="flex items-center gap-3 px-4 h-16 border-b border-gray-200 dark:border-white/10">
@@ -84,8 +84,8 @@
                         </svg>
                     </div>
                     <span x-show="!collapsed" x-transition class="leading-none whitespace-nowrap">
-                        <span class="block font-display font-extrabold text-[13px] tracking-tight text-slate-900 dark:text-white">PERFECT<span class="text-emerald-700 dark:text-accent">IT</span>SECURITY</span>
-                        <span class="shell-logo-sub block font-mono text-[8px] tracking-[0.28em] text-slate-500 dark:text-term-700 uppercase mt-1">OPS://CONSOLE</span>
+                        <span class="block font-display font-extrabold text-[13px] tracking-tight text-slate-900 dark:text-white">AI<span class="text-[#168BFF] dark:text-[#00CFFF]">Security</span></span>
+                        <span class="shell-logo-sub block text-[8px] tracking-[0.28em] text-slate-500 dark:text-term-700 uppercase mt-1">Client Portal</span>
                     </span>
                 </a>
             </div>
@@ -135,7 +135,7 @@
         <div :class="collapsed ? 'lg:ml-20' : 'lg:ml-64'" class="flex-1 w-full min-w-0 transition-all duration-300 flex flex-col">
 
             {{-- Header --}}
-            <header class="sticky top-0 z-[1000] bg-white dark:bg-black border-b border-gray-300 dark:border-[#00FF00]/30">
+            <header class="sticky top-0 z-[1000] bg-white dark:bg-black border-b border-gray-300 dark:border-[#54E5FF]/30">
                 <div class="flex items-center justify-between h-14 px-4 lg:px-8 w-full">
                     <div class="flex items-center gap-3 min-w-0">
                         <button @click="mobileOpen = !mobileOpen" class="lg:hidden p-2 text-gray-600 hover:text-black dark:text-gray-400 dark:hover:text-white transition-colors" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidebar-nav">
@@ -173,27 +173,27 @@
                         {{-- User Menu --}}
                         @auth
                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="flex items-center gap-2 p-1 hover:bg-gray-100 dark:hover:bg-[#00FF00]/10">
+                            <button @click="open = !open" class="flex items-center gap-2 p-1 hover:bg-gray-100 dark:hover:bg-[#54E5FF]/10">
                                 <img src="{{ auth()->user()->avatar_url }}" class="w-8 h-8 object-cover" alt="{{ auth()->user()->name }} profile avatar">
                                 <span class="hidden sm:block text-sm font-medium text-black dark:text-white">{{ auth()->user()->name }}</span>
                             </button>
-                            <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-52 bg-white dark:bg-black border border-gray-300 dark:border-[#00FF00]/30 shadow-lg py-2" style="display: none;">
+                            <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-52 bg-white dark:bg-black border border-gray-300 dark:border-[#54E5FF]/30 shadow-lg py-2" style="display: none;">
                                 <div class="px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] text-gray-600 dark:text-gray-500">SESSION://USER</div>
-                                <a href="{{ auth()->user()->isCustomer() ? route('portal.profile.edit') : route('admin.my-profile.edit') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black dark:text-gray-300 dark:hover:bg-[#00FF00]/10 dark:hover:text-white {{ request()->routeIs('portal.profile.*', 'admin.my-profile.*') ? 'bg-gray-100 dark:bg-[#00FF00]/10 font-semibold' : '' }}">
+                                <a href="{{ auth()->user()->isCustomer() ? route('portal.profile.edit') : route('admin.my-profile.edit') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black dark:text-gray-300 dark:hover:bg-[#54E5FF]/10 dark:hover:text-white {{ request()->routeIs('portal.profile.*', 'admin.my-profile.*') ? 'bg-gray-100 dark:bg-[#54E5FF]/10 font-semibold' : '' }}">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                                     Profile Settings
                                 </a>
                                 @if(auth()->user()->isAdmin())
-                                <a href="{{ route('admin.settings.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black dark:text-gray-300 dark:hover:bg-[#00FF00]/10 dark:hover:text-white">Settings</a>
-                                <a href="{{ route('admin.health.index') }}" class="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 dark:text-[#00FF00] dark:hover:bg-[#00FF00]/10">System Health</a>
+                                <a href="{{ route('admin.settings.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black dark:text-gray-300 dark:hover:bg-[#54E5FF]/10 dark:hover:text-white">Settings</a>
+                                <a href="{{ route('admin.health.index') }}" class="block px-4 py-2 text-sm text-green-700 hover:bg-green-50 dark:text-[#54E5FF] dark:hover:bg-[#54E5FF]/10">System Health</a>
                                 @endif
                                 @if(auth()->user()->isStaff())
-                                <a href="{{ route('mfa.setup') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black dark:text-gray-300 dark:hover:bg-[#00FF00]/10 dark:hover:text-white">Two-Factor Auth</a>
+                                <a href="{{ route('mfa.setup') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-black dark:text-gray-300 dark:hover:bg-[#54E5FF]/10 dark:hover:text-white">Two-Factor Auth</a>
                                 @endif
                                 <hr class="my-1 border-gray-300 dark:border-gray-700">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-[#00FF00]/10 dark:hover:text-red-300">Logout →</button>
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-[#54E5FF]/10 dark:hover:text-red-300">Logout →</button>
                                 </form>
                             </div>
                         </div>

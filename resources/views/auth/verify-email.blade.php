@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Verify Email — PerfectITSecurity')
+@section('title', 'Verify Email — AISecurity')
 
 @section('page-title', 'Email Verification')
 
@@ -10,7 +10,7 @@
         <span class="auth-term-corner tl" aria-hidden="true"></span>
         <span class="auth-term-corner br" aria-hidden="true"></span>
 
-        <div class="font-mono text-[10px] tracking-[0.28em] text-accent-soft uppercase mb-4">AUTH://VERIFY</div>
+        <div class="ais-eyebrow mb-4">Verify your email</div>
 
         <div class="w-14 h-14 mx-auto mb-5 border border-accent/40 bg-accent/10 flex items-center justify-center" aria-hidden="true">
             <svg class="w-7 h-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -19,33 +19,33 @@
         </div>
 
         <h1 class="font-display font-extrabold text-2xl tracking-tight text-slate-900 dark:text-white">Check Your Inbox</h1>
-        <p class="text-sm text-slate-600 dark:text-term-800 leading-relaxed mt-2 mb-6">
+        <p class="text-sm text-slate-600 dark:text-[#B6C8DD] leading-relaxed mt-2 mb-6">
             We dispatched an activation link to your registered email. Click the link to activate your portal.
         </p>
 
         @if (session('success'))
         <div class="term-alert term-alert-ok mb-5 text-left" role="status">
-            <span class="term-alert-tag">SYS://OK</span>
-            <span class="text-slate-800 dark:text-term-950">{{ session('success') }}</span>
+            
+            <span class="text-slate-800 dark:text-white">{{ session('success') }}</span>
         </div>
         @endif
 
         @if ($errors->any())
         <div class="term-alert term-alert-err mb-5 text-left" role="alert">
-            <span class="term-alert-tag">SYS://ERR</span>
-            <span class="text-slate-800 dark:text-term-950">{{ $errors->first() }}</span>
+            
+            <span class="text-slate-800 dark:text-white">{{ $errors->first() }}</span>
         </div>
         @endif
 
         <div class="space-y-3">
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
-                <button class="term-btn w-full !py-3" type="submit">RESEND LINK →</button>
+                <button class="ais-btn-primary w-full !py-3 justify-center" type="submit">Resend link →</button>
             </form>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button class="font-mono text-[11px] tracking-[0.14em] uppercase text-slate-500 dark:text-term-700 hover:text-slate-800 dark:hover:text-term-950 transition-colors py-2" type="submit">
+                <button class="font-mono text-[11px] tracking-[0.14em] uppercase text-slate-500 dark:text-[#7FB7E8] hover:text-slate-800 dark:hover:text-white transition-colors py-2" type="submit">
                     Sign out &amp; switch account
                 </button>
             </form>

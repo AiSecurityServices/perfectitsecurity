@@ -1,44 +1,45 @@
 @extends('layouts.public')
 
-@section('title', 'Get a Quote — PerfectITSecurity')
+@section('title', 'Get a Quote — AISecurity')
 @section('description', 'Request a custom quote for IT services, cybersecurity, cloud solutions, and managed services. Free consultation with no obligation.')
 
 @section('content')
+<div class="ais-page">
 
-{{-- HERO — CONTACT://QUOTE --}}
-<section class="relative w-full overflow-hidden" aria-labelledby="quote-hero-heading">
-    <div class="absolute inset-0 bg-cyber-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
-    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-32 pb-12 lg:pb-16">
-        <div class="max-w-4xl">
-            <div class="flex flex-wrap items-center gap-2.5 mb-7">
-                <span class="term-tag term-tag-accent">CONTACT://QUOTE</span>
-                <span class="term-tag">Free Consultation</span>
-            </div>
-            <h1 id="quote-hero-heading" class="font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-6xl lg:text-7xl text-navy-900 dark:text-white text-balance">
-                GET A <span class="text-accent-soft">CUSTOM QUOTE</span>
-            </h1>
-            <p class="mt-6 text-base sm:text-lg lg:text-xl leading-relaxed text-slate-600 dark:text-term-800 max-w-3xl">
-                Tell us about your requirements and our solutions team will prepare a tailored proposal with transparent pricing. Free consultation, no obligation.
-            </p>
-        </div>
-    </div>
-</section>
+<x-ais-page-hero
+    eyebrow="Get a Quote"
+    title="Get a <span class='ais-title-hl'>Custom Quote</span>"
+    lede="Tell us about your requirements and our solutions team will prepare a tailored proposal with transparent pricing. Free consultation, no obligation."
+    :chips="[
+        ['<path stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M9 9h6v6H9zM4 4h5v5H4zM15 4h5v5h-5zM4 15h5v5H4zM15 15h5v5h-5z\'/>', 'AI Agents'],
+        ['<path stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M17.5 19a4.5 4.5 0 100-9 6 6 0 00-11.5 1.5A4 4 0 006.5 19h11z\'/>', 'Cloud'],
+        ['<path stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z\'/>', 'Cybersecurity'],
+    ]"
+>
+    <x-slot:breadcrumbs>
+        <nav class="ais-crumb" aria-label="Breadcrumb"><a href="{{ route('home') }}">Home</a><span aria-hidden="true">/</span><span aria-current="page">Get a Quote</span></nav>
+    </x-slot:breadcrumbs>
+    <x-slot:actions>
+        <a href="{{ route('contact') }}" class="ais-btn-primary">Talk to an Expert
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+        <a href="{{ route('pricing') }}" class="ais-btn-ghost">See Pricing Plans</a>
+    </x-slot:actions>
+</x-ais-page-hero>
 
-{{-- Quote form --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-label="Quote request">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+{{-- ═════════ QUOTE FORM ═════════ --}}
+<section class="relative w-full border-t border-white/5" aria-label="Quote request" style="background:#020916;">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
         <div class="grid lg:grid-cols-12 gap-6 lg:gap-8">
 
             {{-- Form --}}
             <div class="lg:col-span-7">
-                <div class="term-panel p-6 sm:p-10">
-                    <div class="term-sec-label mb-3">QUOTE://PARAMETERS</div>
-                    <h2 class="font-display text-2xl font-bold tracking-tight text-navy-900 dark:text-white">Describe your requirements</h2>
+                <div class="ais-card p-6 sm:p-8 reveal">
+                    <p class="ais-eyebrow">Quote Parameters</p>
+                    <h2 class="ais-h2 mt-3 text-2xl sm:text-[1.7rem] leading-tight">Describe your requirements</h2>
 
                     @if(session('success'))
-                    <div class="term-alert term-alert-ok mt-6" role="status">
-                        <span class="term-alert-tag">SYS://OK</span>
-                        <span>{{ session('success') }}</span>
+                    <div class="mt-6 ais-glass px-4 py-3 text-sm font-semibold text-white" style="border-color:rgba(0,207,255,.45);" role="status">
+                        {{ session('success') }}
                     </div>
                     @endif
 
@@ -47,40 +48,45 @@
 
                         <div class="grid sm:grid-cols-2 gap-5">
                             <div>
-                                <label for="name" class="term-field-label">Full Name *</label>
+                                <label for="name" class="mb-1.5 block text-[13px] font-semibold text-white">Full Name *</label>
                                 <input type="text" id="name" name="name" required
-                                       class="term-input"
+                                       class="ais-input"
                                        placeholder="John Smith" value="{{ old('name') }}" @error('name') aria-invalid="true" @enderror>
-                                @error('name') <p class="term-error">{{ $message }}</p> @enderror
+                                @error('name') <p class="mt-1.5 text-xs" style="color:#FF8A8A;">{{ $message }}</p> @enderror
                             </div>
                             <div>
-                                <label for="email" class="term-field-label">Email Address *</label>
+                                <label for="email" class="mb-1.5 block text-[13px] font-semibold text-white">Email Address *</label>
                                 <input type="email" id="email" name="email" required
-                                       class="term-input"
+                                       class="ais-input"
                                        placeholder="john@company.com" value="{{ old('email') }}" @error('email') aria-invalid="true" @enderror>
-                                @error('email') <p class="term-error">{{ $message }}</p> @enderror
+                                @error('email') <p class="mt-1.5 text-xs" style="color:#FF8A8A;">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
                         <div class="grid sm:grid-cols-2 gap-5">
                             <div>
-                                <label for="phone" class="term-field-label">Phone Number</label>
+                                <label for="phone" class="mb-1.5 block text-[13px] font-semibold text-white">Phone Number</label>
                                 <input type="tel" id="phone" name="phone"
-                                       class="term-input"
+                                       class="ais-input"
                                        placeholder="+1 (555) 123-4567" value="{{ old('phone') }}">
                             </div>
                             <div>
-                                <label for="company" class="term-field-label">Company Name</label>
+                                <label for="company" class="mb-1.5 block text-[13px] font-semibold text-white">Company Name</label>
                                 <input type="text" id="company" name="company"
-                                       class="term-input"
+                                       class="ais-input"
                                        placeholder="Acme Corp" value="{{ old('company') }}">
                             </div>
                         </div>
 
                         <div>
-                            <label for="service_interest" class="term-field-label">Service of Interest</label>
-                            <select id="service_interest" name="service_interest" class="term-input">
+                            <label for="service_interest" class="mb-1.5 block text-[13px] font-semibold text-white">Service of Interest</label>
+                            <select id="service_interest" name="service_interest" class="ais-input">
                                 <option value="">Select a service category</option>
+                                <option value="ai-agents">AI Agent Development</option>
+                                <option value="ai-platform">AI Platform Setup &amp; Configuration</option>
+                                <option value="ai-support">AI Customer Support Solutions</option>
+                                <option value="ai-automation">Business Process Automation with AI</option>
+                                <option value="ai-security">AI Security Review</option>
                                 <option value="cybersecurity">Cybersecurity &amp; Penetration Testing</option>
                                 <option value="managed-it">Managed IT Support</option>
                                 <option value="cloud">Cloud Infrastructure &amp; Migration</option>
@@ -96,9 +102,9 @@
 
                         <div class="grid sm:grid-cols-2 gap-5">
                             <div>
-                                <label for="service_id" class="term-field-label">Specific Service (optional)</label>
+                                <label for="service_id" class="mb-1.5 block text-[13px] font-semibold text-white">Specific Service (optional)</label>
                                 <select id="service_id" name="service_id"
-                                        class="term-input" @error('service_id') aria-invalid="true" @enderror>
+                                        class="ais-input" @error('service_id') aria-invalid="true" @enderror>
                                     <option value="">General enquiry</option>
                                     @isset($services)
                                         @foreach($services as $service)
@@ -106,12 +112,12 @@
                                         @endforeach
                                     @endisset
                                 </select>
-                                @error('service_id') <p class="term-error">{{ $message }}</p> @enderror
+                                @error('service_id') <p class="mt-1.5 text-xs" style="color:#FF8A8A;">{{ $message }}</p> @enderror
                             </div>
                             <div>
-                                <label for="country_id" class="term-field-label">Country (for local pricing &amp; tax)</label>
+                                <label for="country_id" class="mb-1.5 block text-[13px] font-semibold text-white">Country (for local pricing &amp; tax)</label>
                                 <select id="country_id" name="country_id"
-                                        class="term-input" @error('country_id') aria-invalid="true" @enderror>
+                                        class="ais-input" @error('country_id') aria-invalid="true" @enderror>
                                     <option value="">Select country</option>
                                     @isset($countries)
                                         @foreach($countries as $country)
@@ -119,15 +125,15 @@
                                         @endforeach
                                     @endisset
                                 </select>
-                                @error('country_id') <p class="term-error">{{ $message }}</p> @enderror
+                                @error('country_id') <p class="mt-1.5 text-xs" style="color:#FF8A8A;">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
                         <div class="grid sm:grid-cols-2 gap-5">
                             <div>
-                                <label for="budget_range" class="term-field-label">Estimated Budget</label>
+                                <label for="budget_range" class="mb-1.5 block text-[13px] font-semibold text-white">Estimated Budget</label>
                                 <select id="budget_range" name="budget_range"
-                                        class="term-input">
+                                        class="ais-input">
                                     <option value="">Select budget range</option>
                                     <option value="under-5k">Under $5,000</option>
                                     <option value="5k-15k">$5,000 - $15,000</option>
@@ -138,9 +144,9 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="timeline" class="term-field-label">Project Timeline</label>
+                                <label for="timeline" class="mb-1.5 block text-[13px] font-semibold text-white">Project Timeline</label>
                                 <select id="timeline" name="timeline"
-                                        class="term-input">
+                                        class="ais-input">
                                     <option value="">Select timeline</option>
                                     <option value="urgent">Urgent (ASAP)</option>
                                     <option value="1-month">Within 1 month</option>
@@ -152,26 +158,29 @@
                         </div>
 
                         <div>
-                            <label for="message" class="term-field-label">Project Requirements *</label>
+                            <label for="message" class="mb-1.5 block text-[13px] font-semibold text-white">Project Requirements *</label>
                             <textarea id="message" name="message" rows="6" required
-                                      class="term-input resize-none"
+                                      class="ais-input resize-none"
                                       placeholder="Please describe your project requirements, challenges, and any specific needs..." @error('message') aria-invalid="true" @enderror>{{ old('message') }}</textarea>
-                            @error('message') <p class="term-error">{{ $message }}</p> @enderror
+                            @error('message') <p class="mt-1.5 text-xs" style="color:#FF8A8A;">{{ $message }}</p> @enderror
                         </div>
 
-                        <button type="submit" class="term-btn w-full sm:w-auto justify-center">
-                            Submit Quote Request
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                        </button>
+                        <div>
+                            <button type="submit" class="ais-btn-primary w-full sm:w-auto justify-center">
+                                Submit Quote Request
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                            </button>
+                            <p class="mt-3 text-[12px]" style="color:#7FB7E8;">We only use your details to prepare your quote — no marketing, no sharing.</p>
+                        </div>
                     </form>
                 </div>
             </div>
 
             {{-- Sidebar --}}
             <div class="lg:col-span-5 space-y-4 sm:space-y-5">
-                <div class="term-panel p-7 sm:p-8">
-                    <div class="term-sec-label mb-6">QUOTE://PIPELINE</div>
-                    <div class="space-y-5">
+                <div class="ais-card p-7 sm:p-8 reveal delay-100">
+                    <p class="ais-eyebrow">How It Works</p>
+                    <div class="mt-5 space-y-5">
                         @foreach([
                             ['step' => '01', 'title' => 'Requirements Review', 'desc' => 'Our solutions team reviews your requirements within 24 hours.'],
                             ['step' => '02', 'title' => 'Free Consultation', 'desc' => 'We schedule a call to discuss your needs in detail and clarify scope.'],
@@ -179,53 +188,53 @@
                             ['step' => '04', 'title' => 'Project Kickoff', 'desc' => 'Once approved, we begin work with regular progress updates.'],
                         ] as $item)
                         <div class="flex gap-4">
-                            <span class="font-mono text-[11px] tracking-[0.2em] text-accent-soft flex-shrink-0 pt-0.5">{{ $item['step'] }}</span>
+                            <span class="flex-shrink-0 w-7 h-7 rounded-full inline-flex items-center justify-center text-[11px] font-extrabold" style="color:#00CFFF; background:rgba(0,207,255,.12); border:1px solid rgba(0,207,255,.5);" aria-hidden="true">{{ $item['step'] }}</span>
                             <div>
-                                <h4 class="text-sm font-bold text-navy-900 dark:text-white">{{ $item['title'] }}</h4>
-                                <p class="text-xs leading-relaxed text-slate-600 dark:text-term-800 mt-1">{{ $item['desc'] }}</p>
+                                <h4 class="text-sm font-bold text-white">{{ $item['title'] }}</h4>
+                                <p class="text-xs leading-relaxed mt-1" style="color:#B6C8DD;">{{ $item['desc'] }}</p>
                             </div>
                         </div>
                         @endforeach
                     </div>
                 </div>
 
-                <div class="term-panel p-7 sm:p-8">
-                    <div class="term-sec-label mb-5">CONTACT://VOICE</div>
-                    <div class="space-y-3 text-sm">
-                        <a href="tel:+15551234567" class="flex items-center gap-3 text-slate-600 dark:text-term-800 hover:text-accent-soft transition-colors">
-                            <span class="font-mono text-[10px] text-term-700">TEL://</span> +1 (555) 123-4567
+                <div class="ais-card p-7 sm:p-8 reveal delay-200">
+                    <p class="ais-eyebrow">Prefer to Talk?</p>
+                    <div class="mt-4 space-y-3 text-sm">
+                        <a href="tel:+15551234567" class="flex items-center gap-3 transition-colors hover:text-white" style="color:#B6C8DD;">
+                            <span class="ais-icon !w-8 !h-8" style="background:rgba(0,207,255,.12); color:#00CFFF; border-color:rgba(0,207,255,.4);" aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></span> +1 (555) 123-4567
                         </a>
-                        <a href="mailto:info@techsupport.com" class="flex items-center gap-3 text-slate-600 dark:text-term-800 hover:text-accent-soft transition-colors">
-                            <span class="font-mono text-[10px] text-term-700">MAIL://</span> info@techsupport.com
+                        <a href="mailto:info@techsupport.com" class="flex items-center gap-3 transition-colors hover:text-white" style="color:#B6C8DD;">
+                            <span class="ais-icon !w-8 !h-8" style="background:rgba(121,88,255,.14); color:#9275FF; border-color:rgba(121,88,255,.45);" aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></span> info@techsupport.com
                         </a>
-                        <div class="flex items-center gap-3 text-slate-600 dark:text-term-800">
-                            <span class="font-mono text-[10px] text-term-700">ETA://</span> Response within 24 hours
+                        <div class="flex items-center gap-3" style="color:#B6C8DD;">
+                            <span class="ais-icon !w-8 !h-8" style="background:rgba(0,207,255,.12); color:#00CFFF; border-color:rgba(0,207,255,.4);" aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span> Response within 24 hours
                         </div>
                     </div>
                 </div>
 
-                <div class="term-panel p-7 sm:p-8">
-                    <div class="term-sec-label mb-5">SYS://TELEMETRY</div>
-                    <dl class="grid grid-cols-2 gap-4 text-center">
-                        <div>
+                <div class="ais-card p-7 sm:p-8 reveal delay-200">
+                    <p class="ais-eyebrow">At a Glance</p>
+                    <dl class="mt-5 grid grid-cols-2 gap-4 text-center">
+                        <div class="ais-glass px-3 py-4">
                             <dt class="sr-only">Clients worldwide</dt>
-                            <dd class="font-mono text-2xl font-bold text-navy-900 dark:text-white">250+</dd>
-                            <dd class="term-sec-label mt-1">Clients worldwide</dd>
+                            <dd class="text-2xl font-extrabold text-white">250+</dd>
+                            <dd class="mt-1 text-[11px]" style="color:#7FB7E8;">Clients worldwide</dd>
                         </div>
-                        <div>
+                        <div class="ais-glass px-3 py-4">
                             <dt class="sr-only">Uptime SLA</dt>
-                            <dd class="font-mono text-2xl font-bold text-accent-soft">99.9%</dd>
-                            <dd class="term-sec-label mt-1">Uptime SLA</dd>
+                            <dd class="text-2xl font-extrabold" style="color:#00CFFF;">99.9%</dd>
+                            <dd class="mt-1 text-[11px]" style="color:#7FB7E8;">Uptime SLA</dd>
                         </div>
-                        <div>
+                        <div class="ais-glass px-3 py-4">
                             <dt class="sr-only">Critical response</dt>
-                            <dd class="font-mono text-2xl font-bold text-navy-900 dark:text-white">15min</dd>
-                            <dd class="term-sec-label mt-1">Critical response</dd>
+                            <dd class="text-2xl font-extrabold text-white">15min</dd>
+                            <dd class="mt-1 text-[11px]" style="color:#7FB7E8;">Critical response</dd>
                         </div>
-                        <div>
+                        <div class="ais-glass px-3 py-4">
                             <dt class="sr-only">Emergency support</dt>
-                            <dd class="font-mono text-2xl font-bold text-accent-soft">24/7</dd>
-                            <dd class="term-sec-label mt-1">Emergency support</dd>
+                            <dd class="text-2xl font-extrabold" style="color:#00CFFF;">24/7</dd>
+                            <dd class="mt-1 text-[11px]" style="color:#7FB7E8;">Emergency support</dd>
                         </div>
                     </dl>
                 </div>
@@ -235,4 +244,7 @@
     </div>
 </section>
 
+<x-ais-cta />
+
+</div>
 @endsection

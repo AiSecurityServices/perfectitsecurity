@@ -141,7 +141,7 @@ class BackupDatabaseService
         if (! $gz) {
             throw new RuntimeException('Cannot stage SQLite backup archive.');
         }
-        gzwrite($gz, '-- TechSupport sqlite logical backup '.now()->toIso8601String()."\nPRAGMA foreign_keys=OFF;\n");
+        gzwrite($gz, '-- AISecurity sqlite logical backup '.now()->toIso8601String()."\nPRAGMA foreign_keys=OFF;\n");
         $tables = $pdo->query("SELECT name, sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")->fetchAll(\PDO::FETCH_ASSOC);
         foreach ($tables as $t) {
             gzwrite($gz, "\n".$t['sql'].";\n");

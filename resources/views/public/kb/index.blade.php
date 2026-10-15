@@ -1,55 +1,56 @@
 @extends('layouts.public')
 
-@section('title', 'Knowledge Base & Technical Guides — PerfectITSecurity')
+@section('title', 'Knowledge Base & Technical Guides — AISecurity')
 @section('description', 'Comprehensive technical documentation, cybersecurity runbooks, infrastructure guides, and FAQs.')
 
 @section('content')
+<div class="ais-page">
 
-{{-- HERO — KNOWLEDGE://BASE --}}
+{{-- HERO --}}
 <section class="relative w-full overflow-hidden" aria-labelledby="kb-hero-heading">
-    <div class="absolute inset-0 bg-cyber-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
-    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-32 pb-12 lg:pb-16">
-        <div class="max-w-3xl">
-            <div class="flex flex-wrap items-center gap-2.5 mb-7">
-                <span class="term-tag term-tag-accent">KNOWLEDGE://BASE</span>
-                <span class="term-tag">Runbooks + Guides</span>
-            </div>
-            <h1 id="kb-hero-heading" class="font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-6xl lg:text-7xl text-navy-900 dark:text-white text-balance">
-                TECHNICAL INTELLIGENCE, <span class="text-accent-soft">SYSTEM GUIDES.</span>
-            </h1>
-            <p class="mt-6 text-base sm:text-lg lg:text-xl leading-relaxed text-slate-600 dark:text-term-800 max-w-2xl">
-                Explore architectural blueprints, incident response playbooks, and troubleshooting guides prepared by our senior engineering staff.
-            </p>
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background:radial-gradient(ellipse 60% 55% at 72% 40%, rgba(22,139,255,.20), transparent 65%), radial-gradient(ellipse 45% 50% at 85% 70%, rgba(121,88,255,.14), transparent 60%), radial-gradient(ellipse 70% 45% at 15% 10%, rgba(0,207,255,.07), transparent 60%);"></div>
+    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-14 sm:pt-16 pb-10">
+        <nav class="ais-crumb mb-4" aria-label="Breadcrumb">
+            <a href="{{ route('home') }}">Home</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Knowledge Base</span>
+        </nav>
+        <p class="ais-eyebrow">Runbooks + Guides</p>
+        <h1 id="kb-hero-heading" class="ais-h2 mt-3 text-3xl sm:text-4xl lg:text-5xl leading-tight">Technical guides &amp; runbooks</h1>
+        <p class="ais-sub mt-4 text-[14px] sm:text-[15px] leading-relaxed max-w-2xl">
+            Explore architectural blueprints, incident response playbooks, and troubleshooting guides prepared by our senior engineering staff.
+        </p>
 
-            {{-- Search --}}
-            <form action="{{ route('kb.index') }}" method="GET" role="search" class="mt-8 flex flex-col sm:flex-row gap-2.5 max-w-xl">
-                @if(request('category'))
-                <input type="hidden" name="category" value="{{ request('category') }}">
-                @endif
-                <label for="kb-search" class="sr-only">Search articles, security guides, or error codes</label>
-                <input type="text" id="kb-search" name="search" value="{{ request('search') }}" placeholder="search articles, guides, error codes…"
-                       class="term-input flex-1 font-mono text-sm">
-                <button type="submit" class="term-btn flex-shrink-0">Search -></button>
-            </form>
-        </div>
+        {{-- Search --}}
+        <form action="{{ route('kb.index') }}" method="GET" role="search" class="mt-8 flex flex-col sm:flex-row gap-2.5 max-w-xl">
+            @if(request('category'))
+            <input type="hidden" name="category" value="{{ request('category') }}">
+            @endif
+            <label for="kb-search" class="sr-only">Search articles, security guides, or error codes</label>
+            <input type="text" id="kb-search" name="search" value="{{ request('search') }}" placeholder="Search articles, guides, error codes…"
+                   class="ais-input flex-1 text-sm">
+            <button type="submit" class="ais-btn-primary flex-shrink-0">Search
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </button>
+        </form>
     </div>
 </section>
 
 {{-- Main content --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-label="Knowledge base articles">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-label="Knowledge base articles">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
 
         {{-- Category filter --}}
         @if(isset($categories) && $categories->isNotEmpty())
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-4 mb-10" role="navigation" aria-label="Filter by topic">
+        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-10" role="navigation" aria-label="Filter by topic">
             <a href="{{ route('kb.index', array_filter(['search' => request('search')])) }}"
-               class="term-tag flex-shrink-0 {{ !request('category') ? 'term-tag-accent' : '' }}">
-                ALL TOPICS ({{ $categories->sum('articles_count') }})
+               class="ais-badge flex-shrink-0" @if(!request('category')) style="border-color:#00CFFF;background:rgba(0,207,255,.12);color:#fff;" @endif>
+                All topics ({{ $categories->sum('articles_count') }})
             </a>
             @foreach($categories as $cat)
             <a href="{{ route('kb.index', array_filter(['category' => $cat->id, 'search' => request('search')])) }}"
-               class="term-tag flex-shrink-0 {{ request('category') == $cat->id ? 'term-tag-accent' : '' }}">
-                {{ strtoupper($cat->name) }} [{{ $cat->articles_count }}]
+               class="ais-badge flex-shrink-0" @if(request('category') == $cat->id) style="border-color:#00CFFF;background:rgba(0,207,255,.12);color:#fff;" @endif>
+                {{ $cat->name }} ({{ $cat->articles_count }})
             </a>
             @endforeach
         </div>
@@ -59,25 +60,25 @@
         @if($articles->count() > 0)
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             @foreach($articles as $article)
-            <a href="{{ route('kb.show', $article->slug) }}" class="term-panel p-6 group flex flex-col justify-between">
+            <a href="{{ route('kb.show', $article->slug) }}" class="ais-card group p-6 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between gap-3 mb-4">
-                        <span class="term-tag">{{ strtoupper($article->category->name ?? 'INFRASTRUCTURE') }}</span>
-                        <span class="font-mono text-[11px] text-term-700">VIEWS://{{ number_format($article->views_count ?? 0) }}</span>
+                        <span class="ais-badge">{{ $article->category->name ?? 'Infrastructure' }}</span>
+                        <span class="text-[11px]" style="color:#7FB7E8;">{{ number_format($article->views_count ?? 0) }} views</span>
                     </div>
 
-                    <h3 class="font-display text-lg font-bold tracking-tight text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors leading-snug">
+                    <h3 class="text-lg font-bold tracking-tight text-white leading-snug">
                         {{ $article->title }}
                     </h3>
 
-                    <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-term-800 line-clamp-3">
+                    <p class="mt-2 text-sm leading-relaxed line-clamp-3" style="color:#B6C8DD;">
                         {{ $article->excerpt ?? Str::limit(strip_tags($article->content), 120) }}
                     </p>
                 </div>
 
-                <div class="flex items-center justify-between gap-3 pt-4 mt-5 border-t border-term-300 dark:border-white/5 font-mono text-[11px]">
-                    <span class="text-term-700">UPDATED://{{ $article->updated_at?->diffForHumans() ?? 'recently' }}</span>
-                    <span class="term-link text-xs">Read guide
+                <div class="flex items-center justify-between gap-3 pt-4 mt-5 border-t border-white/5 text-[11px]">
+                    <span style="color:#7FB7E8;">Updated {{ $article->updated_at?->diffForHumans() ?? 'recently' }}</span>
+                    <span class="ais-link text-xs">Read guide
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </span>
                 </div>
@@ -89,15 +90,17 @@
             {{ $articles->withQueryString()->links() }}
         </div>
         @else
-        <div class="term-panel p-12 sm:p-16 text-center max-w-lg mx-auto">
-            <div class="font-mono text-[11px] tracking-[0.24em] text-term-700 mb-3">QUERY://EMPTY</div>
-            <h3 class="font-display text-lg font-bold text-navy-900 dark:text-white mb-2">No matching documentation found</h3>
-            <p class="text-sm text-slate-600 dark:text-term-800 mb-6">Try broadening your search query or removing the active category filter.</p>
-            <a href="{{ route('kb.index') }}" class="term-btn term-btn-ghost term-btn-sm">Clear search filter</a>
+        <div class="ais-card p-12 sm:p-16 text-center max-w-lg mx-auto">
+            <h3 class="text-lg font-bold text-white mb-2">No matching documentation found</h3>
+            <p class="text-sm mb-6" style="color:#B6C8DD;">Try broadening your search query or removing the active category filter.</p>
+            <a href="{{ route('kb.index') }}" class="ais-btn-ghost">Clear search filter</a>
         </div>
         @endif
 
     </div>
 </section>
 
+<x-ais-cta />
+
+</div>
 @endsection

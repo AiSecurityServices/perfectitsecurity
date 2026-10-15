@@ -1,29 +1,33 @@
 @extends('layouts.public')
 
 @section('title', 'Industries We Serve — Global IT Solutions')
-@section('description', 'PerfectITSecurity serves enterprises across healthcare, finance, e-commerce, education, manufacturing, and government with tailored IT, cybersecurity, and cloud services.')
+@section('description', 'AISecurity serves enterprises across healthcare, finance, e-commerce, education, manufacturing, and government with tailored IT, cybersecurity, and cloud services.')
 
 @section('content')
+<div class="ais-page">
 
-{{-- HERO — INDUSTRIES://SECTORS --}}
+{{-- HERO --}}
 <section class="relative w-full overflow-hidden" aria-labelledby="industries-hero-heading">
-    <div class="absolute inset-0 bg-cyber-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
-    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-32 pb-12 lg:pb-16 text-center">
-        <div class="flex flex-wrap items-center justify-center gap-2.5 mb-7">
-            <span class="term-tag term-tag-accent">INDUSTRIES://SECTORS</span>
-        </div>
-        <h1 id="industries-hero-heading" class="font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-6xl lg:text-7xl text-navy-900 dark:text-white text-balance">
-            TAILORED IT SOLUTIONS FOR <span class="text-accent-soft">EVERY INDUSTRY</span>
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background:radial-gradient(ellipse 60% 55% at 72% 40%, rgba(22,139,255,.20), transparent 65%), radial-gradient(ellipse 45% 50% at 85% 70%, rgba(121,88,255,.14), transparent 60%), radial-gradient(ellipse 70% 45% at 15% 10%, rgba(0,207,255,.07), transparent 60%);"></div>
+    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-14 sm:pt-16 pb-10 text-center">
+        <nav class="ais-crumb mb-4 justify-center" aria-label="Breadcrumb">
+            <a href="{{ route('home') }}">Home</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Industries</span>
+        </nav>
+        <p class="ais-eyebrow">Industries we serve</p>
+        <h1 id="industries-hero-heading" class="ais-h2 mt-3 text-3xl sm:text-4xl lg:text-5xl leading-tight">
+            Tailored IT solutions for every industry
         </h1>
-        <p class="mt-6 text-base sm:text-lg lg:text-xl leading-relaxed text-slate-600 dark:text-term-800 max-w-3xl mx-auto">
+        <p class="ais-sub mt-4 text-[14px] sm:text-[15px] leading-relaxed max-w-3xl mx-auto">
             We understand that every industry has unique compliance requirements, security challenges, and operational demands. Our solutions are engineered to address your sector-specific needs.
         </p>
     </div>
 </section>
 
 {{-- Industries grid --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-label="Industries">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-label="Industries">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             @foreach([
                 [
@@ -179,35 +183,37 @@
                     'solutions' => ['Mobile-device provisioning', 'App troubleshooting and backups', 'Cloud file and photo protection', 'Simple monthly support plan'],
                 ],
             ] as $industry)
-            <div class="term-panel p-7 sm:p-8 group">
+            <div class="ais-card p-7 sm:p-8 group">
                 <div class="flex items-center justify-between gap-3 mb-5">
-                    <svg class="w-7 h-7 text-term-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="{{ $industry['icon'] }}"/></svg>
-                    <span class="font-mono text-[10px] tracking-[0.2em] text-term-700">SEC_{{ str_pad((string)($loop->iteration), 2, '0', STR_PAD_LEFT) }}</span>
+                    <span class="ais-icon" style="background:rgba(22,139,255,.18); color:#4DA3FF;" aria-hidden="true">
+                        <svg class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $industry['icon'] }}"/></svg>
+                    </span>
+                    <span class="text-[10px] tracking-[0.2em]" style="color:#7FB7E8;">{{ str_pad((string)($loop->iteration), 2, '0', STR_PAD_LEFT) }}</span>
                 </div>
-                <h3 class="font-display text-xl font-bold tracking-tight text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors">{{ $industry['name'] }}</h3>
-                <p class="mt-2.5 text-sm leading-relaxed text-slate-600 dark:text-term-800">{{ $industry['desc'] }}</p>
+                <h3 class="text-xl font-bold tracking-tight text-white">{{ $industry['name'] }}</h3>
+                <p class="mt-2.5 text-sm leading-relaxed" style="color:#B6C8DD;">{{ $industry['desc'] }}</p>
                 @if(!empty($industry['challenges']))
                 <div class="mt-4 text-left">
-                    <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-term-700 mb-1.5">Typical challenges</p>
-                    <ul class="space-y-1 text-[13px] text-slate-600 dark:text-term-800">
+                    <p class="text-[10px] uppercase tracking-[0.2em] mb-1.5" style="color:#7FB7E8;">Typical challenges</p>
+                    <ul class="space-y-1 text-[13px]" style="color:#B6C8DD;">
                         @foreach($industry['challenges'] as $challenge)<li class="flex gap-2"><span aria-hidden="true">–</span><span>{{ $challenge }}</span></li>@endforeach
                     </ul>
                 </div>
                 @endif
                 @if(!empty($industry['solutions']))
                 <div class="mt-3 text-left">
-                    <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-term-700 mb-1.5">How we help</p>
-                    <ul class="space-y-1 text-[13px] text-slate-600 dark:text-term-800">
-                        @foreach($industry['solutions'] as $solution)<li class="flex gap-2"><span class="text-accent-soft" aria-hidden="true">✓</span><span>{{ $solution }}</span></li>@endforeach
+                    <p class="text-[10px] uppercase tracking-[0.2em] mb-1.5" style="color:#7FB7E8;">How we help</p>
+                    <ul class="space-y-1 text-[13px]" style="color:#B6C8DD;">
+                        @foreach($industry['solutions'] as $solution)<li class="flex gap-2"><span style="color:#00CFFF;" aria-hidden="true">✓</span><span>{{ $solution }}</span></li>@endforeach
                     </ul>
-                    <a href="{{ route('contact') }}" class="term-link mt-2.5 text-xs">Discuss your sector
+                    <a href="{{ route('contact') }}" class="ais-link mt-2.5 text-xs">Discuss your sector
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </a>
                 </div>
                 @endif
-                <div class="flex flex-wrap gap-1.5 pt-4 mt-4 border-t border-term-300 dark:border-white/5">
+                <div class="flex flex-wrap gap-1.5 pt-4 mt-4 border-t border-white/5">
                     @foreach($industry['tags'] as $tag)
-                    <span class="term-tag">{{ strtoupper($tag) }}</span>
+                    <span class="ais-badge">{{ $tag }}</span>
                     @endforeach
                 </div>
             </div>
@@ -217,20 +223,23 @@
 </section>
 
 {{-- CTA --}}
-<section class="relative w-full py-16 sm:py-20 border-t border-term-300 dark:border-white/5" aria-labelledby="industries-cta-heading">
-    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <span class="term-tag term-tag-accent">INDUSTRIES://CONSULT</span>
-        <h2 id="industries-cta-heading" class="mt-4 font-display text-3xl sm:text-5xl font-bold tracking-tight text-navy-900 dark:text-white">
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-labelledby="industries-cta-heading">
+    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center">
+        <p class="ais-eyebrow">Industry consultation</p>
+        <h2 id="industries-cta-heading" class="ais-h2 mt-3 text-2xl sm:text-3xl">
             Need industry-specific IT solutions?
         </h2>
-        <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-term-800">
+        <p class="ais-sub mt-4 text-[13px] sm:text-sm">
             Contact us for a free consultation on how our solutions can meet your industry's unique compliance, security, and operational requirements.
         </p>
-        <a href="{{ route('contact') }}" class="term-btn term-btn-lg mt-8">
+        <a href="{{ route('contact') }}" class="ais-btn-primary mt-8">
             Schedule Industry Consultation
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
         </a>
     </div>
 </section>
 
+<x-ais-cta />
+
+</div>
 @endsection

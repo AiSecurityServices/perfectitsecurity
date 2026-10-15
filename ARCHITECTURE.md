@@ -1,4 +1,4 @@
-# PerfectITSecurity — Architecture
+# AISecurity — Architecture
 
 Laravel 9 + PHP 8.0 + SQLite (dev/test; MySQL supported) + Blade/Tailwind/Alpine + Vite.
 Single coherent platform: one `users` identity feeds CRM, ERP, ITSM, finance,

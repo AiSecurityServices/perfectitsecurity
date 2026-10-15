@@ -46,8 +46,8 @@ class DatabaseSeeder extends Seeder
     {
         // Company
         $company = Company::create([
-            'name' => 'TechSupport Corp',
-            'slug' => 'techsupport-corp',
+            'name' => 'AISecurity',
+            'slug' => 'aisecurity',
             'email' => 'info@techsupport.com',
             'phone' => '+1 (555) 123-4567',
             'address' => '123 Tech Avenue',
@@ -1519,7 +1519,7 @@ class DatabaseSeeder extends Seeder
         AuditLog::create(['user_id' => $pm->id, 'action' => 'project.update', 'module' => 'projects', 'description' => 'Updated Website Redesign project progress to 35%', 'ip_address' => '192.168.1.20', 'auditable_type' => Project::class, 'auditable_id' => $proj1->id]);
 
         // Settings
-        Setting::set('company_name', 'TechSupport Corp', 'general');
+        Setting::set('company_name', 'AISecurity', 'general');
         Setting::set('company_email', 'info@techsupport.com', 'general');
         Setting::set('company_phone', '+1 (555) 123-4567', 'general');
         Setting::set('currency', 'USD', 'general');

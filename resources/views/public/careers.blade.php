@@ -1,43 +1,47 @@
 @extends('layouts.public')
 
 @section('title', 'Careers — Join Our Global IT Team')
-@section('description', 'Join PerfectITSecurity — a world-class IT services company. We are hiring cybersecurity experts, cloud engineers, developers, and IT support specialists across multiple countries.')
+@section('description', 'Join AISecurity — a world-class IT services company. We are hiring cybersecurity experts, cloud engineers, developers, and IT support specialists across multiple countries.')
 
 @section('content')
+<div class="ais-page">
 
-{{-- HERO — CAREERS://OPEN-ROLES --}}
+{{-- HERO --}}
 <section class="relative w-full overflow-hidden" aria-labelledby="careers-hero-heading">
-    <div class="absolute inset-0 bg-cyber-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
-    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-32 pb-12 lg:pb-16">
-        <div class="max-w-2xl">
-            <div class="flex flex-wrap items-center gap-2.5 mb-7">
-                <span class="term-tag term-tag-accent">CAREERS://OPEN-ROLES</span>
-                <span class="term-status text-accent-soft"><span class="term-status-dot" aria-hidden="true"></span>Hiring</span>
-            </div>
-            <h1 id="careers-hero-heading" class="font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-6xl lg:text-7xl text-navy-900 dark:text-white text-balance">
-                BUILD THE FUTURE OF <span class="text-accent-soft">CYBERSECURITY + CLOUD</span>
-            </h1>
-            <p class="mt-6 text-base sm:text-lg lg:text-xl leading-relaxed text-slate-600 dark:text-term-800">
-                Join a global team of elite IT professionals protecting enterprises worldwide. We offer competitive compensation, remote flexibility, continuous learning, and the chance to work on cutting-edge infrastructure.
-            </p>
-            <div class="mt-8 flex flex-wrap gap-3">
-                <a href="#positions" class="term-btn term-btn-lg">
-                    View Open Positions
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                </a>
-                <a href="#culture" class="term-btn term-btn-lg term-btn-ghost">
-                    Our Culture
-                </a>
-            </div>
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background:radial-gradient(ellipse 60% 55% at 72% 40%, rgba(22,139,255,.20), transparent 65%), radial-gradient(ellipse 45% 50% at 85% 70%, rgba(121,88,255,.14), transparent 60%), radial-gradient(ellipse 70% 45% at 15% 10%, rgba(0,207,255,.07), transparent 60%);"></div>
+    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-14 sm:pt-16 pb-10">
+        <nav class="ais-crumb mb-4" aria-label="Breadcrumb">
+            <a href="{{ route('home') }}">Home</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">Careers</span>
+        </nav>
+        <p class="ais-eyebrow">Open roles · Hiring</p>
+        <h1 id="careers-hero-heading" class="ais-h2 mt-3 text-3xl sm:text-4xl lg:text-5xl leading-tight">
+            Build the future of cybersecurity + cloud
+        </h1>
+        <p class="ais-sub mt-4 text-[14px] sm:text-[15px] leading-relaxed max-w-2xl">
+            Join a global team of elite IT professionals protecting enterprises worldwide. We offer competitive compensation, remote flexibility, continuous learning, and the chance to work on cutting-edge infrastructure.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#positions" class="ais-btn-primary">
+                View Open Positions
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+            <a href="#culture" class="ais-btn-ghost">
+                Our Culture
+            </a>
         </div>
     </div>
 </section>
 
 {{-- Why join us --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" id="culture" aria-labelledby="culture-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="01" label="CAREERS://CULTURE" title="Why top engineers choose us." desc="Life at PerfectITSecurity — distributed, technical, and growth-driven." />
-        <span id="culture-heading" class="sr-only">Why join us</span>
+<section class="relative w-full border-t border-white/5" style="background:#020916;" id="culture" aria-labelledby="culture-heading">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
+        <div class="max-w-3xl reveal">
+            <p class="ais-eyebrow">Culture</p>
+            <h2 id="culture-heading" class="ais-h2 mt-3 text-2xl sm:text-3xl">Why top engineers choose us.</h2>
+            <p class="ais-sub mt-3 text-[13px]">Life at AISecurity — distributed, technical, and growth-driven.</p>
+        </div>
 
         <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             @foreach([
@@ -48,11 +52,13 @@
                 ['title' => 'Health & Wellness', 'desc' => 'Comprehensive health insurance, mental health support, gym stipends, and generous paid time off across all regions.', 'icon' => 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'],
                 ['title' => 'Career Growth', 'desc' => 'Clear promotion tracks, mentorship programmes, cross-team rotations, and leadership development for high performers.', 'icon' => 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6'],
             ] as $benefit)
-            <div class="term-panel p-7 sm:p-8 group">
-                <div class="font-mono text-[11px] tracking-[0.24em] text-accent-soft mb-4">{{ str_pad((string)($loop->iteration), 2, '0', STR_PAD_LEFT) }}</div>
-                <svg class="w-6 h-6 text-term-700 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="{{ $benefit['icon'] }}"/></svg>
-                <h3 class="font-display text-lg font-bold tracking-tight text-navy-900 dark:text-white">{{ $benefit['title'] }}</h3>
-                <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-term-800">{{ $benefit['desc'] }}</p>
+            <div class="ais-card p-7 sm:p-8 group">
+                <div class="text-[11px] tracking-[0.24em] mb-4" style="color:#00CFFF;">{{ str_pad((string)($loop->iteration), 2, '0', STR_PAD_LEFT) }}</div>
+                <span class="ais-icon mb-4" style="background:rgba(22,139,255,.18); color:#4DA3FF;" aria-hidden="true">
+                    <svg class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $benefit['icon'] }}"/></svg>
+                </span>
+                <h3 class="text-lg font-bold tracking-tight text-white">{{ $benefit['title'] }}</h3>
+                <p class="mt-2 text-sm leading-relaxed" style="color:#B6C8DD;">{{ $benefit['desc'] }}</p>
             </div>
             @endforeach
         </div>
@@ -60,10 +66,13 @@
 </section>
 
 {{-- Open positions --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" id="positions" aria-labelledby="positions-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="02" label="CAREERS://POSITIONS" title="Find your role." desc="We are always looking for exceptional talent to join our global team." />
-        <span id="positions-heading" class="sr-only">Open positions</span>
+<section class="relative w-full border-t border-white/5" style="background:#020916;" id="positions" aria-labelledby="positions-heading">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
+        <div class="max-w-3xl reveal">
+            <p class="ais-eyebrow">Open positions</p>
+            <h2 id="positions-heading" class="ais-h2 mt-3 text-2xl sm:text-3xl">Find your role.</h2>
+            <p class="ais-sub mt-3 text-[13px]">We are always looking for exceptional talent to join our global team.</p>
+        </div>
 
         <div class="mt-10 space-y-3 sm:space-y-4 max-w-4xl mx-auto">
             @foreach([
@@ -74,22 +83,22 @@
                 ['title' => 'Penetration Tester', 'dept' => 'Security Assessment', 'location' => 'Remote / London', 'type' => 'Full-time', 'salary' => '$95K – $150K', 'tags' => ['Web App', 'Network', 'OSCP']],
                 ['title' => 'Project Manager', 'dept' => 'Delivery', 'location' => 'Remote / London / New York', 'type' => 'Full-time', 'salary' => '$80K – $130K', 'tags' => ['Agile', 'PMP', 'Client Relations']],
             ] as $job)
-            <div class="term-panel p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+            <div class="ais-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
                 <div class="min-w-0">
                     <div class="flex flex-wrap items-center gap-2.5 mb-2">
-                        <h3 class="font-display text-lg font-bold tracking-tight text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors">{{ $job['title'] }}</h3>
-                        <span class="term-tag">{{ strtoupper($job['type']) }}</span>
+                        <h3 class="text-lg font-bold tracking-tight text-white">{{ $job['title'] }}</h3>
+                        <span class="ais-badge">{{ $job['type'] }}</span>
                     </div>
-                    <p class="text-sm text-slate-600 dark:text-term-800 mb-2">{{ $job['dept'] }} // {{ $job['location'] }}</p>
+                    <p class="text-sm mb-2" style="color:#B6C8DD;">{{ $job['dept'] }} · {{ $job['location'] }}</p>
                     <div class="flex flex-wrap gap-1.5">
                         @foreach($job['tags'] as $tag)
-                        <span class="term-tag">{{ strtoupper($tag) }}</span>
+                        <span class="ais-badge">{{ $tag }}</span>
                         @endforeach
                     </div>
                 </div>
                 <div class="flex items-center gap-4 flex-shrink-0">
-                    <span class="font-mono text-sm font-bold text-accent-soft">{{ $job['salary'] }}</span>
-                    <a href="{{ route('contact') }}" class="term-btn term-btn-sm">
+                    <span class="text-sm font-bold" style="color:#00CFFF;">{{ $job['salary'] }}</span>
+                    <a href="{{ route('contact') }}" class="ais-btn-primary !py-2 !px-4 !text-xs">
                         Apply Now
                     </a>
                 </div>
@@ -100,20 +109,23 @@
 </section>
 
 {{-- CTA --}}
-<section class="relative w-full py-16 sm:py-20 border-t border-term-300 dark:border-white/5" aria-labelledby="careers-cta-heading">
-    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <span class="term-tag term-tag-accent">CAREERS://OPEN-APPLICATION</span>
-        <h2 id="careers-cta-heading" class="mt-4 font-display text-3xl sm:text-5xl font-bold tracking-tight text-navy-900 dark:text-white">
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-labelledby="careers-cta-heading">
+    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center">
+        <p class="ais-eyebrow">Open application</p>
+        <h2 id="careers-cta-heading" class="ais-h2 mt-3 text-2xl sm:text-3xl">
             Don't see your role?
         </h2>
-        <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-term-800">
+        <p class="ais-sub mt-4 text-[13px] sm:text-sm">
             We are always interested in hearing from exceptional people. Send us your CV and tell us how you can contribute to our mission.
         </p>
-        <a href="{{ route('contact') }}" class="term-btn term-btn-lg mt-8">
+        <a href="{{ route('contact') }}" class="ais-btn-primary mt-8">
             Send Open Application
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
         </a>
     </div>
 </section>
 
+<x-ais-cta />
+
+</div>
 @endsection

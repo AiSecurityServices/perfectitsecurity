@@ -233,8 +233,10 @@ Route::middleware(['auth', 'verified', 'customer', 'mfa'])->prefix('portal')->na
     Route::get('/tickets', [CustomerTicket::class, 'index'])->name('tickets.index');
     Route::get('/tickets/create', [CustomerTicket::class, 'create'])->name('tickets.create');
     Route::post('/tickets', [CustomerTicket::class, 'store'])->middleware('throttle:10,1')->name('tickets.store');
+    Route::get('/tickets/organisation', [CustomerTicket::class, 'organisation'])->name('tickets.organisation');
     Route::get('/tickets/{id}', [CustomerTicket::class, 'show'])->name('tickets.show');
     Route::post('/tickets/{id}/reply', [CustomerTicket::class, 'reply'])->middleware('throttle:10,1')->name('tickets.reply');
+    Route::post('/tickets/{id}/reopen', [CustomerTicket::class, 'reopen'])->middleware('throttle:5,1')->name('tickets.reopen');
     Route::get('/tickets/{ticket}/attachments/{attachment}', [CustomerTicket::class, 'downloadAttachment'])->name('tickets.attachments.download');
     Route::get('/invoices', [CustomerInvoice::class, 'index'])->name('invoices.index');
     Route::get('/invoices/{id}', [CustomerInvoice::class, 'show'])->name('invoices.show');
@@ -859,6 +861,10 @@ Route::get('/healthz', function () {
     }
 })->name('healthz');
 
+// Inbound email → ticket ingestion (HMAC-signed provider webhook; CSRF-exempt
+// like other server-to-server webhooks, authenticated by shared secret).
+Route::post('/api/ingress/email', [\App\Http\Controllers\InboundEmailController::class, 'store'])->name('ingress.email')->middleware('throttle:60,1');
+
 // Frontend Error Telemetry Ingestion
 Route::post('/api/health/frontend-error', [\App\Http\Controllers\Api\HealthApiController::class, 'logFrontendError'])
     ->middleware('throttle:30,1')
@@ -869,6 +875,8 @@ Route::middleware('throttle:60,1')->group(function () {
     Route::post('/api/ai/conversation', [\App\Http\Controllers\AiChatController::class, 'startConversation'])->name('ai.conversation.start');
     Route::post('/api/ai/message', [\App\Http\Controllers\AiChatController::class, 'sendMessage'])->name('ai.message.send');
     Route::post('/api/ai/ticket/confirm', [\App\Http\Controllers\AiChatController::class, 'confirmTicket'])->name('ai.ticket.confirm');
+    Route::post('/api/ai/service/confirm', [\App\Http\Controllers\AiChatController::class, 'confirmService'])->name('ai.service.confirm');
+    Route::post('/api/ai/quote/confirm', [\App\Http\Controllers\AiChatController::class, 'confirmQuote'])->name('ai.quote.confirm');
     Route::post('/api/ai/escalate', [\App\Http\Controllers\AiChatController::class, 'escalate'])->name('ai.escalate');
     Route::get('/api/ai/conversation/{id}/messages', [\App\Http\Controllers\AiChatController::class, 'getMessages'])->name('ai.messages');
     Route::post('/api/ai/conversation/{id}/close', [\App\Http\Controllers\AiChatController::class, 'close'])->name('ai.conversation.close');
@@ -889,6 +897,9 @@ Route::middleware(['auth', 'staff', 'requires.role:isAdmin'])->prefix('admin/ai'
     Route::get('/questions', [\App\Http\Controllers\Admin\AiController::class, 'questions'])->name('questions');
     Route::get('/test-bench', [\App\Http\Controllers\Admin\AiController::class, 'testBench'])->name('test-bench');
     Route::post('/test-bench', [\App\Http\Controllers\Admin\AiController::class, 'runTestBench'])->name('test-bench.run');
+    Route::get('/runtimes', [\App\Http\Controllers\Admin\AgentRuntimeController::class, 'index'])->name('runtime');
+    Route::post('/runtimes/{runtime}/test', [\App\Http\Controllers\Admin\AgentRuntimeController::class, 'test'])->middleware('throttle:3,1')->name('runtime.test');
+    Route::post('/runtimes/{runtime}/kill', [\App\Http\Controllers\Admin\AgentRuntimeController::class, 'kill'])->middleware('throttle:10,1')->name('runtime.kill');
     Route::get('/skills', [\App\Http\Controllers\Admin\AiSkillController::class, 'index'])->name('skills.index');
     Route::get('/skills/create', [\App\Http\Controllers\Admin\AiSkillController::class, 'create'])->name('skills.create');
     Route::post('/skills', [\App\Http\Controllers\Admin\AiSkillController::class, 'store'])->name('skills.store');

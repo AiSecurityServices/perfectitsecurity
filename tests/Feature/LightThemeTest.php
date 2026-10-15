@@ -74,7 +74,7 @@ class LightThemeTest extends TestCase
     {
         $css = $this->css();
         $this->assertStringContainsString('--term-bg: #000000', $css);
-        $this->assertStringContainsString('--term-accent: #00E67A', $css);
+        $this->assertStringContainsString('--term-accent: #54E5FF', $css);
         $this->assertStringContainsString('html.dark .shell-link', $css);
         $this->assertStringContainsString('html:not(.dark) .dark-island', $css);
         $this->assertStringContainsString('background-color: #000000', $css);

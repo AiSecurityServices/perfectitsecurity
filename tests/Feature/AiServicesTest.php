@@ -50,7 +50,8 @@ class AiServicesTest extends TestCase
     {
         $response = $this->get(route('ai.index'));
         $response->assertOk();
-        $response->assertSee('AI Agents, Engineered for Business.', false);
+        $response->assertSee('AI Agents,', false);
+        $response->assertSee('Engineered for Business.', false);
         $response->assertSee(route('ai.show', 'custom-ai-agents'), false);
     }
 

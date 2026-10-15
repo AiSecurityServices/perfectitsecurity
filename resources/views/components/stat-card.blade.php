@@ -12,12 +12,12 @@
 @php
 $termAccent = [
     'blue' => '#4DA3FF',
-    'emerald' => '#00E67A',
+    'emerald' => '#54E5FF',
     'amber' => '#FFB454',
     'rose' => '#FF5C5C',
     'purple' => '#B48CFF',
     'cyan' => '#4DD8FF',
-][$color] ?? '#00E67A';
+][$color] ?? '#54E5FF';
 @endphp
 
 <div class="term-panel p-5 relative overflow-hidden">
@@ -29,7 +29,7 @@ $termAccent = [
             @if($subtitle || $trend)
             <div class="flex items-center gap-2 mt-2 text-xs">
                 @if($trend)
-                <span class="inline-flex items-center font-mono font-medium {{ $trendUp ? 'text-emerald-600 dark:text-[#00E67A]' : 'text-red-600 dark:text-[#FF5C5C]' }}">
+                <span class="inline-flex items-center font-mono font-medium {{ $trendUp ? 'text-emerald-600 dark:text-[#54E5FF]' : 'text-red-600 dark:text-[#FF5C5C]' }}">
                     <svg class="w-3.5 h-3.5 mr-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         @if($trendUp)
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>

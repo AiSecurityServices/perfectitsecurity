@@ -166,7 +166,7 @@ function revenueChart() {
                 return {
                     tick: dark ? '#9db0a4' : '#475569',
                     grid: dark ? 'rgba(255,255,255,0.07)' : 'rgba(15,23,42,0.08)',
-                    bar: dark ? 'rgba(0, 230, 122, 0.75)' : 'rgba(5, 150, 105, 0.8)',
+                    bar: dark ? 'rgba(84, 229, 255, 0.75)' : 'rgba(5, 150, 105, 0.8)',
                 };
             };
             const applyTheme = () => {

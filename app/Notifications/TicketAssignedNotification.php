@@ -41,7 +41,7 @@ class TicketAssignedNotification extends Notification implements ShouldQueue
             ->line('**Priority:** '.ucfirst($this->ticket->priority))
             ->action('View Ticket', $ticketUrl)
             ->line('Please respond within the SLA timeframe.')
-            ->line('Thank you for using TechSupport Solutions.');
+            ->line('Thank you for using AISecurity.');
     }
 
     public function toArray(object $notifiable): array

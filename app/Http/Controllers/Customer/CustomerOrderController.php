@@ -50,14 +50,24 @@ class CustomerOrderController extends Controller
         $user = auth()->user();
         // Whitelist only customer-supplied fields — never pass customer_id,
         // final_price, totals, payment status or price_locked from the request.
-        $order = $this->workflowService->createCustomerOrder($request->only([
+        // Duplicate-submission guard: replays return the original order.
+        $key = \App\Support\Idempotency::keyForRequest($request, 'portal.order.store', $user->id, $request->only([
             'service_id', 'requirements', 'urgency', 'preferred_date',
             'customer_notes', 'proposed_price',
-        ]), $user);
+        ]));
+        $outcome = \App\Support\Idempotency::run($key, fn () => [
+            'order_id' => $this->workflowService->createCustomerOrder($request->only([
+                'service_id', 'requirements', 'urgency', 'preferred_date',
+                'customer_notes', 'proposed_price',
+            ]), $user)->id,
+        ]);
+        $order = ServiceOrder::where('customer_id', $user->id)->findOrFail($outcome['result']['order_id']);
 
-        $msg = $order->status === 'negotiating'
-            ? 'Service price discussion initiated. Our team will review your requirements.'
-            : 'Service order created successfully!';
+        $msg = $outcome['replayed']
+            ? 'This order was already placed — showing your original order.'
+            : ($order->status === 'negotiating'
+                ? 'Service price discussion initiated. Our team will review your requirements.'
+                : 'Service order created successfully!');
 
         return redirect()->route('portal.orders.show', $order->id)->with('success', $msg);
     }

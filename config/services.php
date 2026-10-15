@@ -65,6 +65,27 @@ return [
             'model' => env('AI_MODEL', 'gpt-4o-mini'),
             'base_url' => env('AI_BASE_URL', 'https://api.openai.com/v1'),
         ],
+        'anthropic' => [
+            'api_key' => env('ANTHROPIC_API_KEY'),
+            'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-4-20250514'),
+            'base_url' => env('ANTHROPIC_BASE_URL', 'https://api.anthropic.com/v1'),
+            'timeout' => (int) env('ANTHROPIC_TIMEOUT', 60),
+        ],
+        'gemini' => [
+            'api_key' => env('GEMINI_API_KEY'),
+            'model' => env('GEMINI_MODEL', 'gemini-2.0-flash'),
+            'base_url' => env('GEMINI_BASE_URL', 'https://generativelanguage.googleapis.com/v1beta'),
+            'timeout' => (int) env('GEMINI_TIMEOUT', 60),
+        ],
+        'azure' => [
+            // Any OpenAI-compatible endpoint (Azure OpenAI, Bedrock via
+            // OpenAI-compatible gateway, self-hosted) reuses the OpenAI
+            // chat-completions wire format with its own key + base URL.
+            'api_key' => env('AZURE_OPENAI_API_KEY'),
+            'model' => env('AZURE_OPENAI_MODEL', ''),
+            'base_url' => env('AZURE_OPENAI_BASE_URL', ''),
+            'timeout' => (int) env('AZURE_OPENAI_TIMEOUT', 60),
+        ],
     ],
 
     'openrouter' => [

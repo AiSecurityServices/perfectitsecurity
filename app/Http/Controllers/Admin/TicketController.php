@@ -46,7 +46,7 @@ class TicketController extends Controller
         return view('admin.tickets.index', compact('tickets'));
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $ticket = Ticket::with('customer', 'assignee', 'category', 'subcategory', 'team', 'messages.user', 'attachments', 'timeEntries.user')->findOrFail($id);
         $this->ensureTicketAccess($ticket, false);
@@ -75,16 +75,24 @@ class TicketController extends Controller
             'team_id' => 'nullable|exists:support_teams,id',
         ]);
 
-        $ticket->update([
-            'assigned_to' => $request->assigned_to,
-            'team_id' => $request->team_id ?? $ticket->team_id,
-            'status' => 'assigned',
-        ]);
+        // Assignees must be active staff — customers and contractors can
+        // never own a support queue ticket.
+        $assignee = User::findOrFail($request->assigned_to);
+        abort_unless($assignee->is_active && $assignee->isStaff(), 422, 'Assignee must be an active staff member.');
+        abort_if($ticket->isTerminal(), 422, 'Terminal tickets cannot be reassigned. Reopen first.');
 
-        $assignee = User::find($request->assigned_to);
-        if ($assignee) {
-            $assignee->notify(new \App\Notifications\TicketAssignedNotification($ticket->fresh(), auth()->user()->name ?? 'System'));
+        $updates = [
+            'assigned_to' => $assignee->id,
+            'team_id' => $request->team_id ?? $ticket->team_id,
+        ];
+        // Re-assignment must not regress an in-flight ticket back to
+        // "assigned"; only fresh tickets advance to it (FSM-guarded).
+        if ($ticket->canTransitionTo('assigned')) {
+            $updates['status'] = 'assigned';
         }
+        $ticket->update($updates);
+
+        $assignee->notify(new \App\Notifications\TicketAssignedNotification($ticket->fresh(), auth()->user()->name ?? 'System'));
 
         return redirect()->back()->with('success', 'Ticket assigned successfully!');
     }
@@ -120,6 +128,24 @@ class TicketController extends Controller
             'message' => $request->message,
         ]);
 
+        // Staff evidence uploads follow the same private-storage rules as
+        // customer attachments (never served from /storage).
+        $request->validate(['attachments' => 'nullable|array|max:5', 'attachments.*' => 'file|mimes:pdf,jpg,jpeg,png,txt,doc,docx,xls,xlsx|max:10240']);
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $path = $file->store('ticket-attachments', 'local');
+                \App\Models\TicketAttachment::create([
+                    'ticket_id' => $ticket->id,
+                    'uploaded_by' => auth()->id(),
+                    'filename' => basename($path),
+                    'original_name' => $file->getClientOriginalName(),
+                    'mime_type' => $file->getMimeType(),
+                    'size' => $file->getSize(),
+                    'path' => $path,
+                ]);
+            }
+        }
+
         app(SlaService::class)->recordFirstResponse($ticket);
 
         if ($ticket->status === 'new' || $ticket->status === 'open') {
@@ -145,13 +171,37 @@ class TicketController extends Controller
         $this->ensureTicketAccess($ticket, false);
         $request->validate(['status' => 'required|in:new,open,assigned,in_progress,waiting_customer,waiting_third_party,escalated,resolved,reopened,closed,cancelled']);
 
+        // Server-enforced lifecycle: invalid transitions are rejected,
+        // never silently applied.
+        abort_unless($ticket->canTransitionTo($request->status), 422, "Cannot move ticket from {$ticket->status} to {$request->status}.");
+
+        $from = $ticket->status;
         $ticket->update(['status' => $request->status]);
 
+        // SLA clock: freeze while waiting on customer/third party, resume
+        // (deadlines shifted by the waited duration) when work restarts.
+        $sla = app(SlaService::class);
+        if (in_array($request->status, Ticket::WAITING_STATUSES, true)) {
+            $sla->pauseClock($ticket->fresh());
+        } elseif (in_array($from, Ticket::WAITING_STATUSES, true)) {
+            $sla->resumeClock($ticket->fresh());
+        }
+
         if (in_array($request->status, ['resolved'])) {
-            app(SlaService::class)->recordResolution($ticket);
+            $sla->recordResolution($ticket);
         }
         if ($request->status === 'closed') {
             $ticket->update(['closed_at' => now()]);
+        }
+
+        // Customer-visible status changes notify the customer
+        // (preference-gated; internal-only transitions stay silent).
+        if ($ticket->customer && in_array($request->status, ['resolved', 'closed', 'reopened', 'escalated', 'waiting_customer'], true)) {
+            \App\Services\ServiceTrackingService::notify(
+                (int) $ticket->customer_id, 'ticket_status',
+                "Ticket {$ticket->ticket_number} is now {$request->status}",
+                "Your support ticket status changed from {$from} to {$request->status}."
+            );
         }
 
         return redirect()->back()->with('success', 'Ticket status updated!');
@@ -204,6 +254,10 @@ class TicketController extends Controller
 
         $secondaryTicket = Ticket::findOrFail($request->merge_ticket_id);
 
+        // Cross-customer merges would expose one customer's internal notes
+        // and history to another — refuse them outright.
+        abort_unless((int) $secondaryTicket->customer_id === (int) $primaryTicket->customer_id, 422, 'Only tickets of the same customer can be merged.');
+
         \Illuminate\Support\Facades\DB::transaction(function () use ($primaryTicket, $secondaryTicket, $request) {
             // Move all messages from secondary to primary
             TicketMessage::where('ticket_id', $secondaryTicket->id)
@@ -245,17 +299,37 @@ class TicketController extends Controller
 
         $request->validate(['reason' => 'required|string|max:500']);
 
+        // Resolved tickets reopen through the FSM; closed tickets need an
+        // explicit staff override (audited via the reopen message).
+        abort_unless(
+            $ticket->canTransitionTo('reopened') || $ticket->status === 'closed',
+            422, "Cannot reopen a ticket with status {$ticket->status}."
+        );
+
         $ticket->update([
             'status' => 'reopened',
             'resolved_at' => null,
             'closed_at' => null,
+            'sla_warning_sent_at' => null,
+            'sla_breached_at' => null,
+            'sla_paused_at' => null,
         ]);
+        // Fresh SLA clock for the reopened work.
+        app(SlaService::class)->applySla($ticket->fresh());
 
         TicketMessage::create([
             'ticket_id' => $ticket->id,
             'user_id' => auth()->id(),
             'message' => "Ticket reopened. Reason: {$request->reason}",
         ]);
+
+        if ($ticket->customer) {
+            \App\Services\ServiceTrackingService::notify(
+                (int) $ticket->customer_id, 'ticket_status',
+                "Ticket {$ticket->ticket_number} reopened",
+                "Your ticket was reopened. Reason: {$request->reason}"
+            );
+        }
 
         return redirect()->back()->with('success', 'Ticket reopened!');
     }

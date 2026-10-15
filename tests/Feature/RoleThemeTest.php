@@ -33,15 +33,15 @@ class RoleThemeTest extends TestCase
     }
 
     /** @test */
-    public function green_blue_brand_identity_is_present()
+    public function cyan_blue_brand_identity_is_present()
     {
-        // Terminal CTA system on auth + quote surfaces (accent-green primary).
+        // AISecurity CTA system on auth + quote surfaces (accent-cyan primary).
         $this->get(route('login'))->assertSee('term-btn', false);
         $this->get(route('get-quote'))->assertSee('term-btn', false);
-        // Compiled theme tokens carry the terminal accent scale (built CSS artifact).
+        // Compiled theme tokens carry the AISecurity accent scale (built CSS artifact).
         $css = collect(glob(public_path('build/assets/*.css')))
             ->map(fn ($f) => file_get_contents($f))->join("\n");
-        $this->assertStringContainsString('#00E67A', $css);
+        $this->assertStringContainsString('#54E5FF', $css);
         $this->assertStringContainsString('#050807', $css);
         $this->assertStringNotContainsString('#FF0000', $css);
     }

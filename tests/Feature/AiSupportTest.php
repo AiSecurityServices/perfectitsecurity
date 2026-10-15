@@ -198,7 +198,7 @@ class AiSupportTest extends TestCase
         $response = $this->get(route('home'));
         $response->assertStatus(200);
         $response->assertSee('function aiChat', false);
-        $response->assertSee('AI Support Assistant', false);
+        $response->assertSee('AISecurity Support Assistant', false);
     }
 
     /** @test */

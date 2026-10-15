@@ -37,7 +37,7 @@
                 <span class="term-field-label">Implementation Progress</span>
                 <div class="mt-2 flex items-center gap-3">
                     <div class="flex-1 bg-white/10 h-3 overflow-hidden">
-                        <div class="h-3" style="width: {{ $project->progress ?? 0 }}%; background: linear-gradient(90deg,#00E67A,#4DA3FF);"></div>
+                        <div class="h-3" style="width: {{ $project->progress ?? 0 }}%; background: linear-gradient(90deg,#54E5FF,#4DA3FF);"></div>
                     </div>
                     <span class="font-mono font-bold text-sm tabular-nums">{{ $project->progress ?? 0 }}%</span>
                 </div>

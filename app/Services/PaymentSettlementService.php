@@ -51,10 +51,16 @@ class PaymentSettlementService
             abort_unless(in_array($invoice->status, array_merge(self::PAYABLE, ['paid']), true), 422, 'Invoice is not payable.');
             abort_unless(strtoupper($txn->original_currency) === strtoupper($invoice->currency ?? ''), 422, 'Currency mismatch.');
 
-            $outstanding = round((float) $invoice->total - (float) $invoice->amount_paid, 2);
-            abort_if($outstanding <= 0, 422, 'Invoice already paid in full.');
-            $amount = min(round((float) $txn->original_amount, 2), $outstanding);
-            abort_if($amount <= 0, 422, 'Nothing left to settle.');
+            // Cent-exact settlement math (integer minor units — no float drift).
+            $outstandingMinor = \App\Support\Money::sub(
+                \App\Support\Money::toMinor($invoice->total),
+                \App\Support\Money::toMinor($invoice->amount_paid)
+            );
+            abort_if($outstandingMinor <= 0, 422, 'Invoice already paid in full.');
+            $amountMinor = \App\Support\Money::min(\App\Support\Money::toMinor($txn->original_amount), $outstandingMinor);
+            abort_if($amountMinor <= 0, 422, 'Nothing left to settle.');
+            $outstanding = \App\Support\Money::toMajor($outstandingMinor);
+            $amount = \App\Support\Money::toMajor($amountMinor);
 
             if ($providerEventId) {
                 $txn->provider_event_id = $providerEventId;
@@ -86,8 +92,10 @@ class PaymentSettlementService
                     'paid_at' => now(),
                     'notes' => "Provider {$txn->provider_key} payment {$txn->reference} for {$invoice->invoice_number}",
                 ]);
-                $invoice->amount_paid = round((float) $invoice->amount_paid + $amount, 2);
-                $invoice->amount_due = max(0, round((float) $invoice->total - (float) $invoice->amount_paid, 2));
+                $newPaidMinor = \App\Support\Money::add(\App\Support\Money::toMinor($invoice->amount_paid), $amountMinor);
+                $newDueMinor = \App\Support\Money::max(0, \App\Support\Money::sub(\App\Support\Money::toMinor($invoice->total), $newPaidMinor));
+                $invoice->amount_paid = \App\Support\Money::toMajor($newPaidMinor);
+                $invoice->amount_due = \App\Support\Money::toMajor($newDueMinor);
                 $invoice->status = $invoice->amount_due == 0 ? 'paid' : 'partially_paid';
                 if ($invoice->amount_due == 0) {
                     $invoice->paid_at = now();

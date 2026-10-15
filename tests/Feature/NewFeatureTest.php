@@ -152,15 +152,17 @@ class NewFeatureTest extends TestCase
         $admin = User::factory()->create(['role' => 'admin', 'is_active' => true]);
         $this->actingAs($admin);
 
-        $tickets = Ticket::all();
-        if ($tickets->count() < 2) {
-            $this->markTestSkipped('Need at least 2 tickets');
-
-            return;
-        }
-
-        $primary = $tickets->first();
-        $secondary = $tickets->skip(1)->first();
+        // Same-customer duplicates merge cleanly; cross-customer merges are
+        // refused to protect internal notes (see InternationalHelpdeskTest).
+        $customer = User::factory()->create(['role' => 'customer', 'is_active' => true]);
+        $mk = fn () => Ticket::create([
+            'ticket_number' => 'TK-'.strtoupper(uniqid()),
+            'customer_id' => $customer->id,
+            'subject' => 'Duplicate report', 'description' => 'Same issue twice.',
+            'priority' => 'medium', 'status' => 'open',
+        ]);
+        $primary = $mk();
+        $secondary = $mk();
 
         $response = $this->post(route('admin.tickets.merge', $primary->id), [
             'merge_ticket_id' => $secondary->id,

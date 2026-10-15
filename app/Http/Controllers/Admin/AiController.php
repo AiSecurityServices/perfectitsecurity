@@ -121,7 +121,7 @@ class AiController extends Controller
     public function updateSettings(Request $request)
     {
         $validated = $request->validate([
-            'ai_provider' => 'nullable|string',
+            'ai_provider' => 'nullable|in:ollama,openai,openrouter,anthropic,gemini,azure',
             'ai_model' => 'nullable|string',
             'ai_enabled' => 'boolean',
             'ai_system_prompt' => 'nullable|string',

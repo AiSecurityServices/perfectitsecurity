@@ -121,12 +121,20 @@ class AgentGatewayTest extends TestCase
         config()->set('agent.runtime', 'hermes');
         config()->set('agent.hermes_enabled', true);
         $gw = app(AgentGateway::class);
-        $this->assertEquals('not_verified', $gw->runtime()->status());
+        // Unconfigured credentials report distinctly from unverified ones.
+        $this->assertEquals('not_configured', $gw->runtime()->status());
         $this->assertFalse($gw->runtime()->health()['verified']);
+
+        // Configured but staging-unverified: still refuses execution.
+        config()->set('agent.hermes.base_url', 'http://127.0.0.1:8642');
+        config()->set('agent.hermes.api_key', 'test');
+        \Illuminate\Support\Facades\Http::fake(['127.0.0.1:8642/health' => \Illuminate\Support\Facades\Http::response(['status' => 'ok'], 200)]);
+        $this->assertTrue($gw->runtime()->health()['reachable']);
+        $this->assertEquals('not_verified', $gw->runtime()->status());
 
         try {
             $gw->runtime()->chat([['role' => 'user', 'content' => 'hi']]);
-            $this->fail('stub adapter must refuse chat');
+            $this->fail('unverified adapter must refuse chat');
         } catch (\RuntimeException $e) {
             $this->assertStringContainsString('not verified', $e->getMessage());
         }

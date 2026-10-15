@@ -99,7 +99,7 @@ class AiAgentServicesSeeder extends Seeder
                 ],
                 'faq' => ['What is the difference between an assistant, an agent, and a multi-agent workflow? — An assistant answers questions; a tool-using agent can also act through approved integrations; a multi-agent workflow coordinates several agents with distinct responsibilities under one supervisor.', 'Will the agent work with our existing software? — If the software offers an official API or export, usually yes. We verify each integration during technical assessment before committing.', 'Can the agent act without human review? — Only for low-risk, reversible actions you explicitly approve. Anything consequential requires a human gate.'],
                 'tags' => ['ai agents', 'automation', 'custom ai', 'integration', 'workflow'],
-                'seo_title' => 'Custom AI Agents for Business Operations | PerfectITSecurity',
+                'seo_title' => 'Custom AI Agents for Business Operations | AISecurity',
                 'seo_description' => 'Purpose-built AI agents integrated with your approved tools, with human approval gates and full audit logging.',
             ],
             [
@@ -131,7 +131,7 @@ class AiAgentServicesSeeder extends Seeder
                 ],
                 'faq' => ['Will customers know they are talking to AI? — Yes. We recommend transparent disclosure, and configure the agent to identify itself.', 'What happens when the agent does not know the answer? — It says so and escalates to your team with full context, rather than guessing.', 'Can it update our ticketing system directly? — Only if you authorize write access. Most deployments start in draft mode and graduate after review.'],
                 'tags' => ['ai agents', 'customer support', 'chatbot', 'helpdesk', 'triage'],
-                'seo_title' => 'AI Customer Service Agents | PerfectITSecurity',
+                'seo_title' => 'AI Customer Service Agents | AISecurity',
                 'seo_description' => 'Knowledge-grounded AI support agents with escalation to humans and draft or authorized ticketing modes.',
             ],
             [
@@ -163,7 +163,7 @@ class AiAgentServicesSeeder extends Seeder
                 ],
                 'faq' => ['Will this send emails automatically? — No. All outreach stays in draft until a team member reviews and sends it.', 'Which data sources can it use? — Only sources you have the right to use: your CRM, licensed data, and public sources within their terms.', 'How is consent handled? — We document the lawful basis and consent requirements for your region during design.'],
                 'tags' => ['ai agents', 'sales', 'lead qualification', 'research', 'crm'],
-                'seo_title' => 'AI Sales & Research Agents | PerfectITSecurity',
+                'seo_title' => 'AI Sales & Research Agents | AISecurity',
                 'seo_description' => 'Lead research and sales drafting agents with human approval and permitted-source compliance.',
             ],
             // ── CATEGORY: AI Setup & Integration ────────────────────────
@@ -196,7 +196,7 @@ class AiAgentServicesSeeder extends Seeder
                 ],
                 'faq' => ['Which platforms do you support? — Open-source agent frameworks, Claude Code workflows, major coding assistants, Ollama-compatible local models, and approved cloud AI platforms — verified per engagement.', 'Do you guarantee a specific feature works? — Only after verification. If a platform cannot do what you need, we tell you during assessment, not after installation.', 'Will our API keys be safe? — Credentials are stored in your systems using secure practices, never committed to source control or left in chat logs.'],
                 'tags' => ['ai setup', 'installation', 'claude code', 'coding assistants', 'configuration'],
-                'seo_title' => 'AI Agent Platform Setup & Configuration | PerfectITSecurity',
+                'seo_title' => 'AI Agent Platform Setup & Configuration | AISecurity',
                 'seo_description' => 'Verified installation and configuration of AI agent frameworks, coding assistants, and model providers.',
             ],
             [
@@ -228,7 +228,7 @@ class AiAgentServicesSeeder extends Seeder
                 ],
                 'faq' => ['What is the difference between an assistant, a provider, and routing? — The assistant is the tool your developers use; the provider supplies the model; routing selects models per task where supported.', 'Will AI-generated code be secure? — It still needs human review and automated checks. We configure both into the workflow.', 'Do you store our code anywhere? — No. Configuration happens in your repositories and accounts under your control.'],
                 'tags' => ['ai setup', 'coding assistants', 'claude code', 'devops', 'ci-cd'],
-                'seo_title' => 'AI Coding Assistant Configuration | PerfectITSecurity',
+                'seo_title' => 'AI Coding Assistant Configuration | AISecurity',
                 'seo_description' => 'Repository-aware AI development workflows with secure provider setup and review checkpoints.',
             ],
             // ── CATEGORY: Local & Private AI ────────────────────────────
@@ -261,7 +261,7 @@ class AiAgentServicesSeeder extends Seeder
                 ],
                 'faq' => ['Does local AI guarantee privacy? — It improves data control, but privacy still depends on access control, logging hygiene, and network isolation — all of which we configure.', 'What hardware do we need? — It depends on the model. We assess your GPUs/CPUs and RAM honestly, including CPU-only options where suitable.', 'Which model licenses apply? — We verify each model license for commercial use before deployment and document the obligations.'],
                 'tags' => ['local ai', 'private ai', 'ollama', 'rag', 'self-hosted'],
-                'seo_title' => 'Local & Private AI Deployment | PerfectITSecurity',
+                'seo_title' => 'Local & Private AI Deployment | AISecurity',
                 'seo_description' => 'Self-hosted models and private RAG assistants on your infrastructure, with honest hardware assessment.',
             ],
             // ── CATEGORY: AI Automation & Managed AI ────────────────────
@@ -294,7 +294,7 @@ class AiAgentServicesSeeder extends Seeder
                 ],
                 'faq' => ['Which workflows are good candidates? — High-volume, rules-based work with clear inputs: triage, extraction, drafting, scheduling, and reporting.', 'What happens when the automation fails? — Every workflow has defined error handling: retry, queue for human review, and alerting. Nothing fails silently.', 'Can it write directly to our systems? — Only steps you authorize. Consequential actions pause for human approval by design.'],
                 'tags' => ['automation', 'ai agents', 'crm', 'workflow', 'integration'],
-                'seo_title' => 'Business Process Automation with AI | PerfectITSecurity',
+                'seo_title' => 'Business Process Automation with AI | AISecurity',
                 'seo_description' => 'Auditable AI automation with human approval gates, documented from trigger to log.',
             ],
             [
@@ -326,7 +326,7 @@ class AiAgentServicesSeeder extends Seeder
                 ],
                 'faq' => ['Are model guardrails not enough? — Correct. Guardrails help, but authorization, validation, and isolation must live in your application — we verify they do.', 'Will you attack our production AI? — Only within explicitly authorized scope, typically starting in staging. No testing begins without written authorization.', 'What standards do you align with? — OWASP guidance for LLM applications, plus our standard infrastructure review practices.'],
                 'tags' => ['ai security', 'hardening', 'prompt injection', 'audit', 'penetration testing'],
-                'seo_title' => 'AI Security Hardening & Review | PerfectITSecurity',
+                'seo_title' => 'AI Security Hardening & Review | AISecurity',
                 'seo_description' => 'Permission reviews, prompt-injection assessment, and authorized testing for AI deployments.',
             ],
             [
@@ -358,7 +358,7 @@ class AiAgentServicesSeeder extends Seeder
                 ],
                 'faq' => ['Do you monitor our AI 24/7? — We commit only to what the agreement states: scheduled checks and defined response times. Anything claiming more without staffing is marketing.', 'What is excluded? — Rebuilds, new features, and third-party outages are out of scope but can be quoted separately.', 'Can we leave the agreement? — Yes, with notice as stated, and you keep all documentation and configurations.'],
                 'tags' => ['managed ai', 'maintenance', 'monitoring', 'support', 'optimization'],
-                'seo_title' => 'Managed AI Support & Maintenance | PerfectITSecurity',
+                'seo_title' => 'Managed AI Support & Maintenance | AISecurity',
                 'seo_description' => 'Maintained AI environments with defined scope, health checks, and cost optimization.',
             ],
         ];

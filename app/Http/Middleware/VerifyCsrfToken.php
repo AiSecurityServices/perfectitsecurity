@@ -14,5 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'stripe/webhook',
         'payments/webhook/*',
+        // HMAC-signed provider webhook (own auth + timestamp, no session).
+        'api/ingress/email',
     ];
 }

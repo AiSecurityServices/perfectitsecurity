@@ -1,6 +1,6 @@
 # AI Customer Service & Service Management Agent
 
-Production feature, integrated into the PerfectITSecurity application.
+Production feature, integrated into the AISecurity application.
 No separate app, no direct model-to-database access.
 
 ## Architecture
@@ -16,8 +16,13 @@ No separate app, no direct model-to-database access.
   LIKE + keyword-overlap scoring. No embeddings/vector store.
 - Providers: `AiProviderInterface`; `AiProviderFactory::make()` reads
   `AiSetting ai_provider` then `config/services.ai`. Implementations:
-  `OpenAiProvider`, `OllamaProvider`. Failures return a safe fallback message;
-  secrets are never exposed.
+  `OllamaProvider` (local), `OpenAiProvider`, `OpenRouterProvider`,
+  `AnthropicProvider` (Messages API), `GeminiProvider` (generateContent REST),
+  `OpenAiCompatibleProvider` (`azure`: Azure OpenAI, Bedrock via an
+  OpenAI-compatible gateway, self-hosted vLLM/TGI/LM Studio). Failures return
+  a safe fallback message; secrets are never exposed. Capability matrix:
+  `AiProviderFactory::capabilities()`. AWS Bedrock native SDK and
+  provider-side streaming are NOT implemented (documented future work).
 - Controller: `app/Http/Controllers/AiChatController.php`. Rate limits:
   10 conversation starts/min/IP, 30 messages/min/IP. Guest identity via
   `X-Session-ID` compared with `hash_equals`; customers own their
@@ -39,6 +44,21 @@ OPENROUTER_API_KEY=             # cloud models; .env only, never elsewhere
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 OPENROUTER_TIMEOUT=60
 
+ANTHROPIC_API_KEY=            # Claude via Messages API (AI_PROVIDER=anthropic)
+ANTHROPIC_MODEL=claude-sonnet-4-20250514
+ANTHROPIC_BASE_URL=https://api.anthropic.com/v1
+ANTHROPIC_TIMEOUT=60
+
+GEMINI_API_KEY=               # Gemini via generateContent REST (AI_PROVIDER=gemini)
+GEMINI_MODEL=gemini-2.0-flash
+GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta
+GEMINI_TIMEOUT=60
+
+AZURE_OPENAI_API_KEY=         # Azure OpenAI / any OpenAI-compatible endpoint (AI_PROVIDER=azure)
+AZURE_OPENAI_MODEL=           # deployment/model name (required)
+AZURE_OPENAI_BASE_URL=        # endpoint base URL (required)
+AZURE_OPENAI_TIMEOUT=60
+
 OLLAMA_BASE_URL=http://127.0.0.1:11434   # loopback only for local dev
 OLLAMA_MODEL=llama3.2:latest             # must be installed (GET /api/tags)
 OLLAMA_MODEL_FAST=llama3.2:latest        # quick general answers
@@ -52,7 +72,8 @@ OLLAMA_KEEP_ALIVE=30m                    # keep models warm between requests
 Central layer: `config/ollama.php` (no URLs, models, or timeouts hard-coded
 anywhere else). Provider tree: `AiProviderInterface` → `OllamaProvider`,
 `OpenAiProvider`, `OpenRouterProvider` (OpenAI-compatible completions with
-per-model cost accounting and sanitized errors). Admin UI
+per-model cost accounting and sanitized errors), `AnthropicProvider`,
+`GeminiProvider`, `OpenAiCompatibleProvider`. Admin UI
 (`admin/ai/settings`) switches provider, sets the model, and shows a live
 health panel: provider, connection, model, model availability, latency,
 last check. Health details are admin-only; customers only ever see

@@ -134,9 +134,14 @@ class AgentGateway
         if ($risk === self::RISK_DENIED) {
             return ['allowed' => false, 'risk' => $risk, 'approval_required' => false, 'reason' => 'high_risk_denied'];
         }
-        $approvalRequired = $risk === self::RISK_MEDIUM && (bool) config('agent.require_approval', true)
-            ? false // MEDIUM executes via authorized pipeline + audit in this phase; HIGH would require human
-            : false;
+        // Approval policy: LOW reads run automatically. MEDIUM workflow
+        // actions (ticket/service-request create, replies, escalation) run
+        // automatically ONLY through the authorized pipeline below — validated
+        // input, ownership checks in AiAgentService, and metadata-only audit.
+        // HIGH-risk and unknown tools are denied outright (riskForTool); if a
+        // HIGH tool is ever allowlisted it MUST arrive with human_approval_id
+        // (enforced in executeApprovedTool).
+        $approvalRequired = false;
 
         return ['allowed' => true, 'risk' => $risk, 'approval_required' => $approvalRequired, 'reason' => 'ok'];
     }

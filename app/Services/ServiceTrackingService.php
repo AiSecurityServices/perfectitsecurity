@@ -65,6 +65,12 @@ class ServiceTrackingService
 
             return true;
         } catch (\Throwable $e) {
+            // Never fail the business action, but never swallow the failure
+            // silently either — notification loss is observable in logs.
+            \Illuminate\Support\Facades\Log::warning('In-app notification failed', [
+                'user_id' => $userId, 'type' => $type, 'error' => $e->getMessage(),
+            ]);
+
             return false;
         }
     }

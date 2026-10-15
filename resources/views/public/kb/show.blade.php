@@ -1,59 +1,60 @@
 @extends('layouts.public')
 
-@section('title', $article->title . ' — Knowledge Base | PerfectITSecurity')
+@section('title', $article->title . ' — Knowledge Base | AISecurity')
 @section('description', $article->excerpt ?? 'Technical runbook and guide for enterprise systems.')
 
 @section('content')
+<div class="ais-page">
 
-{{-- Header — KNOWLEDGE://ENTRY --}}
-<section class="relative w-full overflow-hidden border-b border-term-300 dark:border-white/5" aria-labelledby="kb-article-heading">
-    <div class="absolute inset-0 bg-cyber-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
-    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-20 sm:pt-24 pb-10 lg:pb-14">
-        <nav class="flex flex-wrap items-center gap-2 font-mono text-[11px] tracking-wider text-term-700 mb-6" aria-label="Breadcrumb">
-            <a href="{{ route('home') }}" class="hover:text-accent-soft transition-colors">HOME</a>
+{{-- Header --}}
+<section class="relative w-full overflow-hidden border-b border-white/5" aria-labelledby="kb-article-heading">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background:radial-gradient(ellipse 60% 55% at 72% 40%, rgba(22,139,255,.20), transparent 65%), radial-gradient(ellipse 45% 50% at 85% 70%, rgba(121,88,255,.14), transparent 60%), radial-gradient(ellipse 70% 45% at 15% 10%, rgba(0,207,255,.07), transparent 60%);"></div>
+    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-14 sm:pt-16 pb-10">
+        <nav class="ais-crumb mb-4" aria-label="Breadcrumb">
+            <a href="{{ route('home') }}">Home</a>
             <span aria-hidden="true">/</span>
-            <a href="{{ route('kb.index') }}" class="hover:text-accent-soft transition-colors">KNOWLEDGE-BASE</a>
+            <a href="{{ route('kb.index') }}">Knowledge Base</a>
             <span aria-hidden="true">/</span>
-            <span class="text-term-900 dark:text-term-950 truncate max-w-xs">{{ $article->category->name ?? 'Article' }}</span>
+            <span aria-current="page" class="truncate max-w-xs">{{ $article->category->name ?? 'Article' }}</span>
         </nav>
 
         <div class="max-w-4xl">
-            <span class="term-tag term-tag-accent">KNOWLEDGE://{{ strtoupper($article->category->name ?? 'GUIDE') }}</span>
-            <h1 id="kb-article-heading" class="mt-5 font-display font-extrabold tracking-tight leading-tight text-3xl sm:text-4xl lg:text-5xl text-navy-900 dark:text-white text-balance">
+            <p class="ais-eyebrow">{{ $article->category->name ?? 'Guide' }}</p>
+            <h1 id="kb-article-heading" class="ais-h2 mt-3 text-3xl sm:text-4xl leading-tight">
                 {{ $article->title }}
             </h1>
-            <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] tracking-wider text-term-700">
-                <span>PUBLISHED:// {{ $article->created_at?->format('M d, Y') }}</span>
-                <span>READ:// ~{{ max(1, ceil(str_word_count(strip_tags($article->content)) / 200)) }} min</span>
-                <span>VIEWS:// {{ number_format($article->views_count) }}</span>
+            <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[11px] tracking-wider" style="color:#7FB7E8;">
+                <span>Published {{ $article->created_at?->format('M d, Y') }}</span>
+                <span>~{{ max(1, ceil(str_word_count(strip_tags($article->content)) / 200)) }} min read</span>
+                <span>{{ number_format($article->views_count) }} views</span>
             </div>
         </div>
     </div>
 </section>
 
 {{-- Content & Sidebar --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-24" aria-label="Article content">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+<section class="relative w-full" style="background:#020916;" aria-label="Article content">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
         <div class="grid lg:grid-cols-12 gap-6 lg:gap-8">
 
             {{-- Main article body --}}
-            <article class="lg:col-span-8 min-w-0">
+            <article class="lg:col-span-8 min-w-0 max-w-4xl">
                 @if($article->excerpt)
-                <div class="term-panel-2 px-5 sm:px-6 py-5 mb-8 text-base text-slate-600 dark:text-term-800 leading-relaxed">
+                <div class="ais-card px-5 sm:px-6 py-5 mb-8 text-base leading-relaxed" style="color:#B6C8DD;">
                     {{ $article->excerpt }}
                 </div>
                 @endif
 
-                <div class="term-panel p-6 sm:p-8 lg:p-10">
-                    <div class="prose dark:prose-invert max-w-none text-slate-600 dark:text-term-800">
+                <div class="ais-card p-6 sm:p-8 lg:p-10">
+                    <div class="prose dark:prose-invert max-w-none" style="color:#DCEBFF;">
                         {!! $article->content !!}
                     </div>
 
                     @if($article->tags && $article->tags->isNotEmpty())
-                    <div class="mt-10 pt-6 border-t border-term-300 dark:border-white/5 flex flex-wrap items-center gap-1.5">
-                        <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-term-700 mr-2">TAGS://</span>
+                    <div class="mt-10 pt-6 border-t border-white/5 flex flex-wrap items-center gap-2">
+                        <span class="text-[10px] uppercase tracking-[0.2em] mr-2" style="color:#7FB7E8;">Tags</span>
                         @foreach($article->tags as $tag)
-                        <span class="term-tag">
+                        <span class="ais-badge">
                             #{{ $tag->name }}
                         </span>
                         @endforeach
@@ -62,22 +63,22 @@
                 </div>
 
                 {{-- Helpful vote --}}
-                <div class="term-panel p-6 sm:p-8 mt-6 text-center" x-data="{ voted: false, helpful: null }">
-                    <div class="term-sec-label mb-2">FEEDBACK://SIGNAL</div>
-                    <h3 class="font-display text-xl font-bold text-navy-900 dark:text-white mb-2">Was this article helpful?</h3>
-                    <p class="text-sm text-slate-600 dark:text-term-800 mb-6">Your feedback helps us improve our documentation.</p>
+                <div class="ais-card p-6 sm:p-8 mt-6 text-center" x-data="{ voted: false, helpful: null }">
+                    <p class="ais-eyebrow mb-2">Your feedback</p>
+                    <h3 class="text-xl font-bold text-white mb-2">Was this article helpful?</h3>
+                    <p class="text-sm mb-6" style="color:#B6C8DD;">Your feedback helps us improve our documentation.</p>
 
                     <div x-show="!voted" class="flex flex-col sm:flex-row justify-center gap-3">
-                        <button @click="vote(true)" class="term-btn term-btn-sm">
+                        <button @click="vote(true)" class="ais-btn-primary">
                             Yes, helpful
                         </button>
-                        <button @click="vote(false)" class="term-btn term-btn-sm term-btn-ghost">
+                        <button @click="vote(false)" class="ais-btn-ghost">
                             Not helpful
                         </button>
                     </div>
 
                     <div x-show="voted" x-transition class="text-center" style="display:none;">
-                        <p class="font-mono text-xs tracking-[0.18em] text-accent-soft">SYS://ACK — THANK YOU FOR YOUR FEEDBACK</p>
+                        <p class="text-xs tracking-[0.18em]" style="color:#00CFFF;">Thank you for your feedback</p>
                     </div>
 
                     <script>
@@ -102,28 +103,28 @@
             {{-- Sidebar --}}
             <aside class="lg:col-span-4 space-y-4 sm:space-y-5">
                 @if(isset($related) && $related->isNotEmpty())
-                <div class="term-panel p-6">
-                    <div class="term-sec-label mb-4">KNOWLEDGE://RELATED</div>
+                <div class="ais-card p-6">
+                    <p class="ais-eyebrow mb-4">Related guides</p>
                     <div class="space-y-4">
                         @foreach($related as $rel)
-                        <a href="{{ route('kb.show', $rel->slug) }}" class="block group pb-4 border-b border-term-300/60 dark:border-white/5 last:border-0 last:pb-0">
-                            <h4 class="text-sm font-semibold text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors line-clamp-2">
+                        <a href="{{ route('kb.show', $rel->slug) }}" class="block group pb-4 border-b border-white/5 last:border-0 last:pb-0">
+                            <h4 class="text-sm font-semibold text-white transition-colors line-clamp-2">
                                 {{ $rel->title }}
                             </h4>
-                            <span class="font-mono text-[10px] tracking-wider text-term-700 mt-1 block">{{ $rel->updated_at?->diffForHumans() }}</span>
+                            <span class="text-[10px] tracking-wider mt-1 block" style="color:#7FB7E8;">{{ $rel->updated_at?->diffForHumans() }}</span>
                         </a>
                         @endforeach
                     </div>
                 </div>
                 @endif
 
-                <div class="term-panel p-6 text-center">
-                    <div class="term-sec-label mb-3">SUPPORT://ESCALATE</div>
-                    <h4 class="font-display text-base font-bold text-navy-900 dark:text-white mb-1">Need direct assistance?</h4>
-                    <p class="text-xs leading-relaxed text-slate-600 dark:text-term-800 mb-4">
+                <div class="ais-card p-6 text-center">
+                    <p class="ais-eyebrow mb-3">Need help?</p>
+                    <h4 class="text-base font-bold text-white mb-1">Need direct assistance?</h4>
+                    <p class="text-xs leading-relaxed mb-4" style="color:#B6C8DD;">
                         Our Tier 3 engineers are on standby 24/7 to resolve technical incidents.
                     </p>
-                    <a href="{{ route('contact') }}" class="term-btn term-btn-sm w-full justify-center">
+                    <a href="{{ route('contact') }}" class="ais-btn-primary w-full justify-center">
                         Open Support Ticket
                     </a>
                 </div>
@@ -133,4 +134,7 @@
     </div>
 </section>
 
+<x-ais-cta />
+
+</div>
 @endsection

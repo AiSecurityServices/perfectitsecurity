@@ -131,6 +131,66 @@ class AiChatController extends Controller
     }
 
     /**
+     * Confirm and create a service request from an AI draft.
+     */
+    public function confirmService(Request $request)
+    {
+        $request->validate([
+            'conversation_id' => 'required|exists:ai_conversations,id',
+            'service_id' => 'nullable|exists:services,id',
+            'requirements' => 'required|string|min:10|max:5000',
+        ]);
+
+        $conversation = AiConversation::findOrFail($request->conversation_id);
+        $user = $request->user();
+
+        if (! $user || ! $user->isCustomer()) {
+            return response()->json(['error' => 'Please log in to create a service request.'], 401);
+        }
+        if ($response = $this->authorizeConversation($request, $conversation)) {
+            return $response;
+        }
+
+        $result = $this->chatService->createServiceRequestFromDraft($conversation, [
+            'service_id' => $request->service_id,
+            'requirements' => $request->requirements,
+        ]);
+
+        return response()->json($result);
+    }
+
+    /**
+     * Confirm and create a quotation request from an AI draft.
+     */
+    public function confirmQuote(Request $request)
+    {
+        $request->validate([
+            'conversation_id' => 'required|exists:ai_conversations,id',
+            'service_id' => 'nullable|exists:services,id',
+            'requirements' => 'required|string|min:10|max:5000',
+            'budget_range' => 'nullable|string|max:50',
+        ]);
+
+        $conversation = AiConversation::findOrFail($request->conversation_id);
+        $user = $request->user();
+
+        if (! $user || ! $user->isCustomer()) {
+            return response()->json(['error' => 'Please log in to request a quotation.'], 401);
+        }
+        if ($response = $this->authorizeConversation($request, $conversation)) {
+            return $response;
+        }
+
+        $result = $this->chatService->createQuoteRequestFromDraft($conversation, [
+            'service_id' => $request->service_id,
+            'requirements' => $request->requirements,
+            'budget_range' => $request->budget_range,
+        ]);
+
+        return response()->json($result);
+    }
+
+    /**
      * Request escalation to human support.
      */
     public function escalate(Request $request)

@@ -15,6 +15,9 @@
                 &larr; Back to Tickets
             </a>
             <x-status-badge :status="$ticket->status" />
+            @isset($slaStatus)
+            <x-status-badge :status="$slaStatus" :label="'SLA: ' . ucfirst(str_replace('_', ' ', $slaStatus))" />
+            @endisset
         </x-slot:actions>
     </x-page-header>
 
@@ -29,9 +32,12 @@
             </div>
 
             <div class="font-mono text-[11px] uppercase tracking-[0.14em] text-slate-600 dark:text-term-800 flex items-center gap-4">
-                <span>Opened: <strong class="text-slate-900 dark:text-white">{{ $ticket->created_at->format('M d, Y H:i') }}</strong></span>
+                <span>Opened: <strong class="text-slate-900 dark:text-white">{{ \App\Support\UserTime::format($ticket->created_at, auth()->user(), 'M d, Y H:i') }}</strong></span>
                 @if($ticket->assignee)
                 <span>Assigned Agent: <strong class="text-slate-900 dark:text-white">{{ $ticket->assignee->name }}</strong></span>
+                @endif
+                @if($ticket->sla_resolution_deadline)
+                <span>Target resolution: <strong class="text-slate-900 dark:text-white">{{ \App\Support\UserTime::format($ticket->sla_resolution_deadline, auth()->user(), 'M d, Y H:i') }}</strong></span>
                 @endif
             </div>
         </div>
@@ -121,10 +127,25 @@
         </form>
     </div>
     @else
+    @if(in_array($ticket->status, ['resolved', 'closed'], true) && (int) $ticket->customer_id === (int) auth()->id())
+    <div class="term-panel p-6 lg:p-8">
+        <h3 class="term-field-label mb-3">Not resolved yet? Reopen this ticket</h3>
+        <p class="text-sm text-slate-600 dark:text-term-800 mb-4">Reopening is available within 7 days of resolution. Tell us what still needs attention.</p>
+        <form method="POST" action="{{ route('portal.tickets.reopen', $ticket) }}" class="space-y-4">
+            @csrf
+            <div>
+                <textarea name="reason" rows="3" required maxlength="500" placeholder="What still needs attention?"
+                          class="term-input"></textarea>
+            </div>
+            <button type="submit" class="term-btn term-btn-sm">Reopen Ticket &rarr;</button>
+        </form>
+    </div>
+    @else
     <div class="term-alert term-alert-warn">
         <span class="term-alert-tag">LOCKED</span>
         <span class="text-slate-600 dark:text-term-800">This ticket has been marked as {{ $ticket->status }}. If you require further assistance, please submit a new ticket.</span>
     </div>
+    @endif
     @endif
 </div>
 @endsection

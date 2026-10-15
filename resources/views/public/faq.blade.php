@@ -1,46 +1,47 @@
 @extends('layouts.public')
 
-@section('title', 'Frequently Asked Questions — PerfectITSecurity')
+@section('title', 'Frequently Asked Questions — AISecurity')
 @section('description', 'Find answers to common questions about our IT support services, cybersecurity solutions, pricing, and more.')
 
 @section('content')
+<div class="ais-page">
 
-{{-- HERO — FAQ://INDEX --}}
+{{-- HERO --}}
 <section class="relative w-full overflow-hidden" aria-labelledby="faq-hero-heading">
-    <div class="absolute inset-0 bg-cyber-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
-    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-32 pb-12 lg:pb-16">
-        <div class="max-w-4xl">
-            <div class="flex flex-wrap items-center gap-2.5 mb-7">
-                <span class="term-tag term-tag-accent">FAQ://INDEX</span>
-                <span class="term-tag">Help Centre</span>
-            </div>
-            <h1 id="faq-hero-heading" class="font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-6xl lg:text-7xl text-navy-900 dark:text-white text-balance">
-                FREQUENTLY ASKED <span class="text-accent-soft">QUESTIONS</span>
-            </h1>
-            <p class="mt-6 text-base sm:text-lg lg:text-xl leading-relaxed text-slate-600 dark:text-term-800 max-w-3xl">
-                Find answers to the most common questions about our IT services, cybersecurity solutions, support processes, and pricing.
-            </p>
-        </div>
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background:radial-gradient(ellipse 60% 55% at 72% 40%, rgba(22,139,255,.20), transparent 65%), radial-gradient(ellipse 45% 50% at 85% 70%, rgba(121,88,255,.14), transparent 60%), radial-gradient(ellipse 70% 45% at 15% 10%, rgba(0,207,255,.07), transparent 60%);"></div>
+    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-14 sm:pt-16 pb-10">
+        <nav class="ais-crumb mb-4" aria-label="Breadcrumb">
+            <a href="{{ route('home') }}">Home</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">FAQ</span>
+        </nav>
+        <p class="ais-eyebrow">Help Centre</p>
+        <h1 id="faq-hero-heading" class="ais-h2 mt-3 text-3xl sm:text-4xl lg:text-5xl leading-tight">Frequently Asked Questions</h1>
+        <p class="ais-sub mt-4 text-[14px] sm:text-[15px] leading-relaxed max-w-2xl">
+            Find answers to the most common questions about our IT services, cybersecurity solutions, support processes, and pricing.
+        </p>
     </div>
 </section>
 
 {{-- FAQ Search --}}
-<section class="relative w-full py-10 border-t border-term-300 dark:border-white/5" aria-label="Search answers">
-    <div class="w-full max-w-3xl mx-auto px-4 sm:px-6">
-        <div x-data="{ search: '' }" class="relative">
-            <label for="faq-search" class="sr-only">Search for answers</label>
-            <input type="text" id="faq-search" x-model="search" placeholder="search answers: e.g. pricing, SLA, onboarding…"
-                   class="term-input font-mono text-sm !pl-4">
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-label="Search answers">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-10">
+        <div class="max-w-3xl mx-auto">
+            <div x-data="{ search: '' }" class="relative">
+                <label for="faq-search" class="sr-only">Search for answers</label>
+                <input type="text" id="faq-search" x-model="search" placeholder="Search answers: e.g. pricing, SLA, onboarding…"
+                       class="ais-input text-sm !pl-4">
+            </div>
         </div>
     </div>
 </section>
 
 {{-- FAQ Categories --}}
-<section class="relative w-full py-12 lg:py-16 border-t border-term-300 dark:border-white/5" x-data="{ activeCategory: 'general', search: '' }" aria-label="Questions by category">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
+<section class="relative w-full border-t border-white/5" style="background:#020916;" x-data="{ activeCategory: 'general', search: '' }" aria-label="Questions by category">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
 
         {{-- Category Tabs --}}
-        <div class="flex flex-wrap gap-1.5 mb-10 justify-center" role="tablist" aria-label="FAQ categories">
+        <div class="flex flex-wrap gap-2 mb-10 justify-center" role="tablist" aria-label="FAQ categories">
             @foreach([
                 'general' => 'General',
                 'services' => 'Services',
@@ -50,40 +51,39 @@
                 'account' => 'Account & Portal',
             ] as $key => $label)
             <button @click="activeCategory = '{{ $key }}'"
-                    :class="activeCategory === '{{ $key }}' ? 'term-tag-accent' : ''"
-                    class="term-tag" role="tab">
-                {{ strtoupper($label) }}
+                    :style="activeCategory === '{{ $key }}' ? 'border-color:#00CFFF;background:rgba(0,207,255,.12);color:#fff;' : ''"
+                    class="ais-btn-ghost !py-2 !px-4 !text-xs" role="tab">
+                {{ $label }}
             </button>
             @endforeach
         </div>
 
         {{-- General --}}
-        <div x-show="activeCategory === 'general'" class="max-w-4xl mx-auto space-y-3">
+        <div x-show="activeCategory === 'general'" class="ais-faq max-w-4xl mx-auto space-y-3">
             @php
             $faqs = [
-                ['q' => 'What IT services does PerfectITSecurity provide?', 'a' => 'We provide comprehensive IT services including cybersecurity (penetration testing, vulnerability assessments, security audits), managed IT support, cloud infrastructure, web and software development, IT consulting, and digital transformation services.'],
+                ['q' => 'What IT services does AISecurity provide?', 'a' => 'We provide comprehensive IT services including cybersecurity (penetration testing, vulnerability assessments, security audits), managed IT support, cloud infrastructure, web and software development, IT consulting, and digital transformation services.'],
                 ['q' => 'Which industries do you serve?', 'a' => 'We serve a wide range of industries including healthcare, finance and banking, legal, education, e-commerce, manufacturing, and government organisations. Our solutions are tailored to each industry\'s specific compliance and operational requirements.'],
                 ['q' => 'Do you provide international support?', 'a' => 'Yes. We support clients across the United Kingdom, United States, Bangladesh, Europe, and other regions. Our team operates across multiple time zones and can provide remote and on-site support as needed.'],
                 ['q' => 'What are your support hours?', 'a' => 'Our standard support operates Monday to Friday, 9 AM to 6 PM local time. Premium and enterprise customers have access to 24/7/365 emergency support with guaranteed response times based on their SLA tier.'],
-                ['q' => 'How do I get started with PerfectITSecurity?', 'a' => 'Simply visit our Contact page or request a free consultation. Our solutions team will assess your requirements, recommend the right services, and provide a tailored proposal with transparent pricing.'],
+                ['q' => 'How do I get started with AISecurity?', 'a' => 'Simply visit our Contact page or request a free consultation. Our solutions team will assess your requirements, recommend the right services, and provide a tailored proposal with transparent pricing.'],
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="border border-term-300 dark:border-white/10 overflow-hidden transition-colors hover:border-accent/40" :class="open ? '!border-accent/50' : ''">
+            <div x-data="{ open: false }" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
-                    <span class="font-mono text-[10px] tracking-[0.2em] text-accent-soft flex-shrink-0">FAQ://{{ str_pad((string)($i + 1), 3, '0', STR_PAD_LEFT) }}</span>
-                    <span class="flex-1 text-sm sm:text-base font-semibold text-navy-900 dark:text-white">{{ $faq['q'] }}</span>
-                    <svg class="w-5 h-5 text-term-700 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
+                    <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-5 sm:px-6 pb-5 sm:pb-6">
-                    <p class="text-sm leading-relaxed text-slate-600 dark:text-term-800 pl-0 sm:pl-[72px]">{{ $faq['a'] }}</p>
+                    <p class="text-sm leading-relaxed" style="color:#B6C8DD;">{{ $faq['a'] }}</p>
                 </div>
             </div>
             @endforeach
         </div>
 
         {{-- Services --}}
-        <div x-show="activeCategory === 'services'" class="max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="activeCategory === 'services'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'What cybersecurity services do you offer?', 'a' => 'Our cybersecurity services include penetration testing, vulnerability assessments, web application security testing, network security audits, security compliance audits (ISO 27001, SOC 2, HIPAA, GDPR), incident response, and managed security services.'],
@@ -94,21 +94,20 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="border border-term-300 dark:border-white/10 overflow-hidden transition-colors hover:border-accent/40" :class="open ? '!border-accent/50' : ''">
+            <div x-data="{ open: false }" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
-                    <span class="font-mono text-[10px] tracking-[0.2em] text-accent-soft flex-shrink-0">FAQ://{{ str_pad((string)($i + 101), 3, '0', STR_PAD_LEFT) }}</span>
-                    <span class="flex-1 text-sm sm:text-base font-semibold text-navy-900 dark:text-white">{{ $faq['q'] }}</span>
-                    <svg class="w-5 h-5 text-term-700 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
+                    <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-5 sm:px-6 pb-5 sm:pb-6">
-                    <p class="text-sm leading-relaxed text-slate-600 dark:text-term-800 pl-0 sm:pl-[72px]">{{ $faq['a'] }}</p>
+                    <p class="text-sm leading-relaxed" style="color:#B6C8DD;">{{ $faq['a'] }}</p>
                 </div>
             </div>
             @endforeach
         </div>
 
         {{-- Cybersecurity --}}
-        <div x-show="activeCategory === 'security'" class="max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="activeCategory === 'security'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'How often should we conduct a penetration test?', 'a' => 'We recommend at least annually, with additional tests after major infrastructure changes, new application deployments, or following a security incident. Regulated industries may require more frequent testing.'],
@@ -118,21 +117,20 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="border border-term-300 dark:border-white/10 overflow-hidden transition-colors hover:border-accent/40" :class="open ? '!border-accent/50' : ''">
+            <div x-data="{ open: false }" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
-                    <span class="font-mono text-[10px] tracking-[0.2em] text-accent-soft flex-shrink-0">FAQ://{{ str_pad((string)($i + 201), 3, '0', STR_PAD_LEFT) }}</span>
-                    <span class="flex-1 text-sm sm:text-base font-semibold text-navy-900 dark:text-white">{{ $faq['q'] }}</span>
-                    <svg class="w-5 h-5 text-term-700 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
+                    <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-5 sm:px-6 pb-5 sm:pb-6">
-                    <p class="text-sm leading-relaxed text-slate-600 dark:text-term-800 pl-0 sm:pl-[72px]">{{ $faq['a'] }}</p>
+                    <p class="text-sm leading-relaxed" style="color:#B6C8DD;">{{ $faq['a'] }}</p>
                 </div>
             </div>
             @endforeach
         </div>
 
         {{-- Pricing --}}
-        <div x-show="activeCategory === 'pricing'" class="max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="activeCategory === 'pricing'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'How is pricing determined?', 'a' => 'Our pricing depends on the service type, complexity, scope, and your location. We offer fixed-price projects, hourly rates, monthly retainer plans, and custom enterprise pricing. Visit our Pricing page for detailed plans.'],
@@ -143,21 +141,20 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="border border-term-300 dark:border-white/10 overflow-hidden transition-colors hover:border-accent/40" :class="open ? '!border-accent/50' : ''">
+            <div x-data="{ open: false }" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
-                    <span class="font-mono text-[10px] tracking-[0.2em] text-accent-soft flex-shrink-0">FAQ://{{ str_pad((string)($i + 301), 3, '0', STR_PAD_LEFT) }}</span>
-                    <span class="flex-1 text-sm sm:text-base font-semibold text-navy-900 dark:text-white">{{ $faq['q'] }}</span>
-                    <svg class="w-5 h-5 text-term-700 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
+                    <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-5 sm:px-6 pb-5 sm:pb-6">
-                    <p class="text-sm leading-relaxed text-slate-600 dark:text-term-800 pl-0 sm:pl-[72px]">{{ $faq['a'] }}</p>
+                    <p class="text-sm leading-relaxed" style="color:#B6C8DD;">{{ $faq['a'] }}</p>
                 </div>
             </div>
             @endforeach
         </div>
 
         {{-- Support --}}
-        <div x-show="activeCategory === 'support'" class="max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="activeCategory === 'support'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'How do I submit a support ticket?', 'a' => 'Registered customers can submit support tickets directly from the Customer Portal under "My Tickets". You can also call our support line or email support@techsupport.com for urgent issues.'],
@@ -167,21 +164,20 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="border border-term-300 dark:border-white/10 overflow-hidden transition-colors hover:border-accent/40" :class="open ? '!border-accent/50' : ''">
+            <div x-data="{ open: false }" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
-                    <span class="font-mono text-[10px] tracking-[0.2em] text-accent-soft flex-shrink-0">FAQ://{{ str_pad((string)($i + 401), 3, '0', STR_PAD_LEFT) }}</span>
-                    <span class="flex-1 text-sm sm:text-base font-semibold text-navy-900 dark:text-white">{{ $faq['q'] }}</span>
-                    <svg class="w-5 h-5 text-term-700 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
+                    <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-5 sm:px-6 pb-5 sm:pb-6">
-                    <p class="text-sm leading-relaxed text-slate-600 dark:text-term-800 pl-0 sm:pl-[72px]">{{ $faq['a'] }}</p>
+                    <p class="text-sm leading-relaxed" style="color:#B6C8DD;">{{ $faq['a'] }}</p>
                 </div>
             </div>
             @endforeach
         </div>
 
         {{-- Account --}}
-        <div x-show="activeCategory === 'account'" class="max-w-4xl mx-auto space-y-3" style="display: none;">
+        <div x-show="activeCategory === 'account'" class="ais-faq max-w-4xl mx-auto space-y-3" style="display: none;">
             @php
             $faqs = [
                 ['q' => 'How do I create an account?', 'a' => 'Click "Register" in the top navigation. Fill in your details, verify your email address via the OTP sent to your inbox, and then verify your phone number. Once both are verified, you will have full access to the Customer Portal.'],
@@ -191,14 +187,13 @@
             ];
             @endphp
             @foreach($faqs as $i => $faq)
-            <div x-data="{ open: false }" class="border border-term-300 dark:border-white/10 overflow-hidden transition-colors hover:border-accent/40" :class="open ? '!border-accent/50' : ''">
+            <div x-data="{ open: false }" class="ais-card overflow-hidden">
                 <button @click="open = !open" class="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left" :aria-expanded="open.toString()">
-                    <span class="font-mono text-[10px] tracking-[0.2em] text-accent-soft flex-shrink-0">FAQ://{{ str_pad((string)($i + 501), 3, '0', STR_PAD_LEFT) }}</span>
-                    <span class="flex-1 text-sm sm:text-base font-semibold text-navy-900 dark:text-white">{{ $faq['q'] }}</span>
-                    <svg class="w-5 h-5 text-term-700 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <span class="flex-1 text-sm sm:text-base font-semibold text-white">{{ $faq['q'] }}</span>
+                    <svg class="w-5 h-5 flex-shrink-0 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="open" x-collapse class="px-5 sm:px-6 pb-5 sm:pb-6">
-                    <p class="text-sm leading-relaxed text-slate-600 dark:text-term-800 pl-0 sm:pl-[72px]">{{ $faq['a'] }}</p>
+                    <p class="text-sm leading-relaxed" style="color:#B6C8DD;">{{ $faq['a'] }}</p>
                 </div>
             </div>
             @endforeach
@@ -208,21 +203,24 @@
 </section>
 
 {{-- CTA --}}
-<section class="relative w-full py-16 sm:py-20 border-t border-term-300 dark:border-white/5" aria-labelledby="faq-cta-heading">
-    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <span class="term-tag term-tag-accent">FAQ://ESCALATE</span>
-        <h2 id="faq-cta-heading" class="mt-4 font-display text-3xl sm:text-5xl font-bold tracking-tight text-navy-900 dark:text-white">Still have questions?</h2>
-        <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-term-800 max-w-2xl mx-auto">Our team is ready to help you find the right IT solution for your business.</p>
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-labelledby="faq-cta-heading">
+    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-20 text-center">
+        <p class="ais-eyebrow">Still need help?</p>
+        <h2 id="faq-cta-heading" class="ais-h2 mt-3 text-2xl sm:text-3xl">Still have questions?</h2>
+        <p class="ais-sub mt-4 text-[13px] sm:text-sm max-w-2xl mx-auto">Our team is ready to help you find the right IT solution for your business.</p>
         <div class="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="{{ route('contact') }}" class="term-btn term-btn-lg">
+            <a href="{{ route('contact') }}" class="ais-btn-primary">
                 Contact Us
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
             </a>
-            <a href="{{ route('services.index') }}" class="term-btn term-btn-lg term-btn-ghost">
+            <a href="{{ route('services.index') }}" class="ais-btn-ghost">
                 Browse Services
             </a>
         </div>
     </div>
 </section>
 
+<x-ais-cta />
+
+</div>
 @endsection

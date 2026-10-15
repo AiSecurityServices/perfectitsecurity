@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', '419 — Session Expired | PerfectITSecurity')
+@section('title', '419 — Session Expired | AISecurity')
 
 @section('content')
 <div class="min-h-[75vh] flex items-center justify-center px-4 sm:px-6 py-20 relative">

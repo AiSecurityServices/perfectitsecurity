@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', '403 — Access Forbidden | PerfectITSecurity')
+@section('title', '403 — Access Forbidden | AISecurity')
 @section('description', 'Access to this resource is restricted by role-based access controls.')
 
 @section('content')

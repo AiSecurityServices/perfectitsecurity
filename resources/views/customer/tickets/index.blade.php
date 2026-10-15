@@ -4,6 +4,9 @@
 <div class="space-y-6">
     <x-page-header title="Support Tickets" subtitle="Open, track and resolve your technical support threads." sys="SUPPORT://TICKETS" num="02">
         <x-slot:actions>
+            @if(auth()->user()->company_id)
+            <a href="{{ route('portal.tickets.organisation') }}" class="term-btn term-btn-ghost term-btn-sm">Organisation</a>
+            @endif
             <a href="{{ route('portal.tickets.create') }}" class="term-btn term-btn-sm">Create Ticket</a>
         </x-slot:actions>
     </x-page-header>

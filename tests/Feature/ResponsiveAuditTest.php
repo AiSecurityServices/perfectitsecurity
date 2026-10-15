@@ -27,11 +27,16 @@ class ResponsiveAuditTest extends TestCase
         $this->assertStringContainsString('max-h-[calc(100dvh-3.5rem)] overflow-y-auto', $layout);
         $this->assertStringContainsString('aria-expanded', $layout);
         $this->assertStringContainsString('@keydown.escape', $layout);
-        // Mobile menu links cover the primary desktop destinations; primary links appear exactly once each.
+        // Mobile menu links follow the reference navigation (Home, AI Agents,
+        // IT Support, Services, Solutions, About, Contact); each label exactly once.
         $mobileMenu = substr($layout, strpos($layout, 'id="mobile-menu"'));
         $mobileMenu = substr($mobileMenu, 0, strpos($mobileMenu, 'pt-4 space-y-2.5'));
-        foreach (["route('services.index')", "route('case-studies')", "route('portfolio.index')", "route('kb.index')", "route('about')", "route('contact')"] as $r) {
-            $this->assertEquals(1, substr_count($mobileMenu, $r), $r);
+        foreach (['Home', 'AI Agents', 'IT Support', 'Services', 'Solutions', 'About', 'Contact'] as $label) {
+            $this->assertEquals(1, substr_count($mobileMenu, "'label' => '".$label."'"), $label);
+        }
+        // Every mobile destination resolves to a real route (no dead links).
+        foreach (["route('home')", "route('ai.index')", "route('services.index')", "route('case-studies')", "route('about')", "route('contact')"] as $r) {
+            $this->assertStringContainsString($r, $mobileMenu, $r);
         }
         // FAQ is a single footer link (not duplicated inside the mobile menu); the desktop-only
         // Information pages remain reachable somewhere on the page (mobile menu or footer).
@@ -107,8 +112,8 @@ class ResponsiveAuditTest extends TestCase
         $globe = file_get_contents(resource_path('js/hero-globe.js'));
         $this->assertStringContainsString('visibilitychange', $globe);
         $this->assertStringContainsString('devicePixelRatio', $globe);
-        // Premium cyan identity carried into the globe rig.
-        $this->assertStringContainsString('0x55e6ff', strtolower($globe));
+        // AISecurity cyan identity (electric cyan #54E5FF) carried into the globe rig.
+        $this->assertStringContainsString('0x54e5ff', strtolower($globe));
         $role = file_get_contents(resource_path('js/role-bg.js'));
         $this->assertStringContainsString('#22C55E', $role);
     }

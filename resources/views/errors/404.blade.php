@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', '404 — Resource Not Found | PerfectITSecurity')
+@section('title', '404 — Resource Not Found | AISecurity')
 @section('description', 'The requested endpoint could not be located.')
 
 @section('content')

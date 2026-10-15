@@ -52,7 +52,17 @@ class QuoteController extends Controller
 
         $taxRate = app(BusinessHoursService::class)->taxRateForCountry($country);
 
-        $serviceRequest = DB::transaction(function () use ($validated, $country, $taxRate) {
+        // Duplicate-submission guard: identical replays return the original
+        // request reference instead of creating a second lead + request.
+        $actor = auth()->id() ?? 'guest:'.(string) $request->ip();
+        $key = \App\Support\Idempotency::keyForRequest($request, 'public.quote.store', $actor, [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'service_id' => $validated['service_id'] ?? null,
+            'message' => mb_substr($validated['message'], 0, 500),
+        ]);
+        $outcome = \App\Support\Idempotency::run($key, function () use ($validated, $country, $taxRate) {
+            $serviceRequest = DB::transaction(function () use ($validated, $country, $taxRate) {
             $serviceRequest = ServiceRequest::create([
                 'user_id' => auth()->id(),
                 'service_id' => $validated['service_id'] ?? null,
@@ -94,19 +104,27 @@ class QuoteController extends Controller
             return $serviceRequest;
         });
 
-        // Staff alert: quote requests must reach sales (in-app notification).
-        $staff = \App\Models\User::whereIn('role', ['super_admin', 'admin', 'support_manager', 'sales_agent'])
-            ->where('is_active', true)->limit(10)->get();
-        foreach ($staff as $member) {
-            \App\Models\Notification::create([
-                'id' => (string) \Illuminate\Support\Str::uuid(),
-                'type' => 'quote_request',
-                'notifiable_type' => \App\Models\User::class,
-                'notifiable_id' => $member->id,
-                'data' => ['title' => 'New quote request', 'message' => "{$validated['name']} ({$validated['email']}) requested a quote.", 'service_request_id' => $serviceRequest->id],
-            ]);
-        }
+            // Staff alert: quote requests must reach sales (in-app notification).
+            $staff = \App\Models\User::whereIn('role', ['super_admin', 'admin', 'support_manager', 'sales_agent'])
+                ->where('is_active', true)->limit(10)->get();
+            foreach ($staff as $member) {
+                \App\Services\ServiceTrackingService::notify(
+                    (int) $member->id, 'quote_request',
+                    'New quote request',
+                    "{$validated['name']} ({$validated['email']}) requested a quote."
+                );
+            }
 
-        return redirect()->route('get-quote')->with('success', 'Your quote request has been submitted. We will respond within 24 hours.');
+            return ['request_id' => $serviceRequest->id, 'reference' => $serviceRequest->request_number];
+        });
+
+        $reference = $outcome['result']['reference'] ?? null;
+
+        return redirect()->route('get-quote')->with(
+            'success',
+            $outcome['replayed']
+                ? "This request was already received. Your reference is {$reference}."
+                : "Your quote request has been submitted. Reference {$reference} — we will respond within 24 hours."
+        );
     }
 }

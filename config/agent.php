@@ -30,6 +30,32 @@ return [
     'openclaw_enabled' => env('OPENCLAW_ENABLED', false),
     'omniroute_enabled' => env('OMNIROUTE_ENABLED', false),
 
+    /*
+    | External runtime connections. Hermes Agent exposes an OpenAI-compatible
+    | API server (POST {base}/v1/chat/completions, GET /health,
+    | GET /v1/capabilities). OpenClaw Gateway exposes webhooks
+    | (POST {base}/hooks/agent, POST {base}/hooks/wake) with a Bearer token.
+    | NEVER expose a local runtime to the public internet — backend connects
+    | over loopback / private network only. `verified_*` is set true ONLY
+    | after staging proves the documented endpoint; code never assumes it.
+    */
+    'hermes' => [
+        'base_url' => rtrim((string) env('HERMES_BASE_URL', ''), '/'),
+        'api_key' => env('HERMES_API_KEY', ''),
+        'model' => env('HERMES_MODEL', 'hermes-agent'),
+        'timeout' => (int) env('HERMES_TIMEOUT', 60),
+        'connect_timeout' => (int) env('HERMES_CONNECT_TIMEOUT', 10),
+        'verified' => env('HERMES_VERIFIED', false),
+    ],
+    'openclaw' => [
+        'base_url' => rtrim((string) env('OPENCLAW_BASE_URL', ''), '/'),
+        'token' => env('OPENCLAW_TOKEN', ''),
+        'agent_id' => env('OPENCLAW_AGENT_ID', ''),
+        'timeout' => (int) env('OPENCLAW_TIMEOUT', 60),
+        'connect_timeout' => (int) env('OPENCLAW_CONNECT_TIMEOUT', 10),
+        'verified' => env('OPENCLAW_VERIFIED', false),
+    ],
+
     // Cost / load guards.
     'max_tokens' => (int) env('AI_AGENT_MAX_TOKENS', 512),
     'max_concurrency' => (int) env('AI_AGENT_MAX_CONCURRENCY', 4),
@@ -45,8 +71,8 @@ return [
         .'get_order_status,get_project_status,get_customer_invoice_status,'
         .'get_authenticated_user,get_customer_profile,create_support_ticket,'
         .'add_ticket_message,create_service_request,escalate_to_employee,'
-        .'get_assigned_tickets,get_assigned_tasks,generate_service_report,'
-        .'create_work_log,summarize_customer_issues'
+        .'get_assigned_tickets,get_assigned_tasks,'
+        .'summarize_customer_issues'
     )),
 
     // Roles permitted to invoke the agent gateway at all.

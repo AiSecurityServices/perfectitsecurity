@@ -28,7 +28,7 @@
         <table style="width: 100%;">
             <tr>
                 <td>
-                    <div class="logo">TechSupport Solutions</div>
+                    <div class="logo">AISecurity</div>
                     <div style="color: #64748b; margin-top: 4px;">Enterprise IT Infrastructure & Cybersecurity</div>
                 </td>
                 <td style="text-align: right;">
@@ -120,7 +120,7 @@
     @endif
 
     <div class="footer">
-        Thank you for choosing TechSupport Solutions. For billing inquiries, contact billing@techsupport.com
+        Thank you for choosing AISecurity. For billing inquiries, contact billing@techsupport.com
     </div>
 </body>
 </html>

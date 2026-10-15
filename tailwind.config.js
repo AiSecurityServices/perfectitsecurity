@@ -83,8 +83,8 @@ module.exports = {
                     800: '#1E40AF',
                     900: '#172554',
                 },
-                // PERFECTITSECURITY terminal palette: near-black charcoal,
-                // electric-green accent used sparingly, electric-blue secondary.
+                // AISecurity intelligence palette: midnight navy surfaces,
+                // electric-cyan accent used sparingly, intelligent-blue secondary.
                 term: {
                     0: '#050807',
                     50: '#0a0f0d',
@@ -100,9 +100,9 @@ module.exports = {
                     950: '#e6f0ea',
                 },
                 accent: {
-                    DEFAULT: '#00E67A',
-                    dim: '#00B35F',
-                    soft: '#5CEFA8',
+                    DEFAULT: '#54E5FF',
+                    dim: '#1FA3C7',
+                    soft: '#9BF0FF',
                     blue: '#4DA3FF',
                     amber: '#FFB454',
                     red: '#FF5C5C',
@@ -130,7 +130,7 @@ module.exports = {
                 'premium-sm': '0 1px 2px rgba(2,6,23,0.06), 0 4px 14px -4px rgba(2,6,23,0.10)',
                 'premium': '0 12px 40px -12px rgba(2,6,23,0.18), 0 2px 8px -2px rgba(2,6,23,0.08)',
                 'premium-lg': '0 24px 70px -20px rgba(2,6,23,0.28), 0 4px 16px -4px rgba(2,6,23,0.10)',
-                'glow-brand': '0 10px 30px -8px rgba(22,163,74,0.45), 0 4px 14px -4px rgba(37,99,235,0.35)',
+                'glow-brand': '0 10px 30px -8px rgba(84,229,255,0.35), 0 4px 14px -4px rgba(52,120,246,0.35)',
             },
             borderRadius: {
                 'xl2': '1.1rem',

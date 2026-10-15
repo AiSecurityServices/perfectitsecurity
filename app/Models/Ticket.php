@@ -17,10 +17,42 @@ class Ticket extends Model
         'category_id', 'subcategory_id', 'priority', 'severity', 'impact',
         'urgency', 'status', 'assigned_to', 'team_id', 'tags', 'sla_policy_id',
         'sla_response_deadline', 'sla_resolution_deadline', 'first_response_at',
-        'sla_warning_sent_at', 'sla_breached_at',
+        'sla_warning_sent_at', 'sla_breached_at', 'sla_paused_at',
         'resolved_at', 'closed_at', 'resolution_details', 'satisfaction_rating',
         'satisfaction_feedback',
     ];
+
+    /**
+     * Server-enforced ticket lifecycle.
+     * New → Triaged(open) → Assigned → In Progress → Waiting ↔ In Progress
+     * → Resolved → Closed, with Reopened looping back. Cancelled is terminal
+     * from pre-resolution states. Closed/Cancelled accept no transitions.
+     */
+    public const TRANSITIONS = [
+        'new' => ['open', 'assigned', 'cancelled'],
+        'open' => ['assigned', 'in_progress', 'waiting_customer', 'waiting_third_party', 'cancelled'],
+        'assigned' => ['in_progress', 'waiting_customer', 'waiting_third_party', 'escalated', 'cancelled'],
+        'in_progress' => ['waiting_customer', 'waiting_third_party', 'escalated', 'resolved', 'cancelled'],
+        'waiting_customer' => ['in_progress', 'resolved', 'cancelled'],
+        'waiting_third_party' => ['in_progress', 'resolved', 'escalated', 'cancelled'],
+        'escalated' => ['in_progress', 'waiting_customer', 'waiting_third_party', 'resolved'],
+        'resolved' => ['closed', 'reopened'],
+        'reopened' => ['in_progress', 'assigned', 'resolved'],
+        'closed' => [],
+        'cancelled' => [],
+    ];
+
+    public const WAITING_STATUSES = ['waiting_customer', 'waiting_third_party'];
+
+    public function canTransitionTo(string $status): bool
+    {
+        return in_array($status, self::TRANSITIONS[$this->status] ?? [], true);
+    }
+
+    public function isTerminal(): bool
+    {
+        return in_array($this->status, ['closed', 'cancelled'], true);
+    }
 
     protected $casts = [
         'customer_id' => 'integer',
@@ -35,6 +67,7 @@ class Ticket extends Model
         'sla_resolution_deadline' => 'datetime',
         'sla_warning_sent_at' => 'datetime',
         'sla_breached_at' => 'datetime',
+        'sla_paused_at' => 'datetime',
         'first_response_at' => 'datetime',
         'resolved_at' => 'datetime',
         'closed_at' => 'datetime',
@@ -123,6 +156,9 @@ class Ticket extends Model
 
     public function getSlaStatusAttribute()
     {
+        if ($this->sla_paused_at) {
+            return 'paused';
+        }
         if (! $this->sla_resolution_deadline) {
             return null;
         }

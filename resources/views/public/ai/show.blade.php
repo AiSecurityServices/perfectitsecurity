@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', ($service->seo_title ?: $service->name . ' | PerfectITSecurity'))
+@section('title', ($service->seo_title ?: $service->name . ' | AISecurity'))
 @section('description', ($service->seo_description ?: $service->short_description))
 
 @push('head')
@@ -11,94 +11,98 @@
     'name' => $service->name,
     'description' => $service->short_description,
     'url' => route('ai.show', $service->slug),
-    'provider' => ['@type' => 'Organization', 'name' => 'PerfectITSecurity', 'url' => url('/')],
+    'provider' => ['@type' => 'Organization', 'name' => 'AISecurity', 'url' => url('/')],
 ], JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endpush
 
 @section('content')
+<div class="ais-page">
 
 {{-- ═══════════ HERO ═══════════ --}}
-<section class="premium-hero relative w-full overflow-hidden" aria-labelledby="service-heading">
-    <div class="absolute inset-0 bg-cyber-grid opacity-60 pointer-events-none" aria-hidden="true"></div>
-    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#55E6FF]/40 to-transparent" aria-hidden="true"></div>
-    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-24 sm:pt-28 lg:pt-32 pb-12 lg:pb-16">
-        <nav aria-label="Breadcrumb" class="reveal">
-            <ol class="flex flex-wrap items-center gap-2 font-mono text-[11px] tracking-[0.18em] uppercase text-term-700">
-                <li><a href="{{ route('home') }}" class="hover:text-accent-soft transition-colors">Home</a></li>
-                <li aria-hidden="true">/</li>
-                <li><a href="{{ route('ai.index') }}" class="hover:text-accent-soft transition-colors">AI Agent Services</a></li>
-                <li aria-hidden="true">/</li>
-                <li aria-current="page" class="text-accent-soft">{{ $service->name }}</li>
-            </ol>
-        </nav>
-        <div class="mt-6 grid lg:grid-cols-12 gap-8 items-start">
-            <div class="lg:col-span-8 max-w-4xl">
-                <p class="reveal"><span class="premium-eyebrow">{{ $service->category->name }}</span></p>
-                <h1 id="service-heading" class="mt-6 font-display font-extrabold tracking-tight leading-[1.02] text-4xl sm:text-5xl lg:text-6xl text-balance reveal">
-                    <span class="premium-title">{{ $service->name }}</span>
-                </h1>
-                <p class="premium-lede mt-6 text-base sm:text-lg leading-relaxed max-w-3xl reveal delay-100">{{ $service->short_description }}</p>
-                <div class="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 reveal delay-200">
-                    <a href="{{ auth()->check() ? route('portal.service-request.create', ['service_id' => $service->id]) : route('get-quote', ['service_id' => $service->id]) }}" class="term-btn term-btn-lg btn-premium">
-                        Request a Custom Proposal
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                    </a>
-                    <a href="{{ route('contact') }}" class="term-btn term-btn-lg term-btn-ghost btn-ghost-premium">Discuss This Service →</a>
-                </div>
+<section class="relative w-full overflow-hidden" aria-labelledby="service-heading">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background:radial-gradient(ellipse 60% 55% at 72% 40%, rgba(22,139,255,.20), transparent 65%), radial-gradient(ellipse 45% 50% at 85% 70%, rgba(121,88,255,.14), transparent 60%), radial-gradient(ellipse 70% 45% at 15% 10%, rgba(0,207,255,.07), transparent 60%);"></div>
+    <div class="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 pt-14 sm:pt-16 lg:pt-20 pb-10 lg:pb-14 grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+            <nav aria-label="Breadcrumb" class="reveal">
+                <ol class="ais-crumb">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li aria-hidden="true">/</li>
+                    <li><a href="{{ route('ai.index') }}">AI Agent Services</a></li>
+                    <li aria-hidden="true">/</li>
+                    <li aria-current="page">{{ $service->name }}</li>
+                </ol>
+            </nav>
+            <p class="ais-eyebrow reveal mt-5">{{ $service->category->name }}</p>
+            <h1 id="service-heading" class="mt-4 font-extrabold tracking-tight leading-[1.05] text-4xl sm:text-5xl text-balance reveal" style="font-family:Sora,Inter,system-ui,sans-serif;">
+                <span class="text-white">{{ $service->name }}</span>
+            </h1>
+            <p class="mt-5 text-[14px] sm:text-[15px] leading-relaxed max-w-xl reveal delay-100" style="color:#B6C8DD;">{{ $service->short_description }}</p>
+            <div class="mt-7 flex flex-col sm:flex-row flex-wrap gap-3 reveal delay-200">
+                <a href="{{ auth()->check() ? route('portal.service-request.create', ['service_id' => $service->id]) : route('get-quote', ['service_id' => $service->id]) }}" class="ais-btn-primary">
+                    Request a Custom Proposal
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                </a>
+                <a href="{{ route('contact') }}" class="ais-btn-ghost">Discuss This Service</a>
             </div>
-            <div class="lg:col-span-4 term-panel p-6 reveal delay-100" aria-label="Service facts">
-                <dl class="space-y-4 font-mono text-xs tracking-wider">
-                    <div class="flex justify-between gap-4"><dt class="text-term-700">PRICING</dt><dd class="text-accent-soft text-right">Custom Proposal</dd></div>
+        </div>
+        <div>
+            <x-ais-globe :chips="[
+                ['<circle cx=\'12\' cy=\'8\' r=\'3.5\'/><path stroke-linecap=\'round\' d=\'M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5\'/>', 'AI Agents', 'tl'],
+                ['<circle cx=\'12\' cy=\'12\' r=\'3\'/><path stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10l2 2M19 5l-2 2M7 17l-2 2\'/>', 'Automation', 'tr'],
+                ['<path stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M17.5 19a4.5 4.5 0 100-9 6 6 0 00-11.5 1.5A4 4 0 006.5 19h11z\'/>', 'Cloud', 'mr'],
+                ['<path stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z\'/>', 'Cybersecurity', 'bc'],
+            ]" />
+            <div class="ais-card p-6 mt-4" aria-label="Service facts">
+                <dl class="space-y-4 text-[12px] tracking-wider">
+                    <div class="flex justify-between gap-4"><dt style="color:#7d93ad;">PRICING</dt><dd class="text-right font-semibold" style="color:#00CFFF;">Custom Proposal</dd></div>
                     @if($service->estimated_completion)
-                    <div class="flex justify-between gap-4"><dt class="text-term-700">DELIVERY</dt><dd class="text-term-950 dark:text-term-950 text-right">{{ $service->estimated_completion }}</dd></div>
+                    <div class="flex justify-between gap-4"><dt style="color:#7d93ad;">DELIVERY</dt><dd class="text-white text-right">{{ $service->estimated_completion }}</dd></div>
                     @endif
-                    <div class="flex justify-between gap-4"><dt class="text-term-700">DIVISION</dt><dd class="text-term-950 dark:text-term-950 text-right">{{ $service->category->name }}</dd></div>
-                    <div class="flex justify-between gap-4"><dt class="text-term-700">SUPPORT</dt><dd class="text-term-950 dark:text-term-950 text-right">Ticketed &amp; tracked</dd></div>
+                    <div class="flex justify-between gap-4"><dt style="color:#7d93ad;">DIVISION</dt><dd class="text-white text-right">{{ $service->category->name }}</dd></div>
+                    <div class="flex justify-between gap-4"><dt style="color:#7d93ad;">SUPPORT</dt><dd class="text-white text-right">Ticketed &amp; tracked</dd></div>
                 </dl>
             </div>
         </div>
     </div>
 </section>
 
-{{-- ═══════════ 01 / PROBLEM & SOLUTION ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-24" aria-labelledby="problem-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 grid lg:grid-cols-12 gap-8">
+{{-- ═══════════ PROBLEM & SOLUTION ═══════════ --}}
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-labelledby="problem-heading">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16 grid lg:grid-cols-12 gap-8">
         <div class="lg:col-span-7">
-            <x-section-head num="01" label="AI://SOLUTION"
+            <x-ais-section-head id="problem-heading" eyebrow="The Solution"
                 title="The problem this solves."
-                desc="Concrete operational pain — and exactly how this service addresses it." />
-            <span id="problem-heading" class="sr-only">Problem and solution</span>
-            <p class="mt-8 text-base sm:text-lg leading-relaxed text-surface-600 dark:text-term-800 reveal">{{ $service->description }}</p>
+                sub="Concrete operational pain — and exactly how this service addresses it." />
+            <p class="mt-6 text-[14px] sm:text-[15px] leading-relaxed reveal" style="color:#B6C8DD;">{{ $service->description }}</p>
         </div>
-        <div class="lg:col-span-5 flex flex-col gap-4">
-            <div class="term-panel p-6 reveal">
-                <div class="font-mono text-[10px] tracking-[0.24em] text-accent-soft uppercase mb-3">IN SCOPE</div>
-                <p class="text-sm leading-relaxed text-surface-600 dark:text-term-800">{{ $service->scope }}</p>
+        <div class="lg:col-span-5 flex flex-col gap-3.5">
+            <div class="ais-card p-6 reveal">
+                <div class="text-[11px] font-bold tracking-[0.2em] uppercase mb-3" style="color:#00CFFF;">In scope</div>
+                <p class="text-[13px] leading-relaxed" style="color:#B6C8DD;">{{ $service->scope }}</p>
             </div>
             @if($service->exclusions)
-            <div class="term-panel-2 p-6 reveal">
-                <div class="font-mono text-[10px] tracking-[0.24em] text-term-700 uppercase mb-3">EXCLUDED — BY DESIGN</div>
-                <p class="text-sm leading-relaxed text-term-700 dark:text-term-800">{{ $service->exclusions }}</p>
+            <div class="ais-card p-6 reveal">
+                <div class="text-[11px] font-bold tracking-[0.2em] uppercase mb-3" style="color:#7FB7E8;">Excluded — by design</div>
+                <p class="text-[13px] leading-relaxed" style="color:#B6C8DD;">{{ $service->exclusions }}</p>
             </div>
             @endif
         </div>
     </div>
 </section>
 
-{{-- ═══════════ 02 / CAPABILITIES ═══════════ --}}
+{{-- ═══════════ CAPABILITIES ═══════════ --}}
 @if(!empty($service->features) && count($service->features) > 0)
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-labelledby="capabilities-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="02" label="AI://CAPABILITIES"
+<section class="relative w-full border-t border-white/5" style="background:linear-gradient(180deg,#020916,#03101f);" aria-labelledby="capabilities-heading">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
+        <x-ais-section-head id="capabilities-heading" eyebrow="Capabilities"
             title="What this service includes."
-            desc="Each capability is configured for your environment — never a generic install-and-leave." />
-        <span id="capabilities-heading" class="sr-only">Capabilities</span>
-        <div class="mt-10 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            sub="Each capability is configured for your environment — never a generic install-and-leave." />
+        <div class="mt-8 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
             @foreach($service->features as $i => $feature)
-            <div class="term-panel p-6 group reveal">
-                <div class="font-mono text-[11px] tracking-[0.24em] text-accent-soft">{{ str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) }}</div>
-                <p class="mt-3 text-sm leading-relaxed text-navy-900 dark:text-term-950">{{ $feature }}</p>
+            <div class="ais-card p-5 reveal">
+                <div class="text-[11px] font-bold tracking-[0.22em]" style="color:#00CFFF;">{{ str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) }}</div>
+                <p class="mt-3 text-[13px] leading-relaxed text-white">{{ $feature }}</p>
             </div>
             @endforeach
         </div>
@@ -106,8 +110,8 @@
 </section>
 @endif
 
-{{-- ═══════════ 03 / INTERACTIVE WORKFLOW VISUALIZATION ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-labelledby="workflow-heading"
+{{-- ═══════════ INTERACTIVE WORKFLOW VISUALIZATION ═══════════ --}}
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-labelledby="workflow-heading"
     x-data="{ step: 3, steps: [
         { t: 'Trigger', d: 'A defined event starts the workflow — a new enquiry, a schedule, or a human request. Nothing runs uninvited.' },
         { t: 'Input', d: 'Only the data the task needs is collected from approved sources — inboxes, documents, CRM, or your knowledge base.' },
@@ -117,16 +121,15 @@
         { t: 'Action', d: 'The approved action executes — a draft created, a record updated, a message queued for sending.' },
         { t: 'Log', d: 'Every step is written to an audit log: what ran, what was approved, and what changed. Failures alert, never vanish.' }
     ] }">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="03" label="AI://WORKFLOW"
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
+        <x-ais-section-head id="workflow-heading" eyebrow="Agent Workflow"
             title="How an agent workflow actually runs."
-            desc="Select any stage to inspect it. This is the documented pattern behind every automation we ship — trigger to log." />
-        <span id="workflow-heading" class="sr-only">Interactive workflow diagram</span>
-        <div class="mt-10 term-panel p-6 sm:p-8 reveal">
+            sub="Select any stage to inspect it. This is the documented pattern behind every automation we ship — trigger to log." />
+        <div class="mt-8 ais-card p-6 sm:p-8 reveal">
             <div class="flex flex-wrap gap-2" role="group" aria-label="Workflow stages">
                 <template x-for="(s, i) in steps" :key="i">
                     <button type="button" @click="step = i" :aria-pressed="step === i"
-                        :class="step === i ? 'term-tag term-tag-accent' : 'term-tag'" class="cursor-pointer"
+                        :class="step === i ? 'text-white border-[rgba(0,207,255,.65)] bg-[rgba(0,207,255,.14)]' : 'text-[#B6C8DD] border-white/10 hover:border-[rgba(0,207,255,.4)]'" class="cursor-pointer rounded-full border px-3 py-1.5 text-[11px] tracking-wider transition"
                         x-text="'0' + (i + 1) + ' · ' + s.t"></button>
                 </template>
             </div>
@@ -147,30 +150,29 @@
                     </template>
                 </svg>
                 <div class="flex-1 min-w-0" aria-live="polite">
-                    <p class="font-mono text-[11px] tracking-[0.24em] text-accent-soft" x-text="'STAGE 0' + (step + 1) + ' — ' + steps[step].t.toUpperCase()"></p>
-                    <p class="mt-2 text-sm sm:text-base leading-relaxed text-surface-600 dark:text-term-800" x-text="steps[step].d"></p>
+                    <p class="text-[11px] font-bold tracking-[0.2em]" style="color:#00CFFF;" x-text="'STAGE 0' + (step + 1) + ' — ' + steps[step].t.toUpperCase()"></p>
+                    <p class="mt-2 text-sm sm:text-[15px] leading-relaxed" style="color:#B6C8DD;" x-text="steps[step].d"></p>
                 </div>
             </div>
-            <noscript><p class="mt-4 text-sm text-term-700">Seven stages: trigger, input, AI processing, tools, human approval, action, log.</p></noscript>
+            <noscript><p class="mt-4 text-sm" style="color:#B6C8DD;">Seven stages: trigger, input, AI processing, tools, human approval, action, log.</p></noscript>
         </div>
     </div>
 </section>
 
-{{-- ═══════════ 04 / PROCESS ═══════════ --}}
+{{-- ═══════════ PROCESS ═══════════ --}}
 @if(!empty($service->process_steps) && count($service->process_steps) > 0)
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-labelledby="process-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="04" label="AI://DELIVERY"
+<section class="relative w-full border-t border-white/5" style="background:linear-gradient(180deg,#020916,#03101f);" aria-labelledby="process-heading">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
+        <x-ais-section-head id="process-heading" eyebrow="Delivery Process"
             title="How we deliver {{ strtolower($service->name) }}."
-            desc="A fixed delivery spine — scoped, tracked, and signed off at every stage." />
-        <span id="process-heading" class="sr-only">Delivery process</span>
-        <ol class="mt-10 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            sub="A fixed delivery spine — scoped, tracked, and signed off at every stage." />
+        <ol class="mt-8 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
             @foreach($service->process_steps as $ps)
-            <li class="term-panel-2 p-5 sm:p-6 reveal">
-                <div class="font-mono text-[11px] tracking-[0.24em] text-accent-soft">{{ str_pad((string)($loop->iteration), 2, '0', STR_PAD_LEFT) }}</div>
-                <h3 class="mt-2 font-display text-base font-bold tracking-tight text-navy-900 dark:text-white">{{ is_array($ps) ? ($ps['t'] ?? $ps['title'] ?? '') : $ps }}</h3>
+            <li class="ais-card p-5 reveal">
+                <div class="text-[11px] font-bold tracking-[0.22em]" style="color:#00CFFF;">{{ str_pad((string)($loop->iteration), 2, '0', STR_PAD_LEFT) }}</div>
+                <h3 class="mt-2 text-[13.5px] font-bold tracking-tight text-white">{{ is_array($ps) ? ($ps['t'] ?? $ps['title'] ?? '') : $ps }}</h3>
                 @if(is_array($ps))
-                <p class="mt-2 text-[13px] leading-relaxed text-surface-600 dark:text-term-800">{{ $ps['d'] ?? $ps['description'] ?? '' }}</p>
+                <p class="mt-2 text-[12.5px] leading-relaxed" style="color:#B6C8DD;">{{ $ps['d'] ?? $ps['description'] ?? '' }}</p>
                 @endif
             </li>
             @endforeach
@@ -179,19 +181,18 @@
 </section>
 @endif
 
-{{-- ═══════════ 05 / DELIVERABLES ═══════════ --}}
+{{-- ═══════════ DELIVERABLES ═══════════ --}}
 @if(!empty($service->deliverables) && count($service->deliverables) > 0)
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-labelledby="deliverables-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="05" label="AI://DELIVERABLES"
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-labelledby="deliverables-heading">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
+        <x-ais-section-head id="deliverables-heading" eyebrow="Deliverables"
             title="What you receive."
-            desc="Tangible, checkable outputs — every item tracked in your service record." />
-        <span id="deliverables-heading" class="sr-only">Deliverables</span>
-        <ul class="mt-10 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            sub="Tangible, checkable outputs — every item tracked in your service record." />
+        <ul class="mt-8 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($service->deliverables as $item)
-            <li class="term-panel p-5 sm:p-6 flex items-start gap-3 reveal">
-                <span class="w-1.5 h-1.5 bg-accent flex-shrink-0 mt-1.5" aria-hidden="true"></span>
-                <span class="text-sm leading-relaxed text-navy-900 dark:text-term-950">{{ $item }}</span>
+            <li class="ais-card p-5 flex items-start gap-3 reveal">
+                <span class="mt-0.5 inline-flex w-[18px] h-[18px] rounded-full items-center justify-center flex-shrink-0" style="background:rgba(0,207,255,.15); border:1px solid rgba(0,207,255,.5);" aria-hidden="true"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="#00CFFF" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+                <span class="text-[13px] leading-relaxed text-white">{{ $item }}</span>
             </li>
             @endforeach
         </ul>
@@ -199,27 +200,26 @@
 </section>
 @endif
 
-{{-- ═══════════ 06 / FAQ ═══════════ --}}
+{{-- ═══════════ FAQ ═══════════ --}}
 @if(!empty($service->faq) && count($service->faq) > 0)
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-labelledby="service-faq-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="06" label="AI://QUESTIONS"
+<section class="relative w-full border-t border-white/5" style="background:linear-gradient(180deg,#020916,#03101f);" aria-labelledby="service-faq-heading">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
+        <x-ais-section-head id="service-faq-heading" eyebrow="Questions"
             title="Service-specific questions."
-            desc="Answered plainly — including limits and prerequisites." />
-        <span id="service-faq-heading" class="sr-only">Frequently asked questions</span>
-        <div class="mt-10 grid gap-4 sm:gap-5 lg:grid-cols-2 max-w-5xl">
+            sub="Answered plainly — including limits and prerequisites." />
+        <div class="mt-8 grid gap-3.5 lg:grid-cols-2 max-w-5xl">
             @foreach($service->faq as $entry)
             @php
                 $parts = preg_split('/\s+[—–-]\s+/', (string) $entry, 2);
                 $q = $parts[0] ?? $entry;
                 $a = $parts[1] ?? '';
             @endphp
-            <details class="term-panel p-5 sm:p-6 group reveal">
-                <summary class="cursor-pointer font-display text-base font-bold tracking-tight text-navy-900 dark:text-white list-none flex items-center justify-between gap-4">
+            <details class="ais-card p-5 group reveal">
+                <summary class="cursor-pointer text-[14px] font-bold tracking-tight text-white list-none flex items-center justify-between gap-4">
                     {{ $q }}
-                    <svg class="w-4 h-4 flex-shrink-0 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                    <svg class="w-4 h-4 flex-shrink-0 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="#00CFFF" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                 </summary>
-                @if($a)<p class="mt-3 text-sm leading-relaxed text-surface-600 dark:text-term-800">{{ $a }}</p>@endif
+                @if($a)<p class="mt-3 text-[12.5px] leading-relaxed" style="color:#B6C8DD;">{{ $a }}</p>@endif
             </details>
             @endforeach
         </div>
@@ -227,22 +227,35 @@
 </section>
 @endif
 
-{{-- ═══════════ 07 / RELATED ═══════════ --}}
+{{-- ═══════════ RELATED ═══════════ --}}
 @if($related->isNotEmpty())
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-labelledby="related-heading">
-    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10">
-        <x-section-head num="07" label="AI://RELATED"
+<section class="relative w-full border-t border-white/5" style="background:#020916;" aria-labelledby="related-heading">
+    <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
+        <x-ais-section-head id="related-heading" eyebrow="Related Services"
             title="Commonly scoped together."
-            desc="Adjacent AI services frequently combined in one engagement." />
-        <span id="related-heading" class="sr-only">Related services</span>
-        <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            sub="Adjacent AI services frequently combined in one engagement." />
+        @php
+            $relPalette = [
+                ['bg' => 'rgba(22,139,255,.18)', 'fg' => '#4DA3FF'],
+                ['bg' => 'rgba(255,180,84,.16)', 'fg' => '#FFB454'],
+                ['bg' => 'rgba(121,88,255,.18)', 'fg' => '#9275FF'],
+                ['bg' => 'rgba(0,230,122,.14)', 'fg' => '#00E67A'],
+                ['bg' => 'rgba(0,207,255,.14)', 'fg' => '#00CFFF'],
+                ['bg' => 'rgba(255,92,92,.14)', 'fg' => '#FF8A8A'],
+            ];
+            $relIcon = '<path stroke-linecap="round" stroke-linejoin="round" d="M9 9h6v6H9zM4 4h5v5H4zM15 4h5v5h-5zM4 15h5v5H4zM15 15h5v5h-5z"/>';
+        @endphp
+        <div class="mt-8 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($related as $rel)
-            <a href="{{ route('ai.show', $rel->slug) }}" class="term-panel p-6 group block reveal">
-                <div class="term-tag mb-3 inline-block">{{ $rel->category->name }}</div>
-                <h3 class="font-display text-lg font-bold tracking-tight text-navy-900 dark:text-white group-hover:text-accent-soft transition-colors">{{ $rel->name }}</h3>
-                <p class="mt-2 text-sm leading-relaxed text-surface-600 dark:text-term-800 line-clamp-2">{{ $rel->short_description }}</p>
-                <span class="term-link mt-4 text-sm">Explore
-                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></span>
+            @php $rc = $relPalette[$loop->index % count($relPalette)]; @endphp
+            <a href="{{ route('ai.show', $rel->slug) }}" class="ais-card group block p-5 reveal" aria-label="{{ $rel->name }} — view service">
+                <div class="flex items-start justify-between gap-2">
+                    <span class="ais-icon" style="background:{{ $rc['bg'] }}; color:{{ $rc['fg'] }};" aria-hidden="true"><svg class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">{!! $relIcon !!}</svg></span>
+                    <svg class="w-4 h-4 mt-1 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="#7FB7E8" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                </div>
+                <p class="mt-3 text-[11px] font-semibold uppercase tracking-[0.14em]" style="color:#00CFFF;">{{ $rel->category->name }}</p>
+                <h3 class="mt-2 text-[14px] font-bold text-white leading-snug">{{ $rel->name }}</h3>
+                <p class="mt-1.5 text-[12px] leading-relaxed line-clamp-2" style="color:#B6C8DD;">{{ $rel->short_description }}</p>
             </a>
             @endforeach
         </div>
@@ -250,17 +263,19 @@
 </section>
 @endif
 
-{{-- ═══════════ 08 / CTA ═══════════ --}}
-<section class="relative w-full py-16 sm:py-20 lg:py-24 border-t border-term-300 dark:border-white/5" aria-labelledby="service-cta-heading">
-    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <span class="term-tag term-tag-accent">AI://DEPLOY</span>
-        <h2 id="service-cta-heading" class="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-navy-900 dark:text-white text-balance">Ready to scope {{ strtolower($service->name) }}?</h2>
-        <p class="mt-4 text-base leading-relaxed text-surface-600 dark:text-term-800">Tell us your objective and environment — we respond with a written proposal, not a sales call ambush.</p>
-        <div class="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="{{ auth()->check() ? route('portal.service-request.create', ['service_id' => $service->id]) : route('get-quote', ['service_id' => $service->id]) }}" class="term-btn term-btn-lg btn-premium">Request a Custom Proposal</a>
-            <a href="{{ route('ai.index') }}" class="term-btn term-btn-lg term-btn-ghost btn-ghost-premium">All AI Services →</a>
+{{-- ═══════════ CTA ═══════════ --}}
+<section class="relative w-full border-t border-white/5" style="background:linear-gradient(180deg,#020916,#03101f);" aria-labelledby="service-cta-heading">
+    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 py-12 lg:py-16 text-center">
+        <p class="ais-eyebrow reveal">Delivery</p>
+        <h2 id="service-cta-heading" class="ais-h2 mt-3 text-3xl sm:text-4xl text-balance reveal">Ready to scope {{ strtolower($service->name) }}?</h2>
+        <p class="ais-sub mt-4 text-[13.5px] max-w-xl mx-auto reveal delay-100">Tell us your objective and environment — we respond with a written proposal, not a sales call ambush.</p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3 reveal delay-200">
+            <a href="{{ auth()->check() ? route('portal.service-request.create', ['service_id' => $service->id]) : route('get-quote', ['service_id' => $service->id]) }}" class="ais-btn-primary">Request a Custom Proposal
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></a>
+            <a href="{{ route('ai.index') }}" class="ais-btn-ghost">All AI Services</a>
         </div>
     </div>
 </section>
 
+</div>
 @endsection

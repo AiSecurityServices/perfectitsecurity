@@ -40,9 +40,30 @@ class HomeController extends Controller
         $kbCategories = \App\Models\KbCategory::where('is_active', true)
             ->orderBy('sort_order')->limit(8)->get();
 
+        // AISecurity spotlight: eight AI agent cards in reference order.
+        // Slugs map to the real catalogue (AiAgentServicesSeeder); missing
+        // rows are simply skipped so cards never link to dead pages.
+        $aiSpotlightSlugs = [
+            'ai-customer-service-agents',
+            'ai-sales-research-agents',
+            'ai-coding-assistant-configuration',
+            'business-process-automation-ai',
+            'local-private-ai-deployment',
+            'ai-security-hardening',
+            'ai-agent-platform-setup',
+            'managed-ai-support',
+        ];
+        $aiSpotlight = Service::where('is_active', true)
+            ->whereIn('slug', $aiSpotlightSlugs)
+            ->with('category')
+            ->get()
+            ->sortBy(fn ($s) => array_search($s->slug, $aiSpotlightSlugs, true))
+            ->values();
+
         return view('public.home', compact(
             'featuredServices', 'latestPosts', 'serviceCategories',
-            'portfolioItems', 'caseStudies', 'kbArticles', 'kbCategories'
+            'portfolioItems', 'caseStudies', 'kbArticles', 'kbCategories',
+            'aiSpotlight'
         ));
     }
 }
